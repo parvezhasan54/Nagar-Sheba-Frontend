@@ -49,22 +49,10 @@ export const ResetPasswordZodSchema = z.object({
 });
 
 export const UpdateProfileZodSchema = z.object({
-  fullName: z
-    .string()
-    .trim()
-    .min(2, "Full name must be at least 2 characters."),
-  phone: z
-    .string()
-    .trim()
-    .refine(
-      (v) => v === "" || v.length >= 10,
-      "Phone number must be at least 10 characters.",
-    ),
-  address: z
-    .string()
-    .trim()
-    .max(255, "Address must not exceed 255 characters."),
-  title: z.string().trim().max(100, "Title must not exceed 100 characters."),
+	fullName: z.string().trim().min(2, "Full name must be at least 2 characters."),
+	phone: z.string().trim().refine((v) => v === "" || v.length >= 10, "Phone number must be at least 10 characters."),
+	address: z.string().trim().max(255),
+	title: z.string().trim().max(100),
 });
 
 export const ChangePasswordZodSchema = z

@@ -210,9 +210,9 @@ function DetailsForm({ profile }: { profile: AuthUser }) {
       title: profile.staffProfile?.title ?? "",
     },
     validators: {
-      onChange: UpdateProfileZodSchema,
-      onSubmit: UpdateProfileZodSchema,
-    },
+	onChange: UpdateProfileZodSchema,
+	onSubmit: UpdateProfileZodSchema,
+},
     onSubmit: ({ value }) => {
       const payload: Record<string, string> = {
         fullName: value.fullName.trim(),
