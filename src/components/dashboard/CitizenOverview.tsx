@@ -8,6 +8,7 @@ import {
   Hourglass,
   Inbox,
 } from "lucide-react";
+import dynamic from "next/dynamic";
 import Link from "next/link";
 import { EmptyState } from "@/components/shared/EmptyState";
 import { ErrorState } from "@/components/shared/ErrorState";
@@ -21,7 +22,6 @@ import { useProfile, useRequests } from "@/hook";
 import { formatDate } from "@/lib/format";
 import { getDisplayName } from "@/lib/user";
 import { cn } from "@/lib/utils";
-import dynamic from "next/dynamic";
 
 const CitizenCharts = dynamic(
   () => import("./CitizenCharts").then((m) => m.CitizenCharts),
@@ -94,7 +94,7 @@ export function CitizenOverview() {
           tone="success"
         />
       </div>
-<CitizenCharts />
+      <CitizenCharts />
       <Card>
         <CardHeader className="flex-row items-center justify-between">
           <CardTitle>Recent requests</CardTitle>

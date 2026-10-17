@@ -1,11 +1,11 @@
 "use client";
 
 import { Menu } from "lucide-react";
+import { ThemeToggle } from "@/components/shared/ThemeToggle";
 import { Button } from "@/components/ui/button";
 import type { UserRole } from "@/types/auth.type";
 import { NotificationBell } from "./NotificationBell";
 import { UserMenu } from "./UserMenu";
-import { ThemeToggle } from "@/components/shared/ThemeToggle";
 
 type Props = { role: UserRole; onMenuClick: () => void };
 

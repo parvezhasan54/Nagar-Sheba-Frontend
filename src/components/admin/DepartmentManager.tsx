@@ -203,7 +203,7 @@ export function DepartmentManager() {
 
   return (
     <div>
-            <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-end">
+      <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-end">
         <SearchInput paramKey="search" placeholder="Search departments..." />
         <FilterSelect
           label="Status"
@@ -233,9 +233,13 @@ export function DepartmentManager() {
       ) : isError ? (
         <ErrorState error={error} onRetry={() => refetch()} />
       ) : departments.length === 0 ? (
-                <EmptyState
+        <EmptyState
           icon={Building2}
-          title={hasFilters ? "No departments match your filters" : "No departments yet"}
+          title={
+            hasFilters
+              ? "No departments match your filters"
+              : "No departments yet"
+          }
           description={
             hasFilters
               ? "Try a different search or clear the filter."
