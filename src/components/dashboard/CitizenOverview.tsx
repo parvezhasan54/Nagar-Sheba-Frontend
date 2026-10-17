@@ -21,6 +21,12 @@ import { useProfile, useRequests } from "@/hook";
 import { formatDate } from "@/lib/format";
 import { getDisplayName } from "@/lib/user";
 import { cn } from "@/lib/utils";
+import dynamic from "next/dynamic";
+
+const CitizenCharts = dynamic(
+  () => import("./CitizenCharts").then((m) => m.CitizenCharts),
+  { loading: () => <Skeleton className="mb-6 h-80 w-full rounded-xl" /> },
+);
 
 export function CitizenOverview() {
   const { data: profile } = useProfile();
@@ -88,7 +94,7 @@ export function CitizenOverview() {
           tone="success"
         />
       </div>
-
+<CitizenCharts />
       <Card>
         <CardHeader className="flex-row items-center justify-between">
           <CardTitle>Recent requests</CardTitle>

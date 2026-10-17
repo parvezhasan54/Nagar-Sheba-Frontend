@@ -47,7 +47,14 @@ const csvCell = (v: string | number | null) =>
   `"${String(v ?? "").replace(/"/g, '""')}"`;
 
 function exportPaymentsCsv(payments: Payment[]) {
-  const header = ["Reference", "Request", "Provider", "Amount", "Status", "Paid at"];
+  const header = [
+    "Reference",
+    "Request",
+    "Provider",
+    "Amount",
+    "Status",
+    "Paid at",
+  ];
   const rows = payments.map((p) => [
     p.providerRef,
     p.request?.trackingRef ?? p.requestId,
@@ -66,7 +73,13 @@ function exportPaymentsCsv(payments: Payment[]) {
   URL.revokeObjectURL(url);
 }
 
-function ChartBox({ label, children }: { label: string; children: React.ReactNode }) {
+function ChartBox({
+  label,
+  children,
+}: {
+  label: string;
+  children: React.ReactNode;
+}) {
   return (
     <div role="img" aria-label={label} className="h-72 w-full">
       <ResponsiveContainer width="100%" height="100%">
@@ -177,11 +190,30 @@ export function ReportsView() {
           <CardContent>
             <ChartBox label="Bar chart of requests by status">
               <BarChart data={statusData} margin={{ left: -16, right: 8 }}>
-                <CartesianGrid vertical={false} stroke="var(--border)" strokeDasharray="3 3" />
-                <XAxis dataKey="name" tick={tick} interval={0} angle={-25} textAnchor="end" height={60} />
+                <CartesianGrid
+                  vertical={false}
+                  stroke="var(--border)"
+                  strokeDasharray="3 3"
+                />
+                <XAxis
+                  dataKey="name"
+                  tick={tick}
+                  interval={0}
+                  angle={-25}
+                  textAnchor="end"
+                  height={60}
+                />
                 <YAxis allowDecimals={false} tick={tick} />
-                <Tooltip contentStyle={tooltipStyle} cursor={{ fill: "var(--muted)", opacity: 0.4 }} />
-                <Bar dataKey="value" name="Requests" fill="var(--chart-4)" radius={[4, 4, 0, 0]} />
+                <Tooltip
+                  contentStyle={tooltipStyle}
+                  cursor={{ fill: "var(--muted)", opacity: 0.4 }}
+                />
+                <Bar
+                  dataKey="value"
+                  name="Requests"
+                  fill="var(--chart-4)"
+                  radius={[4, 4, 0, 0]}
+                />
               </BarChart>
             </ChartBox>
           </CardContent>
@@ -195,17 +227,36 @@ export function ReportsView() {
             {feedbacks.isLoading ? (
               <Skeleton className="h-72 w-full" />
             ) : feedbacks.isError ? (
-              <ErrorState error={feedbacks.error} onRetry={() => feedbacks.refetch()} />
+              <ErrorState
+                error={feedbacks.error}
+                onRetry={() => feedbacks.refetch()}
+              />
             ) : (feedbackRows ?? []).length === 0 ? (
-              <EmptyState icon={Star} title="No feedback yet" description="Ratings appear once citizens review resolved requests." />
+              <EmptyState
+                icon={Star}
+                title="No feedback yet"
+                description="Ratings appear once citizens review resolved requests."
+              />
             ) : (
               <ChartBox label="Bar chart of ratings">
                 <BarChart data={ratingData} margin={{ left: -16, right: 8 }}>
-                  <CartesianGrid vertical={false} stroke="var(--border)" strokeDasharray="3 3" />
+                  <CartesianGrid
+                    vertical={false}
+                    stroke="var(--border)"
+                    strokeDasharray="3 3"
+                  />
                   <XAxis dataKey="name" tick={tick} />
                   <YAxis allowDecimals={false} tick={tick} />
-                  <Tooltip contentStyle={tooltipStyle} cursor={{ fill: "var(--muted)", opacity: 0.4 }} />
-                  <Bar dataKey="value" name="Reviews" fill="var(--chart-2)" radius={[4, 4, 0, 0]} />
+                  <Tooltip
+                    contentStyle={tooltipStyle}
+                    cursor={{ fill: "var(--muted)", opacity: 0.4 }}
+                  />
+                  <Bar
+                    dataKey="value"
+                    name="Reviews"
+                    fill="var(--chart-2)"
+                    radius={[4, 4, 0, 0]}
+                  />
                 </BarChart>
               </ChartBox>
             )}
@@ -229,27 +280,49 @@ export function ReportsView() {
           {payments.isLoading ? (
             <Skeleton className="h-72 w-full" />
           ) : payments.isError ? (
-            <ErrorState error={payments.error} onRetry={() => payments.refetch()} />
+            <ErrorState
+              error={payments.error}
+              onRetry={() => payments.refetch()}
+            />
           ) : revenueByProvider.length === 0 ? (
-            <EmptyState icon={Wallet} title="No completed payments" description="Revenue shows up after the first paid request." />
+            <EmptyState
+              icon={Wallet}
+              title="No completed payments"
+              description="Revenue shows up after the first paid request."
+            />
           ) : (
             <div className="grid items-center gap-6 md:grid-cols-[1fr_auto]">
               <ChartBox label="Donut chart of revenue by provider">
                 <PieChart>
-                  <Pie data={revenueByProvider} dataKey="value" nameKey="name" innerRadius="55%" outerRadius="80%" paddingAngle={2}>
+                  <Pie
+                    data={revenueByProvider}
+                    dataKey="value"
+                    nameKey="name"
+                    innerRadius="55%"
+                    outerRadius="80%"
+                    paddingAngle={2}
+                  >
                     {revenueByProvider.map((d) => (
                       <Cell key={d.name} fill={d.fill} />
                     ))}
                   </Pie>
-                  <Tooltip contentStyle={tooltipStyle} formatter={(v) => formatCurrency(Number(v))} />
+                  <Tooltip
+                    contentStyle={tooltipStyle}
+                    formatter={(v) => formatCurrency(Number(v))}
+                  />
                 </PieChart>
               </ChartBox>
               <ul className="space-y-3 text-sm">
                 {revenueByProvider.map((d) => (
                   <li key={d.name} className="flex items-center gap-3">
-                    <span className="size-3 rounded-full" style={{ background: d.fill }} />
+                    <span
+                      className="size-3 rounded-full"
+                      style={{ background: d.fill }}
+                    />
                     <span className="text-muted-foreground">{d.name}</span>
-                    <span className="ml-auto font-semibold tabular-nums">{formatCurrency(d.value)}</span>
+                    <span className="ml-auto font-semibold tabular-nums">
+                      {formatCurrency(d.value)}
+                    </span>
                   </li>
                 ))}
               </ul>

@@ -1,7 +1,10 @@
 import { Building2 } from "lucide-react";
 import type { Metadata } from "next";
 import Link from "next/link";
-import { CategoryCard } from "@/components/home/CategoryCard";
+import {
+  CATEGORY_GRID_CLASS,
+  CategoryCard,
+} from "@/components/home/CategoryCard";
 import { CtaBanner } from "@/components/home/CtaBanner";
 import { Hero } from "@/components/home/Hero";
 import { HowItWorks } from "@/components/home/HowItWorks";
@@ -14,7 +17,7 @@ import {
   getPublicDepartments,
   getPublicStats,
 } from "@/lib/server-api";
-import {config} from "../../../config/index"
+
 export const metadata: Metadata = {
   title: { absolute: "Nagar Sheba | Smart City Services for Citizens" },
   description:
@@ -33,7 +36,6 @@ export default async function HomePage() {
     getPublicCategories(),
     getPublicDepartments(),
   ]);
-  console.log(config.apiUrl)
 
   return (
     <>
@@ -51,9 +53,9 @@ export default async function HomePage() {
             />
           </Reveal>
 
-          <Stagger className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-            {categories.slice(0, 6).map((c) => (
-              <StaggerItem key={c.id}>
+          <Stagger className={`mt-10 ${CATEGORY_GRID_CLASS}`}>
+            {categories.slice(0, 8).map((c) => (
+              <StaggerItem key={c.id} className="h-full">
                 <CategoryCard category={c} />
               </StaggerItem>
             ))}

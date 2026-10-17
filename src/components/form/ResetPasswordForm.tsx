@@ -6,14 +6,14 @@ import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
-import { useResetPassword } from "@/hook";
+import { useCountdown, useForgotPassword, useResetPassword } from "@/hook";
 import { getApiErrorMessage } from "@/lib/api-error";
 import { ResetPasswordZodSchema } from "@/validation";
 import { Button } from "../ui/button";
 import { Field, FieldError, FieldLabel } from "../ui/field";
 import { Input } from "../ui/input";
 import { Spinner } from "../ui/spinner";
-import { useCountdown, useForgotPassword} from "@/hook";
+import { PasswordChecklist } from "./PasswordChecklist";
 export default function ResetPasswordForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -22,22 +22,22 @@ export default function ResetPasswordForm() {
   const { mutate: reset, isPending } = useResetPassword();
 
   const { seconds, restart } = useCountdown(60);
-const { mutate: resendCode, isPending: resending } = useForgotPassword();
+  const { mutate: resendCode, isPending: resending } = useForgotPassword();
 
-const handleResend = () =>
-  resendCode(
-    { email },
-    {
-      onSuccess: () => {
-        toast.success("New code sent");
-        restart();
+  const handleResend = () =>
+    resendCode(
+      { email },
+      {
+        onSuccess: () => {
+          toast.success("New code sent");
+          restart();
+        },
+        onError: (error) =>
+          toast.error("Could not resend code", {
+            description: getApiErrorMessage(error),
+          }),
       },
-      onError: (error) =>
-        toast.error("Could not resend code", {
-          description: getApiErrorMessage(error),
-        }),
-    },
-  );
+    );
   const form = useForm({
     defaultValues: { email, otp: "", newPassword: "" },
     validators: {
@@ -173,6 +173,7 @@ const handleResend = () =>
                   </button>
                 </div>
                 {isInvalid && <FieldError errors={field.state.meta.errors} />}
+                <PasswordChecklist value={field.state.value} />
               </Field>
             );
           }}
@@ -190,16 +191,16 @@ const handleResend = () =>
         </Button>
 
         <p className="text-center text-xs text-muted-foreground">
-  Code expired?{" "}
-  <button
-    type="button"
-    onClick={handleResend}
-    disabled={seconds > 0 || resending}
-    className="text-primary underline-offset-4 hover:underline disabled:opacity-50"
-  >
-    {seconds > 0 ? `Resend in ${seconds}s` : "Request a new one"}
-  </button>
-</p>
+          Code expired?{" "}
+          <button
+            type="button"
+            onClick={handleResend}
+            disabled={seconds > 0 || resending}
+            className="text-primary underline-offset-4 hover:underline disabled:opacity-50"
+          >
+            {seconds > 0 ? `Resend in ${seconds}s` : "Request a new one"}
+          </button>
+        </p>
       </form>
     </div>
   );

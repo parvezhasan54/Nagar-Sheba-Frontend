@@ -8,6 +8,7 @@ import {
   addRequestAttachments,
   cancelRequest,
   createServiceRequest,
+  getCitizenSummary,
   getRequest,
   getRequests,
   getStaffPerformance,
@@ -25,6 +26,7 @@ function useInvalidateRequests() {
     queryClient.invalidateQueries({ queryKey: ["requests"] });
     queryClient.invalidateQueries({ queryKey: ["request-search"] });
     queryClient.invalidateQueries({ queryKey: ["staff-performance"] });
+        queryClient.invalidateQueries({ queryKey: ["citizen-summary"] });
     if (id) queryClient.invalidateQueries({ queryKey: ["request", id] });
     if (opts.payments)
       queryClient.invalidateQueries({ queryKey: ["payments"] });
@@ -152,5 +154,12 @@ export function useStaffPerformance() {
   return useQuery({
     queryKey: ["staff-performance"],
     queryFn: getStaffPerformance,
+  });
+}
+
+export function useCitizenSummary() {
+  return useQuery({
+    queryKey: ["citizen-summary"],
+    queryFn: getCitizenSummary,
   });
 }

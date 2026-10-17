@@ -2,12 +2,13 @@
 
 import { useRouter, useSearchParams } from "next/navigation";
 import Script from "next/script";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
 import { useGoogleLogin } from "@/hook";
 import { getApiErrorMessage } from "@/lib/api-error";
 import { getSafeRedirect } from "@/lib/redirect";
 import { getRoleHome } from "@/lib/roles";
+import { useTheme } from "@/providers/theme.provider";
 
 const CLIENT_ID = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID ?? "";
 
@@ -35,12 +36,15 @@ declare global {
 export default function GoogleSignInButton() {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const { theme } = useTheme();
   const containerRef = useRef<HTMLDivElement>(null);
   const [scriptReady, setScriptReady] = useState(false);
   const { mutate: googleLogin } = useGoogleLogin();
 
-  const handleCredential = useCallback(
-    (response: GoogleCredentialResponse) => {
+  // Google keeps the first callback it receives, so route it through a ref.
+  const onCredential = useRef<(r: GoogleCredentialResponse) => void>(() => {});
+  useEffect(() => {
+    onCredential.current = (response) => {
       googleLogin(response.credential, {
         onSuccess: (user) => {
           toast.success("Welcome!", {
@@ -57,24 +61,33 @@ export default function GoogleSignInButton() {
             description: getApiErrorMessage(error),
           }),
       });
-    },
-    [googleLogin, router, searchParams],
-  );
+    };
+  }, [googleLogin, router, searchParams]);
 
+  // Initialize once
   useEffect(() => {
-    if (!scriptReady || !containerRef.current || !window.google) return;
-
+    if (!scriptReady || !window.google) return;
     window.google.accounts.id.initialize({
       client_id: CLIENT_ID,
-      callback: handleCredential,
+      callback: (response) => onCredential.current(response),
     });
-    window.google.accounts.id.renderButton(containerRef.current, {
-      theme: "outline",
+  }, [scriptReady]);
+
+  // Render (and re-render on theme change) at the container's real width.
+  // Google only accepts 200-400px.
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!scriptReady || !el || !window.google) return;
+    el.innerHTML = "";
+    const width = Math.min(Math.max(el.offsetWidth, 200), 400);
+    window.google.accounts.id.renderButton(el, {
+      theme: theme === "dark" ? "filled_black" : "outline",
       size: "large",
       text: "continue_with",
-      width: 320,
+      shape: "rectangular",
+      width,
     });
-  }, [scriptReady, handleCredential]);
+  }, [scriptReady, theme]);
 
   if (!CLIENT_ID) return null;
 
@@ -85,7 +98,12 @@ export default function GoogleSignInButton() {
         strategy="afterInteractive"
         onReady={() => setScriptReady(true)}
       />
-      <div ref={containerRef} className="flex min-h-11 justify-center" />
+      <div className="flex items-center gap-3">
+        <div className="h-px flex-1 bg-border" />
+        <span className="text-xs text-muted-foreground">or continue with</span>
+        <div className="h-px flex-1 bg-border" />
+      </div>
+      <div ref={containerRef} className="flex min-h-11 w-full justify-center" />
     </>
   );
 }

@@ -18,22 +18,22 @@ export default function VerifyEmailForm() {
   const searchParams = useSearchParams();
   const email = searchParams.get("email") ?? "";
   const { mutate: verify, isPending } = useVerifyEmail();
-const { seconds, restart } = useCountdown(60);
-const { mutate: resend, isPending: resending } = useResendVerificationOtp();
-const handleResend = () =>
-  resend(
-    { email },
-    {
-      onSuccess: () => {
-        toast.success("New code sent", { description: "Check your inbox." });
-        restart();
+  const { seconds, restart } = useCountdown(60);
+  const { mutate: resend, isPending: resending } = useResendVerificationOtp();
+  const handleResend = () =>
+    resend(
+      { email },
+      {
+        onSuccess: () => {
+          toast.success("New code sent", { description: "Check your inbox." });
+          restart();
+        },
+        onError: (error) =>
+          toast.error("Could not resend code", {
+            description: getApiErrorMessage(error),
+          }),
       },
-      onError: (error) =>
-        toast.error("Could not resend code", {
-          description: getApiErrorMessage(error),
-        }),
-    },
-  );
+    );
   const form = useForm({
     defaultValues: { email, otp: "" },
     validators: {
@@ -141,25 +141,32 @@ const handleResend = () =>
           )}
         </Button>
 
-       <div className="space-y-1 text-center text-xs text-muted-foreground">
-  <p>
-    Didn't get the code?{" "}
-    <button
-      type="button"
-      onClick={handleResend}
-      disabled={seconds > 0 || resending}
-      className="text-primary underline-offset-4 hover:underline disabled:cursor-not-allowed disabled:no-underline disabled:opacity-50"
-    >
-      {seconds > 0 ? `Resend in ${seconds}s` : resending ? "Sending..." : "Resend code"}
-    </button>
-  </p>
-  <p>
-    Wrong email?{" "}
-    <Link href="/register" className="text-primary underline-offset-4 hover:underline">
-      Register again
-    </Link>
-  </p>
-</div>
+        <div className="space-y-1 text-center text-xs text-muted-foreground">
+          <p>
+            Didn't get the code?{" "}
+            <button
+              type="button"
+              onClick={handleResend}
+              disabled={seconds > 0 || resending}
+              className="text-primary underline-offset-4 hover:underline disabled:cursor-not-allowed disabled:no-underline disabled:opacity-50"
+            >
+              {seconds > 0
+                ? `Resend in ${seconds}s`
+                : resending
+                  ? "Sending..."
+                  : "Resend code"}
+            </button>
+          </p>
+          <p>
+            Wrong email?{" "}
+            <Link
+              href="/register"
+              className="text-primary underline-offset-4 hover:underline"
+            >
+              Register again
+            </Link>
+          </p>
+        </div>
       </form>
     </div>
   );

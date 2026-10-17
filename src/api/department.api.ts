@@ -10,6 +10,8 @@ export function getDepartments(params?: {
   page?: number;
   limit?: number;
   includeInactive?: boolean;
+  search?: string;
+  status?: "active" | "deleted";
 }) {
   return apiClient<ApiResponse<Department[]>>("/departments", {
     method: "GET",

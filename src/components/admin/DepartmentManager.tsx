@@ -41,6 +41,8 @@ import { getApiErrorMessage } from "@/lib/api-error";
 import { formatDate } from "@/lib/format";
 import type { Department } from "@/types/department.type";
 import { DepartmentZodSchema } from "@/validation";
+import { FilterSelect } from "../shared/FilterSelect";
+import { SearchInput } from "../shared/SearchInput";
 
 type Editing = Department | "new" | null;
 
@@ -159,14 +161,24 @@ function DepartmentForm({
   );
 }
 
+const STATUS_OPTIONS = [
+  { value: "all", label: "All statuses" },
+  { value: "active", label: "Active" },
+  { value: "deleted", label: "Deleted" },
+];
 export function DepartmentManager() {
-  const { getNumber } = useUrlState();
+  const { get, getNumber, setParams } = useUrlState();
   const page = getNumber("page", 1);
+  const search = get("search").trim();
+  const status = get("status", "all");
+  const hasFilters = !!search || status !== "all";
 
   const { data, isLoading, isError, error, refetch } = useDepartments({
     page,
     limit: 10,
     includeInactive: true,
+    search: search || undefined,
+    status: status === "all" ? undefined : (status as "active" | "deleted"),
   });
   const { mutate: remove, isPending: deleting } = useDeleteDepartment();
 
@@ -191,8 +203,27 @@ export function DepartmentManager() {
 
   return (
     <div>
-      <div className="mb-4 flex justify-end">
-        <Button className="h-9 gap-2" onClick={() => setEditing("new")}>
+            <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-end">
+        <SearchInput paramKey="search" placeholder="Search departments..." />
+        <FilterSelect
+          label="Status"
+          value={status}
+          options={STATUS_OPTIONS}
+          onChange={(v) => setParams({ status: v })}
+        />
+        {hasFilters && (
+          <Button
+            variant="ghost"
+            className="h-9"
+            onClick={() => setParams({ search: null, status: null })}
+          >
+            Clear
+          </Button>
+        )}
+        <Button
+          className="h-9 gap-2 sm:ml-auto"
+          onClick={() => setEditing("new")}
+        >
           <Plus className="size-4" /> New department
         </Button>
       </div>
@@ -202,10 +233,14 @@ export function DepartmentManager() {
       ) : isError ? (
         <ErrorState error={error} onRetry={() => refetch()} />
       ) : departments.length === 0 ? (
-        <EmptyState
+                <EmptyState
           icon={Building2}
-          title="No departments yet"
-          description="Create the first department to start routing requests."
+          title={hasFilters ? "No departments match your filters" : "No departments yet"}
+          description={
+            hasFilters
+              ? "Try a different search or clear the filter."
+              : "Create the first department to start routing requests."
+          }
         />
       ) : (
         <>

@@ -80,8 +80,7 @@ export function PaymentResult({ outcome }: { outcome: Outcome }) {
   const effective: Outcome =
     outcome === "success" && payment?.status === "FAILED" ? "fail" : outcome;
 
-  const confirming =
-    outcome === "success" && payment?.status === "PENDING";
+  const confirming = outcome === "success" && payment?.status === "PENDING";
 
   // Poll while the payment is still pending.
   useEffect(() => {
@@ -185,9 +184,7 @@ export function PaymentResult({ outcome }: { outcome: Outcome }) {
       )}
 
       <div className="mt-6 flex flex-col gap-2 sm:flex-row sm:justify-center">
-        {payment && paid && (
-          <ReceiptButton payment={payment} />
-        )}
+        {payment && paid && <ReceiptButton payment={payment} />}
 
         {payment && (
           <Link
@@ -200,10 +197,7 @@ export function PaymentResult({ outcome }: { outcome: Outcome }) {
 
         <Link
           href={profile ? getRoleHome(profile.role) : "/"}
-          className={cn(
-            buttonVariants({ variant: "outline" }),
-            "h-10 px-4",
-          )}
+          className={cn(buttonVariants({ variant: "outline" }), "h-10 px-4")}
         >
           {profile ? "Go to dashboard" : "Back to home"}
         </Link>

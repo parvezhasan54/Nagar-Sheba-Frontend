@@ -44,9 +44,7 @@ export default function Footer() {
               </div>
 
               <div>
-                <p className="text-lg font-bold tracking-tight">
-                  Nagar Sheba
-                </p>
+                <p className="text-lg font-bold tracking-tight">Nagar Sheba</p>
                 <p className="text-[10px] font-medium uppercase tracking-widest text-muted-foreground">
                   Smart City Services
                 </p>

@@ -1,4 +1,3 @@
-
 import type { Metadata } from "next";
 import dynamic from "next/dynamic";
 import { DashboardPageSkeleton } from "@/components/layout/dashboard/DashboardPageSkeleton";

@@ -43,6 +43,10 @@ export default function DemoLoginPanel({ pending, onSelect }: Props) {
         Quick Demo Login
       </h2>
 
+      <p className="mb-3 text-center text-xs text-muted-foreground">
+        Fills the form with demo credentials and signs you in.
+      </p>
+
       <div className="grid gap-3 sm:grid-cols-3">
         {DEMO_ACCOUNTS.map((account) => {
           const missing = !account.email || !account.password;

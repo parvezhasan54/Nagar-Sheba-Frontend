@@ -24,6 +24,22 @@ export type CreateCategoryPayload = {
   feeAmount?: number;
   slaHours: number;
 };
+export type CategoryReview = {
+  id: string;
+  rating: number;
+  comment: string | null;
+  createdAt: string;
+  reviewer: string;
+};
+
+export type CategoryReviews = {
+  summary: {
+    average: number | null;
+    total: number;
+    distribution: Record<string, number>;
+  };
+  reviews: CategoryReview[];
+};
 
 export type UpdateCategoryPayload = Partial<
   Omit<CreateCategoryPayload, "departmentId">

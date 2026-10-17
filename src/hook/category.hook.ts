@@ -1,4 +1,9 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import {
+  keepPreviousData,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from "@tanstack/react-query";
 import {
   createCategory,
   deleteCategory,
@@ -11,6 +16,7 @@ export function useCategories(params?: Parameters<typeof getCategories>[0]) {
   return useQuery({
     queryKey: ["categories", params],
     queryFn: () => getCategories(params),
+    placeholderData: keepPreviousData,
   });
 }
 

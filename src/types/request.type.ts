@@ -74,3 +74,10 @@ export type PaymentSession = { paymentId: string; checkoutUrl: string };
 export type CreateRequestResult = ServiceRequest & {
   paymentSession: PaymentSession | null;
 };
+
+export type CitizenSummary = {
+  total: number;
+  byStatus: Record<string, number>;
+  byMonth: { label: string; total: number }[];
+  totalSpent: string | number;
+};

@@ -47,8 +47,6 @@ export function downloadPaymentReceipt(id: string) {
   });
 }
 
-
-
 // https://www.emailjs.com/
 
 // Programming Hero level 2

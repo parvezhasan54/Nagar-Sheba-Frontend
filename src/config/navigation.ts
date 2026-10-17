@@ -49,7 +49,7 @@ export const NAV_ITEMS: Record<UserRole, NavItem[]> = {
     { label: "Payments", href: "/admin/payments", icon: Wallet },
     { label: "Feedback", href: "/admin/feedbacks", icon: MessageSquareText },
     { label: "Reports", href: "/admin/reports", icon: ChartColumn },
- { label: "Audit Logs", href: "/admin/audit-logs", icon: ScrollText },
+    { label: "Audit Logs", href: "/admin/audit-logs", icon: ScrollText },
     { label: "Notifications", href: "/admin/notifications", icon: Bell },
     { label: "Profile", href: "/admin/profile", icon: UserRound },
   ],

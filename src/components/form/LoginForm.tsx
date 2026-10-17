@@ -18,6 +18,7 @@ import { useState } from "react";
 import { toast } from "sonner";
 import { useLogin } from "@/hook";
 import { getApiErrorMessage } from "@/lib/api-error";
+import { getSafeRedirect } from "@/lib/redirect";
 import { getRoleHome } from "@/lib/roles";
 import type { LoginPayload } from "@/types/auth.type";
 import { LoginZodSchema } from "@/validation";
@@ -42,13 +43,11 @@ export default function LoginForm() {
         });
 
         // Only allow same-site relative redirects (prevents open redirect)
-        const redirect = searchParams.get("redirect");
-        const safeRedirect =
-          redirect?.startsWith("/") && !redirect.startsWith("//")
-            ? redirect
-            : null;
 
-        router.replace(safeRedirect ?? getRoleHome(user.role));
+        router.replace(
+          getSafeRedirect(searchParams.get("redirect")) ??
+            getRoleHome(user.role),
+        );
         router.refresh();
       },
       onError: (error) => {
@@ -237,22 +236,19 @@ export default function LoginForm() {
           )}
         </Button>
 
-        <div className="mt-2 flex items-center gap-3">
-          <div className="h-px flex-1 bg-border" />
-          <span className="text-xs text-muted-foreground">
-            New to Nagar Sheba?
-          </span>
-          <div className="h-px flex-1 bg-border" />
-        </div>
-
-        <Link
-          href="/register"
-          className="flex h-10 w-full items-center justify-center gap-2 rounded-lg bg-transparent px-4 text-sm font-medium transition-colors hover:bg-muted"
-        >
-          <UserPlus className="size-4 text-primary" />
-          Create a new citizen account
-        </Link>
         <GoogleSignInButton />
+
+        <p className="text-center text-sm text-muted-foreground">
+          New to Nagar Sheba?{" "}
+          <Link
+            href="/register"
+            className="inline-flex items-center gap-1 font-medium text-primary underline-offset-4 hover:underline"
+          >
+            <UserPlus className="size-3.5" />
+            Create a citizen account
+          </Link>
+        </p>
+
         <p className="mt-1 text-center text-xs leading-5 text-muted-foreground">
           By continuing, you agree to our{" "}
           <Link
@@ -271,7 +267,14 @@ export default function LoginForm() {
           .
         </p>
       </form>
-      <DemoLoginPanel pending={loginPending} onSelect={submitLogin} />
+      <DemoLoginPanel
+        pending={loginPending}
+        onSelect={(credentials) => {
+          form.setFieldValue("email", credentials.email);
+          form.setFieldValue("password", credentials.password);
+          submitLogin(credentials);
+        }}
+      />
     </div>
   );
 }

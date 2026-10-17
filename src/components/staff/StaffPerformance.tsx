@@ -56,7 +56,12 @@ export function StaffPerformanceView() {
   return (
     <div className="space-y-6">
       <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-        <StatCard title="Resolved" value={s.resolved} icon={CircleCheck} tone="success" />
+        <StatCard
+          title="Resolved"
+          value={s.resolved}
+          icon={CircleCheck}
+          tone="success"
+        />
         <StatCard title="In progress" value={s.inProgress} icon={Hourglass} />
         <StatCard
           title="Overdue"
@@ -66,9 +71,15 @@ export function StaffPerformanceView() {
         />
         <StatCard
           title="Avg. resolution time"
-          value={s.avgResolutionHours === null ? "—" : `${s.avgResolutionHours} h`}
+          value={
+            s.avgResolutionHours === null ? "—" : `${s.avgResolutionHours} h`
+          }
           icon={Timer}
-          hint={s.onTimeRate === null ? undefined : `${s.onTimeRate}% resolved on time`}
+          hint={
+            s.onTimeRate === null
+              ? undefined
+              : `${s.onTimeRate}% resolved on time`
+          }
         />
       </div>
 
@@ -77,14 +88,37 @@ export function StaffPerformanceView() {
           <CardTitle>My requests by status</CardTitle>
         </CardHeader>
         <CardContent>
-          <div role="img" aria-label="Bar chart of my requests by status" className="h-72 w-full">
+          <div
+            role="img"
+            aria-label="Bar chart of my requests by status"
+            className="h-72 w-full"
+          >
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={chartData} margin={{ left: -16, right: 8 }}>
-                <CartesianGrid vertical={false} stroke="var(--border)" strokeDasharray="3 3" />
-                <XAxis dataKey="name" tick={tick} interval={0} angle={-25} textAnchor="end" height={60} />
+                <CartesianGrid
+                  vertical={false}
+                  stroke="var(--border)"
+                  strokeDasharray="3 3"
+                />
+                <XAxis
+                  dataKey="name"
+                  tick={tick}
+                  interval={0}
+                  angle={-25}
+                  textAnchor="end"
+                  height={60}
+                />
                 <YAxis allowDecimals={false} tick={tick} />
-                <Tooltip contentStyle={tooltipStyle} cursor={{ fill: "var(--muted)", opacity: 0.4 }} />
-                <Bar dataKey="value" name="Requests" fill="var(--chart-3)" radius={[4, 4, 0, 0]} />
+                <Tooltip
+                  contentStyle={tooltipStyle}
+                  cursor={{ fill: "var(--muted)", opacity: 0.4 }}
+                />
+                <Bar
+                  dataKey="value"
+                  name="Requests"
+                  fill="var(--chart-3)"
+                  radius={[4, 4, 0, 0]}
+                />
               </BarChart>
             </ResponsiveContainer>
           </div>

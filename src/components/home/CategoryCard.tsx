@@ -1,50 +1,74 @@
-import { ArrowRight, Clock } from "lucide-react";
+import { Building2, Clock } from "lucide-react";
 import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
+import { buttonVariants } from "@/components/ui/button";
 import { formatCurrency, formatSla } from "@/lib/format";
+import { cn } from "@/lib/utils";
 import type { Category } from "@/types/category.type";
+import { CategoryImage } from "./CategoryImage";
+
+/** One grid definition for cards and skeletons: 4 per row on desktop. */
+export const CATEGORY_GRID_CLASS = "grid gap-5 sm:grid-cols-2 lg:grid-cols-4";
 
 export function CategoryCard({ category }: { category: Category }) {
   const isPaid = category.feeType === "PAID";
+  const department = category.department?.name ?? "City service";
+  const description =
+    category.description?.trim() || `Handled by the ${department} department.`;
+  const href = `/services/${category.id}`;
+  const image = category.images?.[0];
 
   return (
-    <div className="group relative flex flex-col overflow-hidden rounded-xl border bg-card p-5 transition-all duration-300 hover:-translate-y-1 hover:border-primary/40 hover:shadow-xl">
-      <span
-        aria-hidden="true"
-        className="absolute inset-x-0 top-0 h-0.5 origin-left scale-x-0 bg-primary transition-transform duration-300 group-hover:scale-x-100"
-      />
-      <div className="flex items-start justify-between gap-3">
-        <h3 className="text-base font-semibold leading-snug">
-  <Link href={`/services/${category.id}`} className="hover:text-primary">
-    {category.name}
-  </Link>
-</h3>
+    <article className="group flex h-full flex-col overflow-hidden rounded-xl border bg-card transition-all duration-300 hover:-translate-y-1 hover:border-primary/40 hover:shadow-lg">
+      <div className="relative aspect-video overflow-hidden bg-muted">
+        <CategoryImage
+          key={image ?? "none"}
+          src={image}
+          alt={category.name}
+          paid={isPaid}
+        />
         <Badge
           variant={isPaid ? "default" : "secondary"}
-          className="h-6 shrink-0 px-2.5 text-xs"
+          className="absolute top-3 right-3 h-6 px-2.5 text-xs shadow-sm"
         >
           {isPaid ? formatCurrency(category.feeAmount) : "Free"}
         </Badge>
       </div>
 
-      {category.department && (
-        <p className="mt-1 text-xs text-muted-foreground">
-          {category.department.name}
+      <div className="flex flex-1 flex-col p-4">
+        <h3 className="line-clamp-1 text-base font-semibold leading-snug">
+          <Link href={href} className="hover:text-primary">
+            {category.name}
+          </Link>
+        </h3>
+
+        <p className="mt-1.5 line-clamp-2 h-10 text-sm leading-5 text-muted-foreground">
+          {description}
         </p>
-      )}
 
-      <div className="mt-4 flex items-center gap-1.5 text-xs text-muted-foreground">
-        <Clock className="size-3.5" />
-        Resolved within {formatSla(category.slaHours)}
+        <div className="mt-3 space-y-1.5 text-xs text-muted-foreground">
+          <p className="flex items-center gap-1.5">
+            <Building2 className="size-3.5 shrink-0" />
+            <span className="truncate">{department}</span>
+          </p>
+          <p className="flex items-center gap-1.5">
+            <Clock className="size-3.5 shrink-0" />
+            Resolved within {formatSla(category.slaHours)}
+          </p>
+        </div>
+
+        <div className="mt-auto pt-4">
+          <Link
+            href={href}
+            className={cn(
+              buttonVariants({ variant: "outline" }),
+              "h-9 w-full text-sm font-medium",
+            )}
+          >
+            View Details
+          </Link>
+        </div>
       </div>
-
-      <Link
-        href={`/citizen/requests/new?category=${category.id}`}
-        className="mt-5 inline-flex items-center gap-1.5 text-sm font-medium text-primary"
-      >
-        Request this service
-        <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
-      </Link>
-    </div>
+    </article>
   );
 }

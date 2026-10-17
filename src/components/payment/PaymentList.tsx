@@ -47,10 +47,7 @@ type Props = {
   canRefund?: boolean;
 };
 
-export function PaymentList({
-  requestBasePath,
-  canRefund = false,
-}: Props) {
+export function PaymentList({ requestBasePath, canRefund = false }: Props) {
   const { get, getNumber, setParams } = useUrlState();
 
   const page = getNumber("page", 1);
@@ -126,9 +123,7 @@ export function PaymentList({
                   <TableHead>Status</TableHead>
                   <TableHead>Paid</TableHead>
                   <TableHead>Created</TableHead>
-                  <TableHead className="pr-4 text-right">
-                    Actions
-                  </TableHead>
+                  <TableHead className="pr-4 text-right">Actions</TableHead>
                 </TableRow>
               </TableHeader>
 

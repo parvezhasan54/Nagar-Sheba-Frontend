@@ -148,7 +148,11 @@ export default function Navbar() {
             aria-expanded={mobileMenuOpen}
             aria-controls="mobile-nav"
           >
-            {mobileMenuOpen ? <X className="size-5" /> : <Menu className="size-5" />}
+            {mobileMenuOpen ? (
+              <X className="size-5" />
+            ) : (
+              <Menu className="size-5" />
+            )}
           </button>
         </div>
       </div>

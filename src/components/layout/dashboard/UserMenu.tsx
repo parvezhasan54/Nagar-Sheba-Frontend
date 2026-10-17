@@ -1,6 +1,12 @@
 "use client";
 
-import { Bell, LayoutDashboard, ListChecks, LogOut, UserRound } from "lucide-react";
+import {
+  Bell,
+  LayoutDashboard,
+  ListChecks,
+  LogOut,
+  UserRound,
+} from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
@@ -87,27 +93,29 @@ export function UserMenu() {
             </p>
           )}
         </div>
-       <DropdownMenuSeparator />
-{(() => {
-  const home = getRoleHome(profile.role);
-  return (
-    <>
-      <DropdownMenuItem render={<Link href={home} />}>
-        <LayoutDashboard /> Dashboard
-      </DropdownMenuItem>
-      <DropdownMenuItem render={<Link href={`${home}/requests`} />}>
-        <ListChecks /> {REQUESTS_LABEL[profile.role]}
-      </DropdownMenuItem>
-      <DropdownMenuItem render={<Link href={`${home}/notifications`} />}>
-        <Bell /> Notifications
-      </DropdownMenuItem>
-      <DropdownMenuItem render={<Link href={`${home}/profile`} />}>
-        <UserRound /> My profile
-      </DropdownMenuItem>
-    </>
-  );
-})()}
-<DropdownMenuSeparator />
+        <DropdownMenuSeparator />
+        {(() => {
+          const home = getRoleHome(profile.role);
+          return (
+            <>
+              <DropdownMenuItem render={<Link href={home} />}>
+                <LayoutDashboard /> Dashboard
+              </DropdownMenuItem>
+              <DropdownMenuItem render={<Link href={`${home}/requests`} />}>
+                <ListChecks /> {REQUESTS_LABEL[profile.role]}
+              </DropdownMenuItem>
+              <DropdownMenuItem
+                render={<Link href={`${home}/notifications`} />}
+              >
+                <Bell /> Notifications
+              </DropdownMenuItem>
+              <DropdownMenuItem render={<Link href={`${home}/profile`} />}>
+                <UserRound /> My profile
+              </DropdownMenuItem>
+            </>
+          );
+        })()}
+        <DropdownMenuSeparator />
         <DropdownMenuItem
           variant="destructive"
           disabled={isPending}

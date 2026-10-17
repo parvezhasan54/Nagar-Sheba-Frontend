@@ -1,5 +1,5 @@
 import type { ApiResponse } from "@/types/api.type";
-import type { Category } from "@/types/category.type";
+import type { Category, CategoryReviews } from "@/types/category.type";
 import type { Department } from "@/types/department.type";
 import type { PublicStats } from "@/types/public.type";
 
@@ -28,6 +28,10 @@ export async function getPublicDepartments() {
 
 export function getPublicStats() {
   return serverGet<PublicStats>("/public/stats");
+}
+
+export function getCategoryReviews(id: string) {
+  return serverGet<CategoryReviews>(`/categories/${id}/reviews?limit=6`, 60);
 }
 
 export function getPublicCategory(id: string) {

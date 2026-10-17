@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import type { UserRole } from "@/types/auth.type";
 import { NotificationBell } from "./NotificationBell";
 import { UserMenu } from "./UserMenu";
+import { ThemeToggle } from "@/components/shared/ThemeToggle";
 
 type Props = { role: UserRole; onMenuClick: () => void };
 
@@ -20,9 +21,9 @@ export function Topbar({ role, onMenuClick }: Props) {
       >
         <Menu />
       </Button>
-
       <div className="flex-1" />
 
+      <ThemeToggle />
       <NotificationBell role={role} />
       <UserMenu />
     </header>

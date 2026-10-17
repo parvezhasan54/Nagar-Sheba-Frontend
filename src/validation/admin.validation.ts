@@ -15,62 +15,55 @@ export const DepartmentZodSchema = z.object({
 // Numbers stay strings in the form (inputs are text) and are validated here.
 
 export const CategoryZodSchema = z
-	.object({
-		departmentId: z.string().min(1, "Please choose a department."),
+  .object({
+    departmentId: z.string().min(1, "Please choose a department."),
 
-		name: z
-			.string()
-			.trim()
-			.min(2, "Name must be at least 2 characters.")
-			.max(100, "Name must not exceed 100 characters."),
+    name: z
+      .string()
+      .trim()
+      .min(2, "Name must be at least 2 characters.")
+      .max(100, "Name must not exceed 100 characters."),
 
-		description: z
-			.string()
-			.trim()
-			.max(500, "Description must not exceed 500 characters."),
+    description: z
+      .string()
+      .trim()
+      .max(500, "Description must not exceed 500 characters."),
 
-		images: z.string().refine(
-			(v) => {
-				const lines = v
-					.split("\n")
-					.map((l) => l.trim())
-					.filter(Boolean);
+    images: z.string().refine((v) => {
+      const lines = v
+        .split("\n")
+        .map((l) => l.trim())
+        .filter(Boolean);
 
-				return (
-					lines.length <= 5 &&
-					lines.every((l) => /^https?:\/\//.test(l))
-				);
-			},
-			"Enter up to 5 image URLs, one per line.",
-		),
+      return lines.length <= 5 && lines.every((l) => /^https?:\/\//.test(l));
+    }, "Enter up to 5 image URLs, one per line."),
 
-		feeType: z.enum(["FREE", "PAID"]),
+    feeType: z.enum(["FREE", "PAID"]),
 
-		feeAmount: z.string().trim(),
+    feeAmount: z.string().trim(),
 
-		slaHours: z
-			.string()
-			.trim()
-			.min(1, "SLA hours is required.")
-			.refine((v) => {
-				const n = Number(v);
-				return Number.isInteger(n) && n >= 1 && n <= 720;
-			}, "SLA must be a whole number between 1 and 720."),
-	})
-	.superRefine((d, ctx) => {
-		if (d.feeType !== "PAID") return;
+    slaHours: z
+      .string()
+      .trim()
+      .min(1, "SLA hours is required.")
+      .refine((v) => {
+        const n = Number(v);
+        return Number.isInteger(n) && n >= 1 && n <= 720;
+      }, "SLA must be a whole number between 1 and 720."),
+  })
+  .superRefine((d, ctx) => {
+    if (d.feeType !== "PAID") return;
 
-		const n = Number(d.feeAmount);
+    const n = Number(d.feeAmount);
 
-		if (!d.feeAmount || !Number.isFinite(n) || n <= 0) {
-			ctx.addIssue({
-				code: "custom",
-				path: ["feeAmount"],
-				message: "Enter a fee greater than 0 for paid services.",
-			});
-		}
-	});
-
+    if (!d.feeAmount || !Number.isFinite(n) || n <= 0) {
+      ctx.addIssue({
+        code: "custom",
+        path: ["feeAmount"],
+        message: "Enter a fee greater than 0 for paid services.",
+      });
+    }
+  });
 
 const fullName = z
   .string()

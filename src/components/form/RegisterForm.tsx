@@ -13,6 +13,8 @@ import { Button } from "../ui/button";
 import { Field, FieldError, FieldLabel } from "../ui/field";
 import { Input } from "../ui/input";
 import { Spinner } from "../ui/spinner";
+import GoogleSignInButton from "./GoogleSignInButton";
+import { PasswordChecklist } from "./PasswordChecklist";
 
 const FIELDS = [
   {
@@ -57,45 +59,43 @@ export default function RegisterForm() {
   const [showPassword, setShowPassword] = useState(false);
   const { mutate: register, isPending } = useRegister();
 
-const form = useForm({
-  defaultValues: {
-    fullName: "",
-    email: "",
-    phone: "",
-    address: "",
-    password: "",
-  },
-  validators: {
-    onChange: RegisterZodSchema,
-    onSubmit: RegisterZodSchema,
-  },
-  onSubmit: ({ value }) => {
-    register(
-      {
-        ...value,
-        address: value.address.trim() || undefined,
-      } as typeof value,
-      {
-        onSuccess: () => {
-          toast.success("Check your email", {
-            description: "We sent a 6-digit verification code.",
-          });
+  const form = useForm({
+    defaultValues: {
+      fullName: "",
+      email: "",
+      phone: "",
+      address: "",
+      password: "",
+    },
+    validators: {
+      onChange: RegisterZodSchema,
+      onSubmit: RegisterZodSchema,
+    },
+    onSubmit: ({ value }) => {
+      register(
+        {
+          ...value,
+          address: value.address.trim() || undefined,
+        } as typeof value,
+        {
+          onSuccess: () => {
+            toast.success("Check your email", {
+              description: "We sent a 6-digit verification code.",
+            });
 
-          router.push(
-            `/verify-email?email=${encodeURIComponent(value.email)}`,
-          );
+            router.push(
+              `/verify-email?email=${encodeURIComponent(value.email)}`,
+            );
+          },
+          onError: (error) => {
+            toast.error("Registration failed", {
+              description: getApiErrorMessage(error),
+            });
+          },
         },
-        onError: (error) => {
-          toast.error("Registration failed", {
-            description: getApiErrorMessage(error),
-          });
-        },
-      },
-    );
-  },
-});
-
-
+      );
+    },
+  });
 
   return (
     <div className="w-full rounded-xl bg-card/90 p-6 shadow-2xl backdrop-blur-2xl sm:p-8">
@@ -125,16 +125,15 @@ const form = useForm({
 
               return (
                 <Field data-invalid={isInvalid} className="space-y-1.5">
-               
                   <FieldLabel
-  htmlFor={field.name}
-  className="text-sm font-medium"
->
-  {item.label}{" "}
-  {item.name !== "address" && (
-    <span className="text-primary">*</span>
-  )}
-</FieldLabel>
+                    htmlFor={field.name}
+                    className="text-sm font-medium"
+                  >
+                    {item.label}{" "}
+                    {item.name !== "address" && (
+                      <span className="text-primary">*</span>
+                    )}
+                  </FieldLabel>
 
                   <div className="relative">
                     <Input
@@ -167,6 +166,9 @@ const form = useForm({
                   </div>
 
                   {isInvalid && <FieldError errors={field.state.meta.errors} />}
+                  {isPassword && (
+                    <PasswordChecklist value={field.state.value} />
+                  )}
                 </Field>
               );
             }}
@@ -190,7 +192,7 @@ const form = useForm({
             </>
           )}
         </Button>
-
+        <GoogleSignInButton />
         <p className="text-center text-xs text-muted-foreground">
           Already have an account?{" "}
           <Link

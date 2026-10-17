@@ -4,6 +4,7 @@ import type { StaffPerformance } from "@/types";
 import type { ApiResponse } from "@/types/api.type";
 import type {
   Attachment,
+  CitizenSummary,
   CreateRequestResult,
   ServiceRequest,
 } from "@/types/request.type";
@@ -98,10 +99,14 @@ export function addRequestAttachments(
   );
 }
 
-
-
 export function getStaffPerformance() {
   return apiClient<ApiResponse<StaffPerformance>>("/requests/performance/me", {
+    method: "GET",
+  });
+}
+
+export function getCitizenSummary() {
+  return apiClient<ApiResponse<CitizenSummary>>("/requests/summary/me", {
     method: "GET",
   });
 }
