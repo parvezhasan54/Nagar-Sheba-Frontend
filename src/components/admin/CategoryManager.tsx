@@ -102,10 +102,16 @@ function CategoryForm({
 };
 
       if (category) {
-        update.mutate({ id: category.id, payload: base }, handlers);
-      } else {
-        create.mutate({ departmentId: value.departmentId, ...base }, handlers);
-      }
+  update.mutate(
+    {
+      id: category.id,
+      payload: { ...base, description: value.description.trim() },
+    },
+    handlers,
+  );
+} else {
+  create.mutate({ departmentId: value.departmentId, ...base }, handlers);
+}
     },
   });
 
