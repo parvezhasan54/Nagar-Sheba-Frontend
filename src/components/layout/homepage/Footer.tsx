@@ -1,7 +1,7 @@
 import { Mail, MapPin, Phone, ShieldCheck } from "lucide-react";
 import Link from "next/link";
-import { FaGithub } from "react-icons/fa";
-import { SITE } from "@/config/site";
+import { FaFacebookF, FaGithub, FaLinkedinIn } from "react-icons/fa";
+import { SITE, type SocialLabel } from "@/config/site";
 
 const footerLinks = {
   platform: [
@@ -24,6 +24,12 @@ const footerLinks = {
   ],
 };
 
+const SOCIAL_ICONS: Record<SocialLabel, typeof FaGithub> = {
+  GitHub: FaGithub,
+  Facebook: FaFacebookF,
+  LinkedIn: FaLinkedinIn,
+};
+
 export default function Footer() {
   return (
     <footer className="border-t bg-muted/30">
@@ -38,7 +44,9 @@ export default function Footer() {
               </div>
 
               <div>
-                <p className="text-lg font-bold tracking-tight">Nagar Sheba</p>
+                <p className="text-lg font-bold tracking-tight">
+                  Nagar Sheba
+                </p>
                 <p className="text-[10px] font-medium uppercase tracking-widest text-muted-foreground">
                   Smart City Services
                 </p>
@@ -51,11 +59,13 @@ export default function Footer() {
               with your community.
             </p>
 
+            {/* Contact Information */}
             <div className="mt-6 space-y-3">
               <div className="flex items-center gap-3 text-sm text-muted-foreground">
                 <MapPin className="size-4 shrink-0 text-primary" />
                 <span>{SITE.address}</span>
               </div>
+
               <div className="flex items-center gap-3 text-sm text-muted-foreground">
                 <Mail className="size-4 shrink-0 text-primary" />
                 <a
@@ -65,6 +75,7 @@ export default function Footer() {
                   {SITE.email}
                 </a>
               </div>
+
               <div className="flex items-center gap-3 text-sm text-muted-foreground">
                 <Phone className="size-4 shrink-0 text-primary" />
                 <a
@@ -76,16 +87,26 @@ export default function Footer() {
               </div>
             </div>
 
-            <div className="mt-6">
-              <a
-                href={SITE.github}
-                target="_blank"
-                rel="noreferrer"
-                aria-label="Source code on GitHub"
-                className="inline-flex size-9 items-center justify-center rounded-lg border bg-background text-muted-foreground transition-colors hover:bg-primary hover:text-primary-foreground"
-              >
-                <FaGithub className="size-4" />
-              </a>
+            {/* Social Media Links */}
+            <div className="mt-6 flex items-center gap-2">
+              {SITE.socials
+                .filter((social) => social.href)
+                .map((social) => {
+                  const Icon = SOCIAL_ICONS[social.label];
+
+                  return (
+                    <a
+                      key={social.label}
+                      href={social.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label={social.label}
+                      className="inline-flex size-9 items-center justify-center rounded-lg border bg-background text-muted-foreground transition-colors hover:bg-primary hover:text-primary-foreground"
+                    >
+                      <Icon className="size-4" />
+                    </a>
+                  );
+                })}
             </div>
           </div>
 
@@ -99,7 +120,7 @@ export default function Footer() {
           <FooterColumn title="Support" links={footerLinks.support} />
         </div>
 
-        {/* Bottom */}
+        {/* Bottom Footer */}
         <div className="mt-10 border-t pt-6">
           <div className="flex flex-col gap-4 text-center sm:flex-row sm:items-center sm:justify-between sm:text-left">
             <p className="text-xs text-muted-foreground">

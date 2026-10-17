@@ -1,6 +1,6 @@
 "use client";
 
-import { LogOut, UserRound } from "lucide-react";
+import { Bell, LayoutDashboard, ListChecks, LogOut, UserRound } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
@@ -28,6 +28,12 @@ function getInitials(name: string) {
       .join("") || "U"
   );
 }
+
+const REQUESTS_LABEL = {
+  CITIZEN: "My requests",
+  STAFF: "Request queue",
+  ADMIN: "All requests",
+} as const;
 
 export function UserMenu() {
   const router = useRouter();
@@ -81,13 +87,27 @@ export function UserMenu() {
             </p>
           )}
         </div>
-        <DropdownMenuSeparator />
-        <DropdownMenuItem
-          render={<Link href={`${getRoleHome(profile.role)}/profile`} />}
-        >
-          <UserRound /> My profile
-        </DropdownMenuItem>
-        <DropdownMenuSeparator />
+       <DropdownMenuSeparator />
+{(() => {
+  const home = getRoleHome(profile.role);
+  return (
+    <>
+      <DropdownMenuItem render={<Link href={home} />}>
+        <LayoutDashboard /> Dashboard
+      </DropdownMenuItem>
+      <DropdownMenuItem render={<Link href={`${home}/requests`} />}>
+        <ListChecks /> {REQUESTS_LABEL[profile.role]}
+      </DropdownMenuItem>
+      <DropdownMenuItem render={<Link href={`${home}/notifications`} />}>
+        <Bell /> Notifications
+      </DropdownMenuItem>
+      <DropdownMenuItem render={<Link href={`${home}/profile`} />}>
+        <UserRound /> My profile
+      </DropdownMenuItem>
+    </>
+  );
+})()}
+<DropdownMenuSeparator />
         <DropdownMenuItem
           variant="destructive"
           disabled={isPending}
