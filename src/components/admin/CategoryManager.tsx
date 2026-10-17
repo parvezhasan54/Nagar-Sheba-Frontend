@@ -43,6 +43,8 @@ import { getApiErrorMessage } from "@/lib/api-error";
 import { formatCurrency, formatSla } from "@/lib/format";
 import type { Category, FeeType } from "@/types/category.type";
 import { CategoryZodSchema } from "@/validation";
+import { Textarea } from "../ui/textarea";
+
 
 type Editing = Category | "new" | null;
 
@@ -76,21 +78,28 @@ function CategoryForm({
 
   const form = useForm({
     defaultValues: {
-      departmentId: category?.departmentId ?? "",
-      name: category?.name ?? "",
-      feeType: (category?.feeType ?? "FREE") as FeeType,
-      feeAmount: category?.feeAmount ? String(Number(category.feeAmount)) : "",
-      slaHours: category ? String(category.slaHours) : "",
-    },
+	departmentId: category?.departmentId ?? "",
+	name: category?.name ?? "",
+	description: category?.description ?? "",
+	images: category?.images?.join("\n") ?? "",
+	feeType: (category?.feeType ?? "FREE") as FeeType,
+	feeAmount: category?.feeAmount ? String(Number(category.feeAmount)) : "",
+	slaHours: category ? String(category.slaHours) : "",
+},
     validators: { onChange: CategoryZodSchema, onSubmit: CategoryZodSchema },
     onSubmit: ({ value }) => {
       const paid = value.feeType === "PAID";
       const base = {
-        name: value.name.trim(),
-        feeType: value.feeType,
-        feeAmount: paid ? Number(value.feeAmount) : undefined,
-        slaHours: Number(value.slaHours),
-      };
+	name: value.name.trim(),
+	description: value.description.trim() || undefined,
+	images: value.images
+		.split("\n")
+		.map((l) => l.trim())
+		.filter(Boolean),
+	feeType: value.feeType,
+	feeAmount: paid ? Number(value.feeAmount) : undefined,
+	slaHours: Number(value.slaHours),
+};
 
       if (category) {
         update.mutate({ id: category.id, payload: base }, handlers);
@@ -155,6 +164,45 @@ function CategoryForm({
           );
         }}
       </form.Field>
+
+      <form.Field name="description">
+  {(field) => {
+    const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid;
+    return (
+      <Field data-invalid={isInvalid} className="space-y-1.5">
+        <FieldLabel htmlFor={field.name}>Description</FieldLabel>
+        <Textarea
+          id={field.name}
+          rows={3}
+          value={field.state.value}
+          onBlur={field.handleBlur}
+          onChange={(e) => field.handleChange(e.target.value)}
+        />
+        {isInvalid && <FieldError errors={field.state.meta.errors} />}
+      </Field>
+    );
+  }}
+</form.Field>
+
+<form.Field name="images">
+  {(field) => {
+    const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid;
+    return (
+      <Field data-invalid={isInvalid} className="space-y-1.5">
+        <FieldLabel htmlFor={field.name}>Image URLs (one per line)</FieldLabel>
+        <Textarea
+          id={field.name}
+          rows={3}
+          placeholder="https://res.cloudinary.com/..."
+          value={field.state.value}
+          onBlur={field.handleBlur}
+          onChange={(e) => field.handleChange(e.target.value)}
+        />
+        {isInvalid && <FieldError errors={field.state.meta.errors} />}
+      </Field>
+    );
+  }}
+</form.Field>
 
       <div className="grid gap-4 sm:grid-cols-2">
         <form.Field name="feeType">

@@ -3,6 +3,8 @@ export type FeeType = "FREE" | "PAID";
 export type Category = {
   id: string;
   name: string;
+  description: string | null;
+  images: string[];
   feeType: FeeType;
   feeAmount: string | null;
   slaHours: number;
@@ -16,6 +18,8 @@ export type Category = {
 export type CreateCategoryPayload = {
   departmentId: string;
   name: string;
+  description?: string;
+  images?: string[];
   feeType: FeeType;
   feeAmount?: number;
   slaHours: number;

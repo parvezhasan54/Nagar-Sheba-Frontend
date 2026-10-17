@@ -3,6 +3,7 @@ import type { ApiResponse } from "@/types/api.type";
 import type {
   Category,
   CreateCategoryPayload,
+  FeeType,
   UpdateCategoryPayload,
 } from "@/types/category.type";
 
@@ -11,6 +12,11 @@ export function getCategories(params?: {
   limit?: number;
   departmentId?: string;
   includeInactive?: boolean;
+  search?: string;
+  feeType?: FeeType;
+  maxSla?: number;
+  sortBy?: "createdAt" | "name" | "slaHours" | "feeAmount";
+  sortOrder?: "asc" | "desc";
 }) {
   return apiClient<ApiResponse<Category[]>>("/categories", {
     method: "GET",
