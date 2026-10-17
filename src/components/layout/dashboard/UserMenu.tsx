@@ -22,18 +22,9 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { ROLE_LABEL } from "@/config/navigation";
 import { useLogOut, useProfile } from "@/hook";
 import { getRoleHome } from "@/lib/roles";
-import { getDisplayName } from "@/lib/user";
+import { getDisplayName, getInitials } from "@/lib/user";
 
-function getInitials(name: string) {
-  return (
-    name
-      .split(" ")
-      .filter(Boolean)
-      .slice(0, 2)
-      .map((w) => w[0]?.toUpperCase())
-      .join("") || "U"
-  );
-}
+
 
 const REQUESTS_LABEL = {
   CITIZEN: "My requests",
@@ -110,7 +101,7 @@ export function UserMenu() {
                 <Bell /> Notifications
               </DropdownMenuItem>
               <DropdownMenuItem render={<Link href={`${home}/profile`} />}>
-                <UserRound /> My profile
+                <UserRound /> Profile & settings
               </DropdownMenuItem>
             </>
           );
