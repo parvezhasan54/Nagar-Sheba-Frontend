@@ -1,6 +1,6 @@
 "use client";
 
-import { LogOut, Menu, ShieldCheck, UserRound, X, Bell } from "lucide-react";
+import { Bell, LogOut, Menu, ShieldCheck, UserRound, X } from "lucide-react";
 import { motion } from "motion/react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
@@ -23,8 +23,7 @@ import { getRoleHome } from "@/lib/roles";
 import { getDisplayName, getInitials } from "@/lib/user";
 import { cn } from "@/lib/utils";
 
-const FOCUS =
-  "outline-none focus-visible:ring-2 focus-visible:ring-ring/50";
+const FOCUS = "outline-none focus-visible:ring-2 focus-visible:ring-ring/50";
 
 export default function Navbar() {
   const pathname = usePathname();

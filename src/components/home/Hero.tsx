@@ -3,10 +3,14 @@ import Link from "next/link";
 import { Stagger, StaggerItem } from "@/components/motion/Stagger";
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { ScrollCue } from "./ScrollCue";
 
 export function Hero() {
   return (
-    <section className="relative isolate overflow-hidden border-b bg-gradient-to-b from-primary/10 via-background to-background">
+    <section
+      id="hero"
+      className="relative isolate flex min-h-[60svh] items-center overflow-hidden border-b bg-gradient-to-b from-primary/10 via-background to-background md:max-h-[70svh]"
+    >
       {/* Decorative blobs */}
       <div
         aria-hidden="true"
@@ -16,10 +20,10 @@ export function Hero() {
         <div className="animate-float-slow absolute top-32 right-[8%] size-80 rounded-full bg-chart-1/30 blur-3xl" />
       </div>
 
-      <Stagger
-        gap={0.12}
-        className="mx-auto max-w-7xl px-4 py-20 text-center sm:px-6 sm:py-28 lg:px-8"
-      >
+        <Stagger
+    gap={0.12}
+    className="mx-auto w-full max-w-7xl px-4 pt-12 pb-16 text-center sm:px-6 sm:pt-16 lg:px-8"
+  >
         <StaggerItem>
           <span className="inline-flex items-center gap-2 rounded-full border bg-background/80 px-3 py-1 text-xs font-medium text-muted-foreground backdrop-blur">
             <ShieldCheck className="size-3.5 text-primary" />
@@ -28,7 +32,7 @@ export function Hero() {
         </StaggerItem>
 
         <StaggerItem>
-          <h1 className="mx-auto mt-6 max-w-3xl font-heading text-4xl font-bold tracking-tight sm:text-5xl lg:text-6xl">
+          <h1 className="mx-auto mt-5 max-w-3xl font-heading text-3xl font-bold tracking-tight sm:text-5xl lg:text-6xl">
             Report it. Track it.{" "}
             <span className="bg-gradient-to-r from-primary to-chart-1 bg-clip-text text-transparent">
               See it fixed.
@@ -68,6 +72,7 @@ export function Hero() {
           </div>
         </StaggerItem>
       </Stagger>
+       <ScrollCue />
     </section>
   );
 }

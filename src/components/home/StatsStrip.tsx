@@ -5,7 +5,8 @@ import { StatCard } from "@/components/shared/StatCard";
 import type { PublicStats } from "@/types/public.type";
 
 export function StatsStrip({ stats }: { stats: PublicStats | null }) {
-  if (!stats) return null;
+  const count = (value?: number) =>
+    value === undefined ? "—" : <CountUp value={value} />;
 
   return (
     <section className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
@@ -13,14 +14,14 @@ export function StatsStrip({ stats }: { stats: PublicStats | null }) {
         <StaggerItem>
           <StatCard
             title="Requests filed"
-            value={<CountUp value={stats.totalRequests} />}
+            value={count(stats?.totalRequests)}
             icon={ClipboardList}
           />
         </StaggerItem>
         <StaggerItem>
           <StatCard
             title="Issues resolved"
-            value={<CountUp value={stats.resolvedRequests} />}
+            value={count(stats?.resolvedRequests)}
             icon={CircleCheck}
             tone="success"
           />
@@ -28,7 +29,7 @@ export function StatsStrip({ stats }: { stats: PublicStats | null }) {
         <StaggerItem>
           <StatCard
             title="City departments"
-            value={<CountUp value={stats.departments} />}
+            value={count(stats?.departments)}
             icon={Building2}
           />
         </StaggerItem>
@@ -36,7 +37,9 @@ export function StatsStrip({ stats }: { stats: PublicStats | null }) {
           <StatCard
             title="Citizen rating"
             value={
-              stats.averageRating ? (
+              !stats ? (
+                "—"
+              ) : stats.averageRating ? (
                 <CountUp
                   value={stats.averageRating}
                   decimals={1}

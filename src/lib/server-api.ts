@@ -1,7 +1,7 @@
 import type { ApiResponse } from "@/types/api.type";
 import type { Category, CategoryReviews } from "@/types/category.type";
 import type { Department } from "@/types/department.type";
-import type { PublicStats } from "@/types/public.type";
+import type { PublicStats, ResolvedIssue, Testimonial } from "@/types/public.type";
 
 const BACKEND_URL = process.env.BACKEND_URL ?? "http://localhost:5000/api/v1";
 
@@ -36,4 +36,12 @@ export function getCategoryReviews(id: string) {
 
 export function getPublicCategory(id: string) {
   return serverGet<Category>(`/categories/${id}`, 60);
+}
+
+export async function getResolvedIssues() {
+  return (await serverGet<ResolvedIssue[]>("/public/resolved")) ?? [];
+}
+
+export async function getTestimonials() {
+  return (await serverGet<Testimonial[]>("/public/testimonials")) ?? [];
 }

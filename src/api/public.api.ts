@@ -8,3 +8,10 @@ export function sendContactMessage(payload: ContactPayload) {
     body: payload,
   });
 }
+
+export function subscribeToNewsletter(payload: { email: string }) {
+  return apiClient<ApiResponse<null>>("/public/subscribe", {
+    method: "POST",
+    body: payload,
+  });
+}

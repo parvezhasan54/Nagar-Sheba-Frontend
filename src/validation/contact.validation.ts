@@ -15,3 +15,7 @@ export const ContactZodSchema = z.object({
     .min(20, "Message must be at least 20 characters.")
     .max(2000, "Message must not exceed 2000 characters."),
 });
+
+export const SubscribeZodSchema = z.object({
+  email: z.email("Please provide a valid email address."),
+});

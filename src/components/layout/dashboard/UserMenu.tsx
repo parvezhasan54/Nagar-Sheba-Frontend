@@ -24,8 +24,6 @@ import { useLogOut, useProfile } from "@/hook";
 import { getRoleHome } from "@/lib/roles";
 import { getDisplayName, getInitials } from "@/lib/user";
 
-
-
 const REQUESTS_LABEL = {
   CITIZEN: "My requests",
   STAFF: "Request queue",
