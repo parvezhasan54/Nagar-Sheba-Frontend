@@ -1,3 +1,5 @@
+
+import Image from "next/image";
 import { Clock } from "lucide-react";
 import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
@@ -8,33 +10,46 @@ import { cn } from "@/lib/utils";
 
 export function BlogCard({ post }: { post: BlogPost }) {
   const href = `/blog/${post.slug}`;
-  const Icon = post.icon;
 
   return (
     <article className="group flex h-full flex-col overflow-hidden rounded-xl border bg-card transition-all duration-300 hover:-translate-y-1 hover:border-primary/40 hover:shadow-lg">
-      <div className="relative flex aspect-video items-center justify-center bg-gradient-to-br from-primary/15 via-primary/5 to-muted">
-        <Icon className="size-10 text-primary/60" aria-hidden="true" />
+      <Link
+        href={href}
+        aria-label={`Read ${post.title}`}
+        className="relative block aspect-video overflow-hidden bg-muted"
+      >
+        <Image
+          src={post.image}
+          alt={post.imageAlt}
+          fill
+          sizes="(max-width: 639px) 100vw, (max-width: 1023px) 50vw, 25vw"
+          className="object-cover transition-transform duration-500 group-hover:scale-105"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
         <Badge
           variant="secondary"
           className="absolute top-3 right-3 h-6 px-2.5 text-xs shadow-sm"
         >
           {post.category}
         </Badge>
-      </div>
+      </Link>
 
       <div className="flex flex-1 flex-col p-4">
-        <h3 className="line-clamp-2 h-11 text-base font-semibold leading-snug">
-          <Link href={href} className="hover:text-primary">
+        <h3 className="line-clamp-2 min-h-11 text-base font-semibold leading-snug">
+          <Link href={href} className="transition-colors hover:text-primary">
             {post.title}
           </Link>
         </h3>
-        <p className="mt-1.5 line-clamp-2 h-10 text-sm leading-5 text-muted-foreground">
+
+        <p className="mt-1.5 line-clamp-2 min-h-10 text-sm leading-5 text-muted-foreground">
           {post.excerpt}
         </p>
+
         <p className="mt-3 flex items-center gap-1.5 text-xs text-muted-foreground">
-          <Clock className="size-3.5 shrink-0" />
+          <Clock className="size-3.5 shrink-0" aria-hidden="true" />
           {formatDate(post.date)} · {post.readMinutes} min read
         </p>
+
         <div className="mt-auto pt-4">
           <Link
             href={href}

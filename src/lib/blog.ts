@@ -1,3 +1,4 @@
+
 import {
   CreditCard,
   FilePlus,
@@ -14,6 +15,8 @@ export type BlogPost = {
   date: string;
   readMinutes: number;
   icon: LucideIcon;
+  image: string;
+  imageAlt: string;
   sections: { heading: string; body: string[] }[];
 };
 
@@ -27,6 +30,9 @@ export const POSTS: BlogPost[] = [
     date: "2026-10-03",
     readMinutes: 3,
     icon: FilePlus,
+    image:
+      "https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?auto=format&fit=crop&w=900&q=80",
+    imageAlt: "Smartphone used to submit a civic service request",
     sections: [
       {
         heading: "Choose the right service",
@@ -63,6 +69,9 @@ export const POSTS: BlogPost[] = [
     date: "2026-10-06",
     readMinutes: 3,
     icon: Timer,
+    image:
+      "https://images.unsplash.com/photo-1501139083538-0139583c060f?auto=format&fit=crop&w=900&q=80",
+    imageAlt: "Clock representing service deadlines and resolution times",
     sections: [
       {
         heading: "When the clock starts",
@@ -99,6 +108,9 @@ export const POSTS: BlogPost[] = [
     date: "2026-10-09",
     readMinutes: 4,
     icon: CreditCard,
+    image:
+      "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?auto=format&fit=crop&w=900&q=80",
+    imageAlt: "Customer making a digital payment at checkout",
     sections: [
       {
         heading: "Which services are paid",
@@ -135,6 +147,9 @@ export const POSTS: BlogPost[] = [
     date: "2026-10-12",
     readMinutes: 3,
     icon: RotateCcw,
+    image:
+      "https://images.unsplash.com/photo-1504307651254-35680f356dfd?auto=format&fit=crop&w=900&q=80",
+    imageAlt: "Maintenance workers repairing a road or public infrastructure",
     sections: [
       {
         heading: "The 3-day window",

@@ -3,10 +3,9 @@
 import { FileText, Wrench } from "lucide-react";
 import Image from "next/image";
 import { useState } from "react";
+import cloudinaryLoader from "@/lib/cloudinary-loader";
 
 type Props = { src?: string; alt: string; paid: boolean };
-
-const CLOUDINARY = "https://res.cloudinary.com/";
 
 export function CategoryImage({ src, alt, paid }: Props) {
   const [failed, setFailed] = useState(false);
@@ -29,10 +28,8 @@ export function CategoryImage({ src, alt, paid }: Props) {
       src={src}
       alt={alt}
       fill
+      loader={cloudinaryLoader}
       sizes="(min-width: 1024px) 25vw, (min-width: 640px) 50vw, 100vw"
-      // Only Cloudinary is whitelisted in next.config.ts. Any other host an
-      // admin pastes is served as-is instead of crashing the page.
-      unoptimized={!src.startsWith(CLOUDINARY)}
       onError={() => setFailed(true)}
       className="object-cover transition-transform duration-500 group-hover:scale-105"
     />

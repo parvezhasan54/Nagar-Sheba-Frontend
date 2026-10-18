@@ -1,3 +1,5 @@
+
+import Image from "next/image";
 import { Building2, Tags } from "lucide-react";
 import type { Metadata } from "next";
 import Link from "next/link";
@@ -56,6 +58,47 @@ function Section({
   );
 }
 
+const DEPARTMENT_IMAGES = [
+  {
+    keywords: ["licensing", "permit", "trade"],
+    image:
+      "https://images.unsplash.com/photo-1450101499163-c8848c66ca85?auto=format&fit=crop&w=900&q=80",
+    alt: "Official documents and permit paperwork",
+  },
+  {
+    keywords: ["water", "drainage", "plumbing"],
+    image:
+      "https://images.unsplash.com/photo-1548337138-e87d889cc369?auto=format&fit=crop&w=900&q=80",
+    alt: "Water supply and infrastructure",
+  },
+  {
+  keywords: ["waste", "garbage", "sanitation", "clean"],
+  image:
+    "https://images.unsplash.com/photo-1532996122724-e3c354a0b15b?auto=format&fit=crop&w=900&q=80",
+  alt: "Waste recycling and environmental sanitation",
+},
+  {
+    keywords: ["road", "infrastructure", "traffic", "street"],
+    image:
+      "https://images.unsplash.com/photo-1504307651254-35680f356dfd?auto=format&fit=crop&w=900&q=80",
+    alt: "Road and infrastructure maintenance",
+  },
+];
+
+function getDepartmentImage(name: string) {
+  const normalizedName = name.toLowerCase();
+
+  return (
+    DEPARTMENT_IMAGES.find((department) =>
+      department.keywords.some((keyword) => normalizedName.includes(keyword)),
+    ) ?? {
+      image:
+        "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=900&q=80",
+      alt: `${name} public service department`,
+    }
+  );
+}
+
 export default async function HomePage() {
   const [stats, categories, departments, resolved, testimonials] =
     await Promise.all([
@@ -95,12 +138,13 @@ export default async function HomePage() {
           ) : (
             <>
               <Stagger className={CATEGORY_GRID_CLASS}>
-                {categories.slice(0, 8).map((c) => (
-                  <StaggerItem key={c.id} className="h-full">
-                    <CategoryCard category={c} />
+                {categories.slice(0, 8).map((category) => (
+                  <StaggerItem key={category.id} className="h-full">
+                    <CategoryCard category={category} />
                   </StaggerItem>
                 ))}
               </Stagger>
+
               <div className="mt-8 text-center">
                 <Link
                   href="/services"
@@ -139,24 +183,46 @@ export default async function HomePage() {
             />
           ) : (
             <Stagger className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-              {departments.map((d) => (
-                <StaggerItem key={d.id} className="h-full">
-                  <Link
-                    href={`/services?department=${d.id}`}
-                    className="group block h-full rounded-xl border bg-card p-5 transition-all duration-300 hover:-translate-y-1 hover:border-primary/40 hover:shadow-lg"
-                  >
-                    <div className="flex size-10 items-center justify-center rounded-lg bg-primary/10 text-primary transition-transform duration-300 group-hover:scale-110 group-hover:-rotate-3">
-                      <Building2 className="size-5" />
-                    </div>
-                    <h3 className="mt-3 text-sm font-semibold">{d.name}</h3>
-                    {d.description && (
-                      <p className="mt-1 text-xs leading-5 text-muted-foreground">
-                        {d.description}
-                      </p>
-                    )}
-                  </Link>
-                </StaggerItem>
-              ))}
+              {departments.map((department) => {
+                const departmentImage = getDepartmentImage(department.name);
+
+                return (
+                  <StaggerItem key={department.id} className="h-full">
+                    <Link
+                      href={`/services?department=${encodeURIComponent(department.id)}`}
+                      className="group block h-full overflow-hidden rounded-xl border bg-card transition-all duration-300 hover:-translate-y-1 hover:border-primary/40 hover:shadow-lg"
+                    >
+                      <div className="relative aspect-[16/9] overflow-hidden bg-muted">
+                        <Image
+                          src={departmentImage.image}
+                          alt={departmentImage.alt}
+                          fill
+                          sizes="(max-width: 639px) 100vw, (max-width: 1023px) 50vw, 25vw"
+                          className="object-cover transition-transform duration-500 group-hover:scale-105"
+                        />
+
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/45 to-transparent" />
+
+                        <div className="absolute bottom-3 left-4 flex size-10 items-center justify-center rounded-lg border border-white/30 bg-white/90 text-primary shadow-sm backdrop-blur-sm">
+                          <Building2 className="size-5" aria-hidden="true" />
+                        </div>
+                      </div>
+
+                      <div className="p-5">
+                        <h3 className="text-sm font-semibold">
+                          {department.name}
+                        </h3>
+
+                        {department.description && (
+                          <p className="mt-1 text-xs leading-5 text-muted-foreground">
+                            {department.description}
+                          </p>
+                        )}
+                      </div>
+                    </Link>
+                  </StaggerItem>
+                );
+              })}
             </Stagger>
           )}
         </div>
