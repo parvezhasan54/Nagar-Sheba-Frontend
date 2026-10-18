@@ -1,4 +1,3 @@
-
 import Link from "next/link";
 import { BlogCard } from "@/components/blog/BlogCard";
 import { Reveal } from "@/components/motion/Reveal";

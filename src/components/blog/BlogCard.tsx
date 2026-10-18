@@ -1,6 +1,5 @@
-
-import Image from "next/image";
 import { Clock } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
 import { buttonVariants } from "@/components/ui/button";

@@ -1,7 +1,6 @@
-
-import Image from "next/image";
 import { Building2, Tags } from "lucide-react";
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import type { ReactNode } from "react";
 import { BlogPreview } from "@/components/home/BlogPreview";
@@ -55,47 +54,6 @@ function Section({
         {children}
       </div>
     </section>
-  );
-}
-
-const DEPARTMENT_IMAGES = [
-  {
-    keywords: ["licensing", "permit", "trade"],
-    image:
-      "https://images.unsplash.com/photo-1450101499163-c8848c66ca85?auto=format&fit=crop&w=900&q=80",
-    alt: "Official documents and permit paperwork",
-  },
-  {
-    keywords: ["water", "drainage", "plumbing"],
-    image:
-      "https://images.unsplash.com/photo-1548337138-e87d889cc369?auto=format&fit=crop&w=900&q=80",
-    alt: "Water supply and infrastructure",
-  },
-  {
-  keywords: ["waste", "garbage", "sanitation", "clean"],
-  image:
-    "https://images.unsplash.com/photo-1532996122724-e3c354a0b15b?auto=format&fit=crop&w=900&q=80",
-  alt: "Waste recycling and environmental sanitation",
-},
-  {
-    keywords: ["road", "infrastructure", "traffic", "street"],
-    image:
-      "https://images.unsplash.com/photo-1504307651254-35680f356dfd?auto=format&fit=crop&w=900&q=80",
-    alt: "Road and infrastructure maintenance",
-  },
-];
-
-function getDepartmentImage(name: string) {
-  const normalizedName = name.toLowerCase();
-
-  return (
-    DEPARTMENT_IMAGES.find((department) =>
-      department.keywords.some((keyword) => normalizedName.includes(keyword)),
-    ) ?? {
-      image:
-        "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=900&q=80",
-      alt: `${name} public service department`,
-    }
   );
 }
 
@@ -184,8 +142,6 @@ export default async function HomePage() {
           ) : (
             <Stagger className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
               {departments.map((department) => {
-                const departmentImage = getDepartmentImage(department.name);
-
                 return (
                   <StaggerItem key={department.id} className="h-full">
                     <Link
@@ -194,8 +150,8 @@ export default async function HomePage() {
                     >
                       <div className="relative aspect-[16/9] overflow-hidden bg-muted">
                         <Image
-                          src={departmentImage.image}
-                          alt={departmentImage.alt}
+                          src={department.imageUrl ?? ""}
+                          alt={department.name}
                           fill
                           sizes="(max-width: 639px) 100vw, (max-width: 1023px) 50vw, 25vw"
                           className="object-cover transition-transform duration-500 group-hover:scale-105"

@@ -1,6 +1,5 @@
-
-import Image from "next/image";
 import { Bell, MapPin, Moon, ScrollText, Timer, Undo2 } from "lucide-react";
+import Image from "next/image";
 import { Reveal } from "@/components/motion/Reveal";
 import { Stagger, StaggerItem } from "@/components/motion/Stagger";
 import { SectionHeading } from "@/components/shared/SectionHeading";

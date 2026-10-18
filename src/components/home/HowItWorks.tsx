@@ -1,5 +1,5 @@
-import Image from "next/image";
 import { Bell, CreditCard, FilePlus, Wrench } from "lucide-react";
+import Image from "next/image";
 import { Stagger, StaggerItem } from "@/components/motion/Stagger";
 import { SectionHeading } from "@/components/shared/SectionHeading";
 

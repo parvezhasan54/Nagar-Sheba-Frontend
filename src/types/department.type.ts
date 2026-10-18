@@ -2,6 +2,7 @@ export type Department = {
   id: string;
   name: string;
   description: string | null;
+  imageUrl: string | null;
   createdAt: string;
   deletedAt: string | null;
 };
