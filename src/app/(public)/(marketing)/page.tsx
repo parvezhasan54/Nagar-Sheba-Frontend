@@ -2,6 +2,7 @@ import { Building2, Tags } from "lucide-react";
 import type { Metadata } from "next";
 import Link from "next/link";
 import type { ReactNode } from "react";
+import { BlogPreview } from "@/components/home/BlogPreview";
 import {
   CATEGORY_GRID_CLASS,
   CategoryCard,
@@ -11,7 +12,6 @@ import { FaqPreview } from "@/components/home/FaqPreview";
 import { Features } from "@/components/home/Features";
 import { Hero } from "@/components/home/Hero";
 import { HowItWorks } from "@/components/home/HowItWorks";
-import { BlogPreview } from "@/components/home/BlogPreview";
 import { Newsletter } from "@/components/home/Newsletter";
 import { ResolvedIssues } from "@/components/home/ResolvedIssues";
 import { StatsStrip } from "@/components/home/StatsStrip";

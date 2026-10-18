@@ -9,7 +9,9 @@ import { RequestListSkeleton } from "@/components/request/skeletons";
 import { ConfirmDialog } from "@/components/shared/ConfirmDialog";
 import { EmptyState } from "@/components/shared/EmptyState";
 import { ErrorState } from "@/components/shared/ErrorState";
+import { FilterSelect } from "@/components/shared/FilterSelect";
 import { Pagination } from "@/components/shared/Pagination";
+import { SearchInput } from "@/components/shared/SearchInput";
 import { SelectField } from "@/components/shared/SelectField";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -46,6 +48,19 @@ import { CategoryZodSchema } from "@/validation";
 import { Textarea } from "../ui/textarea";
 
 type Editing = Category | "new" | null;
+
+const STATUS_OPTIONS = [
+  { value: "all", label: "All statuses" },
+  { value: "active", label: "Active" },
+  { value: "inactive", label: "Inactive" },
+  { value: "deleted", label: "Deleted" },
+];
+
+const FEE_FILTER = [
+  { value: "all", label: "Free and paid" },
+  { value: "FREE", label: "Free only" },
+  { value: "PAID", label: "Paid only" },
+];
 
 const FEE_OPTIONS = [
   { value: "FREE", label: "Free" },
@@ -299,15 +314,27 @@ function CategoryForm({
 }
 
 export function CategoryManager() {
-  const { get, getNumber } = useUrlState();
+  const { get, getNumber, setParams } = useUrlState();
   const page = getNumber("page", 1);
   const department = get("department", "all");
+  const search = get("search").trim();
+  const status = get("status", "all");
+  const fee = get("fee", "all");
+
+  const hasFilters =
+    !!search || status !== "all" || fee !== "all" || department !== "all";
 
   const { data, isLoading, isError, error, refetch } = useCategories({
     page,
     limit: 10,
     departmentId: department === "all" ? undefined : department,
     includeInactive: true,
+    search: search || undefined,
+    status:
+      status === "all"
+        ? undefined
+        : (status as "active" | "inactive" | "deleted"),
+    feeType: fee === "all" ? undefined : (fee as FeeType),
   });
   const { mutate: toggle, isPending: toggling } = useUpdateCategory();
   const { mutate: remove, isPending: deleting } = useDeleteCategory();
@@ -348,13 +375,46 @@ export function CategoryManager() {
 
   return (
     <div>
-      <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+      <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-end">
+        <SearchInput placeholder="Search services..." paramKey="search" />
         <DepartmentFilter />
-        <Button className="h-9 gap-2" onClick={() => setEditing("new")}>
-          <Plus className="size-4" /> New category
+        <FilterSelect
+          label="Fee"
+          value={fee}
+          options={FEE_FILTER}
+          onChange={(v) => setParams({ fee: v })}
+        />
+        <FilterSelect
+          label="Status"
+          value={status}
+          options={STATUS_OPTIONS}
+          onChange={(v) => setParams({ status: v })}
+        />
+        {hasFilters && (
+          <Button
+            variant="ghost"
+            className="h-9"
+            onClick={() =>
+              setParams({
+                search: null,
+                status: null,
+                fee: null,
+                department: null,
+                page: null,
+              })
+            }
+          >
+            Clear
+          </Button>
+        )}
+        <Button
+          className="h-9 gap-2 sm:ml-auto"
+          onClick={() => setEditing("new")}
+        >
+          <Plus className="size-4" />
+          New category
         </Button>
       </div>
-
       {isLoading ? (
         <RequestListSkeleton />
       ) : isError ? (
@@ -362,8 +422,16 @@ export function CategoryManager() {
       ) : categories.length === 0 ? (
         <EmptyState
           icon={Tags}
-          title="No categories found"
-          description="Create a category so citizens can file requests."
+          title={
+            hasFilters
+              ? "No categories match your filters"
+              : "No categories found"
+          }
+          description={
+            hasFilters
+              ? "Try changing your search or filter criteria."
+              : "Create a category so citizens can file requests."
+          }
         />
       ) : (
         <>

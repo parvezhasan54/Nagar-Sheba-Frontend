@@ -20,7 +20,7 @@ export default function AdminReportsPage() {
     <>
       <PageHeader
         title="Reports"
-        description="Service performance, revenue and citizen satisfaction. Revenue and ratings use the latest 100 records."
+        description="Service performance, revenue and citizen satisfaction across the platform."
       />
       <ReportsView />
     </>

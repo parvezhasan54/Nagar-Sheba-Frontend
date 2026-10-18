@@ -1,7 +1,6 @@
 "use client";
 
 import { Download, Star, Timer, Wallet } from "lucide-react";
-import { useMemo } from "react";
 import {
   Bar,
   BarChart,
@@ -20,7 +19,7 @@ import { StatCard } from "@/components/shared/StatCard";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
-import { useDashboardStats, useFeedbacks, usePayments } from "@/hook";
+import { useDashboardStats, usePayments } from "@/hook";
 import { formatCurrency } from "@/lib/format";
 import { REQUEST_STATUSES, STATUS_META } from "@/lib/status";
 import type { Payment } from "@/types/payment.type";
@@ -91,37 +90,26 @@ function ChartBox({
 
 export function ReportsView() {
   const stats = useDashboardStats();
+  const s = stats.data?.data;
   const payments = usePayments({
     status: "COMPLETED",
     limit: 100,
     sortBy: "createdAt",
     sortOrder: "desc",
   });
-  const feedbacks = useFeedbacks({ limit: 100 });
 
   const paymentRows = payments.data?.data;
-  const feedbackRows = feedbacks.data?.data;
 
-  const revenueByProvider = useMemo(() => {
-    const totals = new Map<string, number>();
-    for (const p of paymentRows ?? []) {
-      totals.set(p.provider, (totals.get(p.provider) ?? 0) + Number(p.amount));
-    }
-    return [...totals.entries()].map(([provider, value]) => ({
-      name: PROVIDER_LABEL[provider] ?? provider,
-      value,
-      fill: PROVIDER_FILL[provider] ?? "var(--chart-1)",
-    }));
-  }, [paymentRows]);
+  const revenueByProvider = (s?.payments.byProvider ?? []).map((r) => ({
+    name: PROVIDER_LABEL[r.provider] ?? r.provider,
+    value: Number(r.total),
+    fill: PROVIDER_FILL[r.provider] ?? "var(--chart-1)",
+  }));
 
-  const ratingData = useMemo(
-    () =>
-      [5, 4, 3, 2, 1].map((n) => ({
-        name: `${n} ★`,
-        value: (feedbackRows ?? []).filter((f) => f.rating === n).length,
-      })),
-    [feedbackRows],
-  );
+  const ratingData = [5, 4, 3, 2, 1].map((n) => ({
+    name: `${n} ★`,
+    value: s?.feedback.distribution[String(n)] ?? 0,
+  }));
 
   if (stats.isLoading) {
     return (
@@ -137,11 +125,10 @@ export function ReportsView() {
     );
   }
 
-  if (stats.isError || !stats.data) {
+  if (stats.isError || !stats.data || !s) {
     return <ErrorState error={stats.error} onRetry={() => stats.refetch()} />;
   }
 
-  const s = stats.data.data;
   const total = s.requests.total;
   const onTimeRate = total
     ? Math.round(((total - s.requests.overdue) / total) * 100)
@@ -151,8 +138,6 @@ export function ReportsView() {
     name: STATUS_META[key].label,
     value: s.requests.byStatus[key] ?? 0,
   }));
-
-  const totalRevenue = revenueByProvider.reduce((sum, r) => sum + r.value, 0);
 
   return (
     <div className="space-y-6">
@@ -164,16 +149,18 @@ export function ReportsView() {
           tone={onTimeRate !== null && onTimeRate < 80 ? "danger" : "success"}
           hint={`${s.requests.overdue} overdue of ${total}`}
         />
+
         <StatCard
-          title="Revenue (latest 100 payments)"
-          value={formatCurrency(totalRevenue)}
+          title="Revenue collected"
+          value={formatCurrency(s.payments.totalRevenue)}
           icon={Wallet}
           tone="success"
         />
+
         <StatCard
           title="Average rating"
           value={
-            s.feedback.averageRating
+            s.feedback.averageRating !== null
               ? `${Number(s.feedback.averageRating).toFixed(1)} / 5`
               : "—"
           }
@@ -224,14 +211,7 @@ export function ReportsView() {
             <CardTitle>Citizen ratings</CardTitle>
           </CardHeader>
           <CardContent>
-            {feedbacks.isLoading ? (
-              <Skeleton className="h-72 w-full" />
-            ) : feedbacks.isError ? (
-              <ErrorState
-                error={feedbacks.error}
-                onRetry={() => feedbacks.refetch()}
-              />
-            ) : (feedbackRows ?? []).length === 0 ? (
+            {s.feedback.total === 0 ? (
               <EmptyState
                 icon={Star}
                 title="No feedback yet"
@@ -273,18 +253,11 @@ export function ReportsView() {
             disabled={!paymentRows || paymentRows.length === 0}
             onClick={() => paymentRows && exportPaymentsCsv(paymentRows)}
           >
-            <Download className="size-4" /> Export CSV
+            <Download className="size-4" /> Export latest 100 payments
           </Button>
         </CardHeader>
         <CardContent>
-          {payments.isLoading ? (
-            <Skeleton className="h-72 w-full" />
-          ) : payments.isError ? (
-            <ErrorState
-              error={payments.error}
-              onRetry={() => payments.refetch()}
-            />
-          ) : revenueByProvider.length === 0 ? (
+          {revenueByProvider.length === 0 ? (
             <EmptyState
               icon={Wallet}
               title="No completed payments"

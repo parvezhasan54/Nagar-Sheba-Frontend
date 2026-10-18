@@ -45,6 +45,12 @@ const SORT_OPTIONS = [
   { value: "feeAmount:desc", label: "Fee: high to low" },
 ];
 
+const RATING_OPTIONS = [
+  { value: "all", label: "Any rating" },
+  { value: "4", label: "4 stars and up" },
+  { value: "3", label: "3 stars and up" },
+];
+
 export function ServiceExplorer() {
   const { get, getNumber, setParams } = useUrlState();
 
@@ -53,10 +59,12 @@ export function ServiceExplorer() {
   const department = get("department", "all");
   const fee = get("fee", "all");
   const sla = get("sla", "all");
+  const rating = get("rating", "all");
   const rawSort = get("sort", DEFAULT_SORT);
-  const sort = SORT_OPTIONS.some((o) => o.value === rawSort)
+  const sort = SORT_OPTIONS.some((option) => option.value === rawSort)
     ? rawSort
     : DEFAULT_SORT;
+
   const [sortBy, sortOrder] = sort.split(":") as [SortBy, "asc" | "desc"];
   const maxSla = Number(sla);
 
@@ -68,18 +76,32 @@ export function ServiceExplorer() {
       departmentId: department === "all" ? undefined : department,
       feeType: fee === "FREE" || fee === "PAID" ? fee : undefined,
       maxSla: Number.isFinite(maxSla) && maxSla > 0 ? maxSla : undefined,
+      minRating: rating === "all" ? undefined : Number(rating),
       sortBy,
       sortOrder,
     });
 
   const categories = data?.data ?? [];
   const total = data?.meta?.total ?? 0;
+
   const hasFilters =
     !!search ||
     department !== "all" ||
     fee !== "all" ||
     sla !== "all" ||
+    rating !== "all" ||
     sort !== DEFAULT_SORT;
+
+  const clearFilters = () => {
+    setParams({
+      search: null,
+      department: null,
+      fee: null,
+      sla: null,
+      rating: null,
+      sort: null,
+    });
+  };
 
   return (
     <div>
@@ -88,39 +110,39 @@ export function ServiceExplorer() {
           paramKey="search"
           placeholder="Search services or departments..."
         />
+
         <DepartmentFilter />
+
         <FilterSelect
           label="Fee"
           value={fee}
           options={FEE_OPTIONS}
-          onChange={(v) => setParams({ fee: v })}
+          onChange={(value) => setParams({ fee: value })}
         />
+
         <FilterSelect
           label="Resolution time"
           value={sla}
           options={SLA_OPTIONS}
-          onChange={(v) => setParams({ sla: v })}
+          onChange={(value) => setParams({ sla: value })}
         />
+
+        <FilterSelect
+          label="Rating"
+          value={rating}
+          options={RATING_OPTIONS}
+          onChange={(value) => setParams({ rating: value })}
+        />
+
         <FilterSelect
           label="Sort by"
           value={sort}
           options={SORT_OPTIONS}
-          onChange={(v) => setParams({ sort: v })}
+          onChange={(value) => setParams({ sort: value })}
         />
+
         {hasFilters && (
-          <Button
-            variant="ghost"
-            className="h-9"
-            onClick={() =>
-              setParams({
-                search: null,
-                department: null,
-                fee: null,
-                sla: null,
-                sort: null,
-              })
-            }
-          >
+          <Button variant="ghost" className="h-9" onClick={clearFilters}>
             Clear
           </Button>
         )}
@@ -147,6 +169,7 @@ export function ServiceExplorer() {
           <p className="mb-3 text-xs text-muted-foreground" aria-live="polite">
             {total} service{total === 1 ? "" : "s"} found
           </p>
+
           <div
             aria-busy={isFetching}
             className={cn(
@@ -155,10 +178,11 @@ export function ServiceExplorer() {
               isFetching && "opacity-60",
             )}
           >
-            {categories.map((c) => (
-              <CategoryCard key={c.id} category={c} />
+            {categories.map((category) => (
+              <CategoryCard key={category.id} category={category} />
             ))}
           </div>
+
           <Pagination meta={data?.meta} />
         </>
       )}

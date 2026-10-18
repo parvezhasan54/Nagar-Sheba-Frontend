@@ -1,7 +1,11 @@
 import type { ApiResponse } from "@/types/api.type";
 import type { Category, CategoryReviews } from "@/types/category.type";
 import type { Department } from "@/types/department.type";
-import type { PublicStats, ResolvedIssue, Testimonial } from "@/types/public.type";
+import type {
+  PublicStats,
+  ResolvedIssue,
+  Testimonial,
+} from "@/types/public.type";
 
 const BACKEND_URL = process.env.BACKEND_URL ?? "http://localhost:5000/api/v1";
 

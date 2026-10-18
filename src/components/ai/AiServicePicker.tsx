@@ -22,7 +22,9 @@ export function AiServicePicker({ onPick }: Props) {
       onSuccess: ({ data }) => setResult(data),
       onError: (error) => {
         setResult(null);
-        toast.error("No suggestion", { description: getApiErrorMessage(error) });
+        toast.error("No suggestion", {
+          description: getApiErrorMessage(error),
+        });
       },
     });
 
@@ -46,7 +48,11 @@ export function AiServicePicker({ onPick }: Props) {
         disabled={isPending || text.trim().length < 10}
         onClick={run}
       >
-        {isPending ? <Spinner data-icon="inline-start" /> : <Sparkles className="size-4" />}
+        {isPending ? (
+          <Spinner data-icon="inline-start" />
+        ) : (
+          <Sparkles className="size-4" />
+        )}
         Suggest a service
       </Button>
 

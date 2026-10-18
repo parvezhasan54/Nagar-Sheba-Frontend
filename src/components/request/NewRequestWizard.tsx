@@ -29,9 +29,9 @@ import { formatCurrency, formatSla } from "@/lib/format";
 import { cn } from "@/lib/utils";
 import type { Category } from "@/types/category.type";
 import { CreateRequestZodSchema } from "@/validation";
+import { AiServicePicker } from "../ai/AiServicePicker";
 import { LocationPreview } from "./LocationPreview";
 import { PhotoPicker } from "./PhotoPicker";
-import { AiServicePicker } from "../ai/AiServicePicker";
 
 type FormValues = {
   categoryId: string;
@@ -268,10 +268,10 @@ export default function NewRequestWizard({
               const isInvalid =
                 field.state.meta.isTouched && !field.state.meta.isValid;
               return (
-  <div className="space-y-5">
-    <AiServicePicker onPick={(id) => field.handleChange(id)} />
+                <div className="space-y-5">
+                  <AiServicePicker onPick={(id) => field.handleChange(id)} />
 
-    {groupedCategories.map(([department, items]) => (
+                  {groupedCategories.map(([department, items]) => (
                     <div key={department}>
                       <h3 className="mb-2 text-xs font-semibold tracking-widest text-muted-foreground uppercase">
                         {department}

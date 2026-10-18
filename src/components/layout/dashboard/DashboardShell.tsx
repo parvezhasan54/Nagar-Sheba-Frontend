@@ -4,6 +4,7 @@ import { ShieldAlert } from "lucide-react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { type ReactNode, useEffect, useState } from "react";
+import { ChatAssistant } from "@/components/ai/ChatAssistant";
 import {
   Sheet,
   SheetContent,
@@ -16,7 +17,6 @@ import type { UserRole } from "@/types/auth.type";
 import { DashboardPageSkeleton } from "./DashboardPageSkeleton";
 import { SidebarContent } from "./Sidebar";
 import { Topbar } from "./Topbar";
-import { ChatAssistant } from "@/components/ai/ChatAssistant";
 
 type Props = { userRole: UserRole; children: ReactNode };
 
@@ -69,7 +69,8 @@ export function DashboardShell({ userRole, children }: Props) {
         {profile?.mustChangePassword && (
           <div
             role="alert"
-className="flex items-center gap-2 border-b border-primary/30 bg-primary/5 px-4 py-2.5 text-xs text-foreground sm:px-6"          >
+            className="flex items-center gap-2 border-b border-primary/30 bg-primary/5 px-4 py-2.5 text-xs text-foreground sm:px-6"
+          >
             <ShieldAlert className="size-4 shrink-0" />
             <span>
               You are using a temporary password.{" "}

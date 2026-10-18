@@ -1,4 +1,4 @@
-import { Building2, Clock } from "lucide-react";
+import { Building2, Clock, Star } from "lucide-react";
 import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
 import { buttonVariants } from "@/components/ui/button";
@@ -47,6 +47,17 @@ export function CategoryCard({ category }: { category: Category }) {
         </p>
 
         <div className="mt-3 space-y-1.5 text-xs text-muted-foreground">
+          <p className="flex items-center gap-1.5">
+            <Star
+              className={cn(
+                "size-3.5 shrink-0",
+                category.reviewCount ? "fill-primary text-primary" : "",
+              )}
+            />
+            {category.reviewCount
+              ? `${category.averageRating?.toFixed(1)} (${category.reviewCount} reviews)`
+              : "No reviews yet"}
+          </p>
           <p className="flex items-center gap-1.5">
             <Building2 className="size-3.5 shrink-0" />
             <span className="truncate">{department}</span>

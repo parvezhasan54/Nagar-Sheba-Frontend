@@ -12,6 +12,8 @@ export function getCategories(params?: {
   limit?: number;
   departmentId?: string;
   includeInactive?: boolean;
+  minRating?: number;
+  status?: "active" | "inactive" | "deleted";
   search?: string;
   feeType?: FeeType;
   maxSla?: number;

@@ -13,6 +13,8 @@ export type Category = {
   createdAt: string;
   deletedAt?: string | null;
   department?: { id: string; name: string };
+  averageRating?: number | null;
+  reviewCount?: number;
 };
 
 export type CreateCategoryPayload = {

@@ -286,6 +286,26 @@
   animation: shimmer 2s infinite;
 }
 
+/* Marquee (testimonials) */
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(-100%);
+  }
+}
+
+.animate-marquee {
+  animation: marquee var(--marquee-duration, 40s) linear infinite;
+}
+
+.marquee:hover .animate-marquee,
+.marquee:focus-within .animate-marquee {
+  animation-play-state: paused;
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   ::before,
@@ -294,5 +314,17 @@
     animation-iteration-count: 1;
     transition-duration: 0.01ms;
     scroll-behavior: auto;
+  }
+  .animate-marquee {
+    animation: none;
+  }
+
+  .marquee {
+    overflow-x: auto;
+    mask-image: none;
+  }
+
+  .marquee-clone {
+    display: none;
   }
 }

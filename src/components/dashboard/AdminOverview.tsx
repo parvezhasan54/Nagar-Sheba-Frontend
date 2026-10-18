@@ -166,7 +166,7 @@ export function AdminOverview() {
           hint="Resolved or closed"
         />
       </div>
-<AiInsights />
+      <AiInsights />
       <div className="mb-6 grid gap-6 lg:grid-cols-[2fr_1fr]">
         <Card>
           <CardHeader>

@@ -31,13 +31,32 @@ export type AuditLog = {
 };
 
 export type DashboardStats = {
-  users: { total: number; citizens: number; staff: number };
+  users: {
+    total: number;
+    citizens: number;
+    staff: number;
+  };
   requests: {
     total: number;
     overdue: number;
     byStatus: Record<string, number>;
-    byDepartment: { departmentId: string; name: string; total: number }[];
+    byDepartment: {
+      departmentId: string;
+      name: string;
+      total: number;
+    }[];
   };
-  payments: { totalRevenue: string | number; pending: number };
-  feedback: { averageRating: number | null };
+  payments: {
+    totalRevenue: string | number;
+    pending: number;
+    byProvider: {
+      provider: string;
+      total: string | number;
+    }[];
+  };
+  feedback: {
+    averageRating: number | null;
+    total: number;
+    distribution: Record<string, number>;
+  };
 };

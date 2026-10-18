@@ -12,9 +12,7 @@ export function StarRating({ value, onChange }: Props) {
       {STARS.map((n) => {
         const starClass = cn(
           "size-5",
-          n <= value
-  ? "fill-primary text-primary"
-  : "text-muted-foreground/40",
+          n <= value ? "fill-primary text-primary" : "text-muted-foreground/40",
         );
 
         if (onChange) {

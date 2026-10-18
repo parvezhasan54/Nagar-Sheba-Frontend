@@ -20,10 +20,10 @@ export function Hero() {
         <div className="animate-float-slow absolute top-32 right-[8%] size-80 rounded-full bg-chart-1/30 blur-3xl" />
       </div>
 
-        <Stagger
-    gap={0.12}
-    className="mx-auto w-full max-w-7xl px-4 pt-12 pb-16 text-center sm:px-6 sm:pt-16 lg:px-8"
-  >
+      <Stagger
+        gap={0.12}
+        className="mx-auto w-full max-w-7xl px-4 pt-12 pb-16 text-center sm:px-6 sm:pt-16 lg:px-8"
+      >
         <StaggerItem>
           <span className="inline-flex items-center gap-2 rounded-full border bg-background/80 px-3 py-1 text-xs font-medium text-muted-foreground backdrop-blur">
             <ShieldCheck className="size-3.5 text-primary" />
@@ -72,7 +72,7 @@ export function Hero() {
           </div>
         </StaggerItem>
       </Stagger>
-       <ScrollCue />
+      <ScrollCue />
     </section>
   );
 }

@@ -1,4 +1,5 @@
 export * from "./admin.type";
+export * from "./ai.type";
 export * from "./api.type";
 export * from "./auth.type";
 export * from "./category.type";
@@ -10,4 +11,3 @@ export * from "./public.type";
 export * from "./request.type";
 export * from "./staff.type";
 export * from "./user.type";
-export * from "./ai.type";

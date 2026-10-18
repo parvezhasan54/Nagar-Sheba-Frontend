@@ -70,7 +70,10 @@ export function ChatAssistant() {
             </button>
           </div>
 
-          <div className="flex-1 space-y-3 overflow-y-auto p-4" aria-live="polite">
+          <div
+            className="flex-1 space-y-3 overflow-y-auto p-4"
+            aria-live="polite"
+          >
             {messages.map((m, i) => (
               <div
                 // biome-ignore lint/suspicious/noArrayIndexKey: append-only list
@@ -122,7 +125,12 @@ export function ChatAssistant() {
               aria-label="Message"
               className="h-9"
             />
-            <Button type="submit" size="icon-lg" disabled={isPending || !input.trim()} aria-label="Send">
+            <Button
+              type="submit"
+              size="icon-lg"
+              disabled={isPending || !input.trim()}
+              aria-label="Send"
+            >
               <Send />
             </Button>
           </form>

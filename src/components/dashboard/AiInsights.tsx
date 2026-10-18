@@ -29,7 +29,8 @@ export function AiInsights() {
             )}
             {data.data.anomalies.length === 0 ? (
               <p className="flex items-center gap-2 text-sm text-muted-foreground">
-                <CircleCheck className="size-4 text-green-600" /> No anomalies detected.
+                <CircleCheck className="size-4 text-green-600" /> No anomalies
+                detected.
               </p>
             ) : (
               <ul className="divide-y rounded-lg border">
@@ -38,9 +39,15 @@ export function AiInsights() {
                     <TriangleAlert className="mt-0.5 size-4 shrink-0 text-destructive" />
                     <div className="min-w-0 flex-1">
                       <p className="text-sm font-medium">{a.title}</p>
-                      <p className="text-xs text-muted-foreground">{a.detail}</p>
+                      <p className="text-xs text-muted-foreground">
+                        {a.detail}
+                      </p>
                     </div>
-                    <Badge variant={a.severity === "high" ? "destructive" : "secondary"}>
+                    <Badge
+                      variant={
+                        a.severity === "high" ? "destructive" : "secondary"
+                      }
+                    >
                       {a.severity}
                     </Badge>
                   </li>

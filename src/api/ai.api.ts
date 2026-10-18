@@ -1,5 +1,9 @@
 import apiClient from "@/lib/apiClient";
-import type { AiInsights, ChatMessage, ServiceSuggestion } from "@/types/ai.type";
+import type {
+  AiInsights,
+  ChatMessage,
+  ServiceSuggestion,
+} from "@/types/ai.type";
 import type { ApiResponse } from "@/types/api.type";
 
 export function aiChat(messages: ChatMessage[]) {
