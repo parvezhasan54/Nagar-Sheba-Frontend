@@ -10,26 +10,15 @@ import { StatusBadge } from "@/components/shared/StatusBadge";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
-import { useProfile, useRequests } from "@/hook";
+import { useProfile, useRequests, useStaffPerformance } from "@/hook";
 import { formatDateTime } from "@/lib/format";
 import { getDisplayName } from "@/lib/user";
 
 export function StaffOverview() {
   const { data: profile } = useProfile();
 
-  // limit=1 queries: only meta.total is needed
-  const toStart = useRequests({ limit: 1, assigned: "me", status: "ASSIGNED" });
-  const inProgress = useRequests({
-    limit: 1,
-    assigned: "me",
-    status: "IN_PROGRESS",
-  });
-  const overdue = useRequests({ limit: 1, assigned: "me", overdue: true });
-  const resolved = useRequests({
-    limit: 1,
-    assigned: "me",
-    status: "RESOLVED",
-  });
+  // One performance request (shared with the Performance page) replaces four count queries.
+  const performance = useStaffPerformance();
   const needsAction = useRequests({
     limit: 5,
     assigned: "me",
@@ -38,8 +27,9 @@ export function StaffOverview() {
     sortOrder: "asc",
   });
 
-  const count = (q: typeof toStart) =>
-    q.isLoading ? "…" : (q.data?.meta?.total ?? 0);
+  const byStatus = performance.data?.data.byStatus ?? {};
+  const count = (value: number | undefined) =>
+    performance.isLoading ? "…" : performance.isError ? "—" : (value ?? 0);
 
   const name = getDisplayName(profile);
   const department = profile?.staffProfile?.department?.name;
@@ -56,24 +46,28 @@ export function StaffOverview() {
       />
 
       <div className="mb-6 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-        <StatCard title="Waiting to start" value={count(toStart)} icon={Play} />
-        <StatCard
-          title="In progress"
-          value={count(inProgress)}
-          icon={Hourglass}
-        />
-        <StatCard
-          title="Overdue"
-          value={count(overdue)}
-          icon={AlarmClock}
-          tone="danger"
-        />
-        <StatCard
-          title="Resolved"
-          value={count(resolved)}
-          icon={CircleCheck}
-          tone="success"
-        />
+       <StatCard
+  title="Waiting to start"
+  value={count(byStatus.ASSIGNED)}
+  icon={Play}
+/>
+<StatCard
+  title="In progress"
+  value={count(byStatus.IN_PROGRESS)}
+  icon={Hourglass}
+/>
+<StatCard
+  title="Overdue"
+  value={count(performance.data?.data.overdue)}
+  icon={AlarmClock}
+  tone="danger"
+/>
+<StatCard
+  title="Resolved"
+  value={count(byStatus.RESOLVED)}
+  icon={CircleCheck}
+  tone="success"
+/>
       </div>
 
       <Card>

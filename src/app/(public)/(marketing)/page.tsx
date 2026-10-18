@@ -148,21 +148,29 @@ export default async function HomePage() {
                       href={`/services?department=${encodeURIComponent(department.id)}`}
                       className="group block h-full overflow-hidden rounded-xl border bg-card transition-all duration-300 hover:-translate-y-1 hover:border-primary/40 hover:shadow-lg"
                     >
-                      <div className="relative aspect-[16/9] overflow-hidden bg-muted">
-                        <Image
-                          src={department.imageUrl ?? ""}
-                          alt={department.name}
-                          fill
-                          sizes="(max-width: 639px) 100vw, (max-width: 1023px) 50vw, 25vw"
-                          className="object-cover transition-transform duration-500 group-hover:scale-105"
-                        />
+<div className="relative aspect-[16/9] overflow-hidden bg-muted">
+  {department.imageUrl ? (
+    <>
+      <Image
+        src={department.imageUrl}
+        alt={department.name}
+        fill
+        sizes="(max-width: 639px) 100vw, (max-width: 1023px) 50vw, 25vw"
+        className="object-cover transition-transform duration-500 group-hover:scale-105"
+      />
+      <div className="absolute inset-0 bg-gradient-to-t from-black/45 to-transparent" />
+    </>
+  ) : (
+    <div
+      aria-hidden="true"
+      className="absolute inset-0 bg-gradient-to-br from-primary/15 via-primary/5 to-muted"
+    />
+  )}
 
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/45 to-transparent" />
-
-                        <div className="absolute bottom-3 left-4 flex size-10 items-center justify-center rounded-lg border border-white/30 bg-white/90 text-primary shadow-sm backdrop-blur-sm">
-                          <Building2 className="size-5" aria-hidden="true" />
-                        </div>
-                      </div>
+  <div className="absolute bottom-3 left-4 flex size-10 items-center justify-center rounded-lg border border-white/30 bg-white/90 text-primary shadow-sm backdrop-blur-sm">
+    <Building2 className="size-5" aria-hidden="true" />
+  </div>
+</div>
 
                       <div className="p-5">
                         <h3 className="text-sm font-semibold">

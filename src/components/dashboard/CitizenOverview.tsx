@@ -18,7 +18,7 @@ import { StatusBadge } from "@/components/shared/StatusBadge";
 import { buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
-import { useProfile, useRequests } from "@/hook";
+import { useCitizenSummary, useProfile, useRequests } from "@/hook";
 import { formatDate } from "@/lib/format";
 import { getDisplayName } from "@/lib/user";
 import { cn } from "@/lib/utils";
@@ -31,17 +31,15 @@ const CitizenCharts = dynamic(
 export function CitizenOverview() {
   const { data: profile } = useProfile();
 
-  // limit=1 queries: we only need meta.total for each status
-  const total = useRequests({ limit: 1 });
-  const awaitingPayment = useRequests({ limit: 1, status: "PENDING_PAYMENT" });
-  const inProgress = useRequests({ limit: 1, status: "IN_PROGRESS" });
-  const resolved = useRequests({ limit: 1, status: "RESOLVED" });
+  // One summary request (shared with CitizenCharts) replaces five count queries.
+  const summary = useCitizenSummary();
   const recent = useRequests({ limit: 5 });
 
-  const count = (q: typeof total) =>
-    q.isLoading ? "…" : (q.data?.meta?.total ?? 0);
+  const byStatus = summary.data?.data.byStatus ?? {};
+  const count = (value: number | undefined) =>
+    summary.isLoading ? "…" : summary.isError ? "—" : (value ?? 0);
 
-  const pendingCount = awaitingPayment.data?.meta?.total ?? 0;
+  const pendingCount = byStatus.PENDING_PAYMENT ?? 0;
   const name = getDisplayName(profile);
 
   return (
@@ -71,28 +69,28 @@ export function CitizenOverview() {
       )}
 
       <div className="mb-6 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-        <StatCard
-          title="Total requests"
-          value={count(total)}
-          icon={ClipboardList}
-        />
-        <StatCard
-          title="Awaiting payment"
-          value={count(awaitingPayment)}
-          icon={CreditCard}
-          tone="warning"
-        />
-        <StatCard
-          title="In progress"
-          value={count(inProgress)}
-          icon={Hourglass}
-        />
-        <StatCard
-          title="Resolved"
-          value={count(resolved)}
-          icon={CircleCheck}
-          tone="success"
-        />
+       <StatCard
+  title="Total requests"
+  value={count(summary.data?.data.total)}
+  icon={ClipboardList}
+/>
+<StatCard
+  title="Awaiting payment"
+  value={count(byStatus.PENDING_PAYMENT)}
+  icon={CreditCard}
+  tone="warning"
+/>
+<StatCard
+  title="In progress"
+  value={count(byStatus.IN_PROGRESS)}
+  icon={Hourglass}
+/>
+<StatCard
+  title="Resolved"
+  value={count(byStatus.RESOLVED)}
+  icon={CircleCheck}
+  tone="success"
+/>
       </div>
       <CitizenCharts />
       <Card>

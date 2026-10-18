@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { ChatAssistant } from "@/components/ai/ChatAssistant";
+import { ChatAssistantLoader } from "@/components/ai/ChatAssistantLoader";
 import Footer from "@/components/layout/homepage/Footer";
 import Navbar from "@/components/layout/homepage/Navbar";
 
@@ -11,7 +11,7 @@ export default function MarketingLayout({ children }: { children: ReactNode }) {
         {children}
       </div>
       <Footer />
-      <ChatAssistant />
+      <ChatAssistantLoader />
     </div>
   );
 }

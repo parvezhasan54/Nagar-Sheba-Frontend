@@ -4,7 +4,7 @@ import { ShieldAlert } from "lucide-react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { type ReactNode, useEffect, useState } from "react";
-import { ChatAssistant } from "@/components/ai/ChatAssistant";
+
 import {
   Sheet,
   SheetContent,
@@ -17,6 +17,7 @@ import type { UserRole } from "@/types/auth.type";
 import { DashboardPageSkeleton } from "./DashboardPageSkeleton";
 import { SidebarContent } from "./Sidebar";
 import { Topbar } from "./Topbar";
+import { ChatAssistantLoader } from "@/components/ai/ChatAssistantLoader";
 
 type Props = { userRole: UserRole; children: ReactNode };
 
@@ -88,7 +89,7 @@ export function DashboardShell({ userRole, children }: Props) {
           {ready ? children : <DashboardPageSkeleton />}
         </main>
       </div>
-      {userRole === "CITIZEN" && <ChatAssistant />}
+      {userRole === "CITIZEN" && <ChatAssistantLoader />}
     </div>
   );
 }
