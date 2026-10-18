@@ -2,6 +2,7 @@ import { Bell, CreditCard, FilePlus, Wrench } from "lucide-react";
 import Image from "next/image";
 import { Stagger, StaggerItem } from "@/components/motion/Stagger";
 import { SectionHeading } from "@/components/shared/SectionHeading";
+import { DrawLine } from "../motion/DrawLine";
 
 const STEPS = [
   {
@@ -47,42 +48,43 @@ export function HowItWorks() {
           title="From complaint to resolution in four steps"
         />
 
-        <Stagger
-          as="ol"
-          className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4"
-        >
-          {STEPS.map((step, i) => (
-            <StaggerItem
-              as="li"
-              key={step.title}
-              className="group relative overflow-hidden rounded-xl border bg-background transition-all duration-300 hover:-translate-y-1 hover:border-primary/40 hover:shadow-lg"
-            >
-              <div className="relative aspect-[16/10] overflow-hidden bg-muted">
-                <Image
-                  src={step.image}
-                  alt={step.imageAlt}
-                  fill
-                  sizes="(max-width: 639px) 100vw, (max-width: 1023px) 50vw, 25vw"
-                  className="object-cover transition-transform duration-500 group-hover:scale-105"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/45 via-transparent to-transparent" />
-                <span className="absolute top-3 right-3 flex size-9 items-center justify-center rounded-full border border-white/30 bg-black/35 text-lg font-bold text-white backdrop-blur-sm">
-                  {i + 1}
-                </span>
-                <div className="absolute bottom-3 left-4 flex size-10 items-center justify-center rounded-xl border border-white/30 bg-white/90 text-primary shadow-sm backdrop-blur-sm">
-                  <step.icon className="size-5" aria-hidden="true" />
-                </div>
-              </div>
+        <div className="relative mt-10">
+          <DrawLine
+            origin="left"
+            delay={0.3}
+            className="absolute top-5 right-[12.5%] left-[12.5%] hidden h-px bg-gradient-to-r from-primary/20 via-primary to-primary/20 lg:block"
+          />
 
-              <div className="p-5">
-                <h3 className="text-base font-semibold">{step.title}</h3>
-                <p className="mt-1.5 text-sm leading-6 text-muted-foreground">
-                  {step.text}
-                </p>
-              </div>
-            </StaggerItem>
-          ))}
-        </Stagger>
+          <Stagger as="ol" className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+            {STEPS.map((step, i) => (
+              <StaggerItem as="li" key={step.title} className="group flex flex-col">
+                <div className="relative z-10 mx-auto mb-4 flex size-10 items-center justify-center rounded-full bg-primary text-sm font-bold text-primary-foreground shadow-sm ring-4 ring-muted">
+                  {i + 1}
+                </div>
+
+                <article className="flex-1 overflow-hidden rounded-xl border bg-background transition-all duration-300 hover:-translate-y-1 hover:border-primary/40 hover:shadow-lg">
+                  <div className="relative aspect-[16/10] overflow-hidden bg-muted">
+                    <Image
+                      src={step.image}
+                      alt={step.imageAlt}
+                      fill
+                      sizes="(max-width: 639px) 100vw, (max-width: 1023px) 50vw, 25vw"
+                      className="object-cover transition-transform duration-500 group-hover:scale-105"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/45 via-transparent to-transparent" />
+                    <div className="absolute bottom-3 left-4 flex size-10 items-center justify-center rounded-xl border border-white/30 bg-white/90 text-primary shadow-sm backdrop-blur-sm">
+                      <step.icon className="size-5" aria-hidden="true" />
+                    </div>
+                  </div>
+                  <div className="p-5">
+                    <h3 className="text-base font-semibold">{step.title}</h3>
+                    <p className="mt-1.5 text-sm leading-6 text-muted-foreground">{step.text}</p>
+                  </div>
+                </article>
+              </StaggerItem>
+            ))}
+          </Stagger>
+        </div>
       </div>
     </section>
   );

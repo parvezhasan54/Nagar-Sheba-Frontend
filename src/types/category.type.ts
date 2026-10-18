@@ -15,6 +15,8 @@ export type Category = {
   department?: { id: string; name: string };
   averageRating?: number | null;
   reviewCount?: number;
+  requestCount?: number;
+  
 };
 
 export type CreateCategoryPayload = {
@@ -47,4 +49,9 @@ export type UpdateCategoryPayload = Partial<
   Omit<CreateCategoryPayload, "departmentId">
 > & {
   isActive?: boolean;
+};
+
+export type RecommendedCategories = {
+  reason: string;
+  items: Category[];
 };

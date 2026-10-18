@@ -1,5 +1,6 @@
-import { ChevronDown } from "lucide-react";
+
 import Link from "next/link";
+import { AnimatedFaq } from "@/components/home/AnimatedFaq";
 import { Reveal } from "@/components/motion/Reveal";
 import { SectionHeading } from "@/components/shared/SectionHeading";
 import { HOME_FAQS } from "@/lib/faq";
@@ -23,19 +24,7 @@ export function FaqPreview() {
       </Reveal>
 
       <Reveal delay={0.1}>
-        <div className="divide-y rounded-xl border bg-card">
-          {HOME_FAQS.map((item) => (
-            <details key={item.q} className="group px-5 py-4">
-              <summary className="flex cursor-pointer list-none items-center justify-between gap-4 text-sm font-medium [&::-webkit-details-marker]:hidden">
-                {item.q}
-                <ChevronDown className="size-4 shrink-0 text-muted-foreground transition-transform group-open:rotate-180" />
-              </summary>
-              <p className="mt-3 text-sm leading-6 text-muted-foreground">
-                {item.a}
-              </p>
-            </details>
-          ))}
-        </div>
+        <AnimatedFaq items={HOME_FAQS} />
       </Reveal>
     </div>
   );

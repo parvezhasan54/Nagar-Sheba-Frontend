@@ -26,11 +26,17 @@ export function getDepartment(id: string) {
 }
 
 export function createDepartment(payload: CreateDepartmentPayload | FormData) {
-  return apiClient<ApiResponse<Department>>("/departments", { method: "POST", body: payload });
+  return apiClient<ApiResponse<Department>>("/departments", {
+    method: "POST",
+    body: payload,
+  });
 }
 
 export function updateDepartmentImage(id: string, formData: FormData) {
-  return apiClient<ApiResponse<Department>>(`/departments/${id}/image`, { method: "PATCH", body: formData });
+  return apiClient<ApiResponse<Department>>(`/departments/${id}/image`, {
+    method: "PATCH",
+    body: formData,
+  });
 }
 
 export function updateDepartment(id: string, payload: UpdateDepartmentPayload) {

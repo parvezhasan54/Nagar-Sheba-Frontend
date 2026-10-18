@@ -13,6 +13,7 @@ async function serverGet<T>(path: string, revalidate = 30): Promise<T | null> {
   try {
     const res = await fetch(`${BACKEND_URL}${path}`, {
       next: { revalidate },
+      signal: AbortSignal.timeout(8000), // don't hang 60s on a cold backend
     });
     if (!res.ok) return null;
     const json = (await res.json()) as ApiResponse<T>;
@@ -48,4 +49,10 @@ export async function getResolvedIssues() {
 
 export async function getTestimonials() {
   return (await serverGet<Testimonial[]>("/public/testimonials")) ?? [];
+}
+
+export async function getTrendingCategories() {
+  return (
+    (await serverGet<Category[]>("/categories/trending?limit=4", 60)) ?? []
+  );
 }

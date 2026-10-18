@@ -46,28 +46,28 @@ export function StaffOverview() {
       />
 
       <div className="mb-6 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-       <StatCard
-  title="Waiting to start"
-  value={count(byStatus.ASSIGNED)}
-  icon={Play}
-/>
-<StatCard
-  title="In progress"
-  value={count(byStatus.IN_PROGRESS)}
-  icon={Hourglass}
-/>
-<StatCard
-  title="Overdue"
-  value={count(performance.data?.data.overdue)}
-  icon={AlarmClock}
-  tone="danger"
-/>
-<StatCard
-  title="Resolved"
-  value={count(byStatus.RESOLVED)}
-  icon={CircleCheck}
-  tone="success"
-/>
+        <StatCard
+          title="Waiting to start"
+          value={count(byStatus.ASSIGNED)}
+          icon={Play}
+        />
+        <StatCard
+          title="In progress"
+          value={count(byStatus.IN_PROGRESS)}
+          icon={Hourglass}
+        />
+        <StatCard
+          title="Overdue"
+          value={count(performance.data?.data.overdue)}
+          icon={AlarmClock}
+          tone="danger"
+        />
+        <StatCard
+          title="Resolved"
+          value={count(byStatus.RESOLVED)}
+          icon={CircleCheck}
+          tone="success"
+        />
       </div>
 
       <Card>

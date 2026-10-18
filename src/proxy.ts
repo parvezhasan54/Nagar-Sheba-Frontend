@@ -18,59 +18,121 @@ const AUTH_PAGES = [
   "/reset-password",
 ];
 
-type Session = { role: UserRole | null; setCookies: string[] };
+type Session = {
+  role: UserRole | null;
+  setCookies: string[];
+};
+
 const NO_SESSION: Session = { role: null, setCookies: [] };
+
+function roleFromToken(token?: string): UserRole | null {
+  if (!token) return null;
+
+  try {
+    const part = token.split(".")[1];
+    if (!part) return null;
+
+    const base64 = part.replace(/-/g, "+").replace(/_/g, "/");
+    const json = JSON.parse(atob(base64)) as {
+      exp?: number;
+      role?: UserRole;
+    };
+
+    if (
+      typeof json.exp !== "number" ||
+      json.exp * 1000 <= Date.now() ||
+      !["ADMIN", "STAFF", "CITIZEN"].includes(json.role ?? "")
+    ) {
+      return null;
+    }
+
+    return json.role ?? null;
+  } catch {
+    return null;
+  }
+}
 
 async function fetchRole(cookie: string): Promise<UserRole | null> {
   const res = await fetch(`${BACKEND_URL}/auth/me`, {
     headers: { cookie },
     cache: "no-store",
   });
+
   if (!res.ok) return null;
-  const json = (await res.json()) as { data?: { role?: UserRole } };
-  return json.data?.role ?? null;
+
+  const json = (await res.json()) as {
+    data?: { role?: UserRole };
+  };
+
+  const role = json.data?.role;
+
+  return role && ["ADMIN", "STAFF", "CITIZEN"].includes(role) ? role : null;
 }
 
-/** Overlay freshly issued Set-Cookie values onto the request's Cookie header. */
+/** Overlay freshly issued Set-Cookie values onto the request Cookie header. */
 function mergeCookies(original: string, setCookies: string[]) {
   const jar = new Map<string, string>();
+
   for (const part of original.split(/;\s*/).filter(Boolean)) {
     const i = part.indexOf("=");
-    jar.set(part.slice(0, i), part.slice(i + 1));
+    if (i > 0) jar.set(part.slice(0, i), part.slice(i + 1));
   }
+
   for (const sc of setCookies) {
     const pair = sc.split(";")[0];
     const i = pair.indexOf("=");
-    jar.set(pair.slice(0, i).trim(), pair.slice(i + 1));
+
+    if (i > 0) {
+      jar.set(pair.slice(0, i).trim(), pair.slice(i + 1));
+    }
   }
-  return [...jar].map(([k, v]) => `${k}=${v}`).join("; ");
+
+  return [...jar].map(([key, value]) => `${key}=${value}`).join("; ");
 }
 
-async function getSession(request: NextRequest): Promise<Session> {
+async function getSession(
+  request: NextRequest,
+  trustToken: boolean,
+): Promise<Session> {
   const cookie = request.headers.get("cookie") ?? "";
-  const hasAccess = cookie.includes("accessToken=");
-  const hasRefresh = cookie.includes("refreshToken=");
+  const accessToken = request.cookies.get("accessToken")?.value;
+  const hasRefresh = Boolean(request.cookies.get("refreshToken")?.value);
+
+  // Protected pages: decode the JWT locally to avoid a backend round trip.
+  if (trustToken) {
+    const role = roleFromToken(accessToken);
+    if (role) return { role, setCookies: [] };
+  }
+
+  const hasAccess = Boolean(accessToken);
+
   if (!hasAccess && !hasRefresh) return NO_SESSION;
 
   try {
-    // The backend re-verifies the token AND checks blocked/deleted accounts.
+    // Auth pages retain backend verification, including account status checks.
     if (hasAccess) {
       const role = await fetchRole(cookie);
       if (role) return { role, setCookies: [] };
     }
+
     if (!hasRefresh) return NO_SESSION;
 
-    // Access token missing/expired: try the refresh token once.
+    // Attempt refresh when the access token is absent, expired, or rejected.
     const refresh = await fetch(`${BACKEND_URL}/auth/refresh-token`, {
       method: "POST",
-      headers: { cookie, "content-type": "application/json" },
+      headers: {
+        cookie,
+        "content-type": "application/json",
+      },
       body: "{}",
       cache: "no-store",
     });
+
     if (!refresh.ok) return NO_SESSION;
 
     const setCookies = refresh.headers.getSetCookie();
     const role = await fetchRole(mergeCookies(cookie, setCookies));
+
     return role ? { role, setCookies } : NO_SESSION;
   } catch {
     return NO_SESSION;
@@ -79,15 +141,18 @@ async function getSession(request: NextRequest): Promise<Session> {
 
 export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
-  const { role, setCookies } = await getSession(request);
+  const isAuthPage = AUTH_PAGES.some((page) => pathname.startsWith(page));
 
-  // Forward rotated cookies to the browser on whatever response we return.
-  const finish = (res: NextResponse) => {
-    for (const c of setCookies) res.headers.append("set-cookie", c);
-    return res;
+  const { role, setCookies } = await getSession(request, !isAuthPage);
+
+  // Preserve rotated cookies on responses returned by this proxy.
+  const finish = (response: NextResponse) => {
+    for (const cookie of setCookies) {
+      response.headers.append("set-cookie", cookie);
+    }
+    return response;
   };
 
-  const isAuthPage = AUTH_PAGES.some((p) => pathname.startsWith(p));
   if (isAuthPage) {
     return finish(
       role
@@ -96,13 +161,16 @@ export async function proxy(request: NextRequest) {
     );
   }
 
-  const rule = PROTECTED.find((r) => pathname.startsWith(r.prefix));
-  if (!rule) return NextResponse.next();
+  const rule = PROTECTED.find(
+    ({ prefix }) => pathname === prefix || pathname.startsWith(`${prefix}/`),
+  );
+
+  if (!rule) return finish(NextResponse.next());
 
   if (!role) {
     const url = new URL("/login", request.url);
     url.searchParams.set("redirect", pathname + request.nextUrl.search);
-    return NextResponse.redirect(url);
+    return finish(NextResponse.redirect(url));
   }
 
   if (role !== rule.role) {

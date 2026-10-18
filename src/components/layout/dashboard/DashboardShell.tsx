@@ -4,7 +4,7 @@ import { ShieldAlert } from "lucide-react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { type ReactNode, useEffect, useState } from "react";
-
+import { ChatAssistantLoader } from "@/components/ai/ChatAssistantLoader";
 import {
   Sheet,
   SheetContent,
@@ -17,7 +17,6 @@ import type { UserRole } from "@/types/auth.type";
 import { DashboardPageSkeleton } from "./DashboardPageSkeleton";
 import { SidebarContent } from "./Sidebar";
 import { Topbar } from "./Topbar";
-import { ChatAssistantLoader } from "@/components/ai/ChatAssistantLoader";
 
 type Props = { userRole: UserRole; children: ReactNode };
 

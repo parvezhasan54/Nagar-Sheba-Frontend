@@ -3,6 +3,7 @@ import Image from "next/image";
 import { Reveal } from "@/components/motion/Reveal";
 import { Stagger, StaggerItem } from "@/components/motion/Stagger";
 import { SectionHeading } from "@/components/shared/SectionHeading";
+import { Tilt } from "../motion/Tilt";
 
 const FEATURES = [
   {
@@ -68,16 +69,17 @@ export function Features() {
 
       <Stagger className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
         {FEATURES.map((feature) => (
-          <StaggerItem key={feature.title} className="h-full">
-            <article className="group h-full overflow-hidden rounded-xl border bg-card transition-all duration-300 hover:-translate-y-1 hover:border-primary/40 hover:shadow-lg">
-              <div className="relative aspect-[16/9] overflow-hidden bg-muted">
+          <StaggerItem key={feature.title} className="h-full [perspective:1000px]">
+  <Tilt>
+    <article className="group h-full overflow-hidden rounded-xl border bg-card transition-shadow duration-300 hover:border-primary/40 hover:shadow-lg">
+    <div className="relative aspect-[16/9] overflow-hidden bg-muted">
                 <Image
                   src={feature.image}
                   alt={feature.imageAlt}
                   fill
                   sizes="(max-width: 639px) 100vw, (max-width: 1023px) 50vw, 33vw"
                   className="object-cover transition-transform duration-500 group-hover:scale-105"
-                />
+                  />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/45 via-transparent to-transparent" />
                 <div className="absolute bottom-3 left-4 flex size-11 items-center justify-center rounded-xl border border-white/30 bg-white/90 text-primary shadow-sm backdrop-blur-sm">
                   <feature.icon className="size-5" aria-hidden="true" />
@@ -91,6 +93,7 @@ export function Features() {
                 </p>
               </div>
             </article>
+                  </Tilt>
           </StaggerItem>
         ))}
       </Stagger>

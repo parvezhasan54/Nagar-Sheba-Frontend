@@ -22,6 +22,7 @@ import { useCitizenSummary, useProfile, useRequests } from "@/hook";
 import { formatDate } from "@/lib/format";
 import { getDisplayName } from "@/lib/user";
 import { cn } from "@/lib/utils";
+import { RecommendedServices } from "./RecommendedServices";
 
 const CitizenCharts = dynamic(
   () => import("./CitizenCharts").then((m) => m.CitizenCharts),
@@ -69,30 +70,31 @@ export function CitizenOverview() {
       )}
 
       <div className="mb-6 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-       <StatCard
-  title="Total requests"
-  value={count(summary.data?.data.total)}
-  icon={ClipboardList}
-/>
-<StatCard
-  title="Awaiting payment"
-  value={count(byStatus.PENDING_PAYMENT)}
-  icon={CreditCard}
-  tone="warning"
-/>
-<StatCard
-  title="In progress"
-  value={count(byStatus.IN_PROGRESS)}
-  icon={Hourglass}
-/>
-<StatCard
-  title="Resolved"
-  value={count(byStatus.RESOLVED)}
-  icon={CircleCheck}
-  tone="success"
-/>
+        <StatCard
+          title="Total requests"
+          value={count(summary.data?.data.total)}
+          icon={ClipboardList}
+        />
+        <StatCard
+          title="Awaiting payment"
+          value={count(byStatus.PENDING_PAYMENT)}
+          icon={CreditCard}
+          tone="warning"
+        />
+        <StatCard
+          title="In progress"
+          value={count(byStatus.IN_PROGRESS)}
+          icon={Hourglass}
+        />
+        <StatCard
+          title="Resolved"
+          value={count(byStatus.RESOLVED)}
+          icon={CircleCheck}
+          tone="success"
+        />
       </div>
       <CitizenCharts />
+      <RecommendedServices />
       <Card>
         <CardHeader className="flex-row items-center justify-between">
           <CardTitle>Recent requests</CardTitle>

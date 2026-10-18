@@ -20,6 +20,7 @@ const inter = Inter({
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
+  preload: false, // only used for tracking refs
 });
 
 export const metadata: Metadata = {

@@ -11,3 +11,15 @@ export type AiInsights = {
   anomalies: { severity: "high" | "medium"; title: string; detail: string }[];
   summary: string | null;
 };
+
+export type SearchSuggestion = {
+  id: string;
+  name: string;
+  department: string;
+  fee: string;
+};
+
+export type SearchSuggestResult = {
+  suggestions: SearchSuggestion[];
+  source: "ai" | "keyword";
+};

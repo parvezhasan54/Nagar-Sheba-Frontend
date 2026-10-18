@@ -1,7 +1,6 @@
-
-import Image from "next/image";
 import { Eye, HeartHandshake, ShieldCheck, Users, Wrench } from "lucide-react";
 import type { Metadata } from "next";
+import Image from "next/image";
 import { Reveal } from "@/components/motion/Reveal";
 import { Stagger, StaggerItem } from "@/components/motion/Stagger";
 import { SectionHeading } from "@/components/shared/SectionHeading";
@@ -23,7 +22,8 @@ const VALUES = [
     text: "Every status change is recorded, so you always know where your request stands.",
     image:
       "https://images.unsplash.com/photo-1554224155-6726b3ff858f?auto=format&fit=crop&w=900&q=80",
-    imageAlt: "Financial records and documents representing transparent reporting",
+    imageAlt:
+      "Financial records and documents representing transparent reporting",
   },
   {
     icon: ShieldCheck,
@@ -31,7 +31,8 @@ const VALUES = [
     text: "Each category has a service-level deadline, and overdue requests are flagged automatically.",
     image:
       "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=900&q=80",
-    imageAlt: "Professional reviewing project records and tracking responsibilities",
+    imageAlt:
+      "Professional reviewing project records and tracking responsibilities",
   },
   {
     icon: HeartHandshake,
@@ -66,7 +67,8 @@ const ROLES = [
     text: "Manage departments and categories, assign work, oversee payments and review the audit trail.",
     image:
       "https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=900&q=80",
-    imageAlt: "Team collaborating to coordinate administrative responsibilities",
+    imageAlt:
+      "Team collaborating to coordinate administrative responsibilities",
   },
 ];
 function ImageCard({

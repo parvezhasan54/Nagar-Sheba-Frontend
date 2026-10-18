@@ -1,3 +1,4 @@
+import type { RecommendedCategories } from "@/types/category.type";
 import apiClient from "@/lib/apiClient";
 import type { ApiResponse } from "@/types/api.type";
 import type {
@@ -50,4 +51,12 @@ export function deleteCategory(id: string) {
   return apiClient<ApiResponse<Category>>(`/categories/${id}`, {
     method: "DELETE",
   });
+}
+
+
+export function getRecommendedCategories(limit = 4) {
+  return apiClient<ApiResponse<RecommendedCategories>>(
+    "/categories/recommended",
+    { method: "GET", query: { limit } },
+  );
 }

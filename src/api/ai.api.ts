@@ -1,3 +1,4 @@
+import type { SearchSuggestResult } from "@/types/ai.type";
 import apiClient from "@/lib/apiClient";
 import type {
   AiInsights,
@@ -23,5 +24,13 @@ export function aiSuggestCategory(text: string) {
 export function getAiInsights() {
   return apiClient<ApiResponse<AiInsights>>("/ai/admin-insights", {
     method: "GET",
+  });
+}
+
+
+export function aiSearchSuggest(q: string) {
+  return apiClient<ApiResponse<SearchSuggestResult>>("/ai/search-suggest", {
+    method: "GET",
+    query: { q },
   });
 }

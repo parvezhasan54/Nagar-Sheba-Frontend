@@ -1,3 +1,4 @@
+import { getRecommendedCategories } from "@/api";
 import {
   keepPreviousData,
   useMutation,
@@ -73,5 +74,14 @@ export function useDeleteCategory() {
         queryKey: ["categories"],
       });
     },
+  });
+}
+
+
+export function useRecommendedCategories() {
+  return useQuery({
+    queryKey: ["recommended-categories"],
+    queryFn: () => getRecommendedCategories(4),
+    staleTime: 5 * 60 * 1000,
   });
 }
