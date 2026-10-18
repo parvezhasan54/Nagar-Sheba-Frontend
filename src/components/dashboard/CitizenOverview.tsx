@@ -62,7 +62,7 @@ export function CitizenOverview() {
       {pendingCount > 0 && (
         <Link
           href="/citizen/requests?status=PENDING_PAYMENT"
-          className="mb-6 flex items-center gap-2 rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-900 hover:bg-amber-100 dark:border-amber-500/30 dark:bg-amber-500/10 dark:text-amber-200"
+          className="mb-6 flex items-center gap-2 rounded-lg border border-primary/30 bg-primary/5 px-4 py-3 text-sm text-foreground hover:bg-primary/10"
         >
           <CreditCard className="size-4 shrink-0" />
           {pendingCount} request{pendingCount === 1 ? " is" : "s are"} waiting

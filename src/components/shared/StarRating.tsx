@@ -13,8 +13,8 @@ export function StarRating({ value, onChange }: Props) {
         const starClass = cn(
           "size-5",
           n <= value
-            ? "fill-amber-400 text-amber-400"
-            : "text-muted-foreground/40",
+  ? "fill-primary text-primary"
+  : "text-muted-foreground/40",
         );
 
         if (onChange) {

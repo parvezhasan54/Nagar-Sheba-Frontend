@@ -16,6 +16,7 @@ import type { UserRole } from "@/types/auth.type";
 import { DashboardPageSkeleton } from "./DashboardPageSkeleton";
 import { SidebarContent } from "./Sidebar";
 import { Topbar } from "./Topbar";
+import { ChatAssistant } from "@/components/ai/ChatAssistant";
 
 type Props = { userRole: UserRole; children: ReactNode };
 
@@ -68,8 +69,7 @@ export function DashboardShell({ userRole, children }: Props) {
         {profile?.mustChangePassword && (
           <div
             role="alert"
-            className="flex items-center gap-2 border-b border-amber-200 bg-amber-50 px-4 py-2.5 text-xs text-amber-900 sm:px-6 dark:border-amber-500/30 dark:bg-amber-500/10 dark:text-amber-200"
-          >
+className="flex items-center gap-2 border-b border-primary/30 bg-primary/5 px-4 py-2.5 text-xs text-foreground sm:px-6"          >
             <ShieldAlert className="size-4 shrink-0" />
             <span>
               You are using a temporary password.{" "}
@@ -87,6 +87,7 @@ export function DashboardShell({ userRole, children }: Props) {
           {ready ? children : <DashboardPageSkeleton />}
         </main>
       </div>
+      {userRole === "CITIZEN" && <ChatAssistant />}
     </div>
   );
 }

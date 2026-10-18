@@ -33,6 +33,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { useDashboardStats, useRequests } from "@/hook";
 import { formatCurrency, formatDate } from "@/lib/format";
 import { REQUEST_STATUSES, STATUS_META } from "@/lib/status";
+import { AiInsights } from "./AiInsights";
 
 const tooltipStyle = {
   background: "var(--popover)",
@@ -165,7 +166,7 @@ export function AdminOverview() {
           hint="Resolved or closed"
         />
       </div>
-
+<AiInsights />
       <div className="mb-6 grid gap-6 lg:grid-cols-[2fr_1fr]">
         <Card>
           <CardHeader>

@@ -31,6 +31,7 @@ import type { Category } from "@/types/category.type";
 import { CreateRequestZodSchema } from "@/validation";
 import { LocationPreview } from "./LocationPreview";
 import { PhotoPicker } from "./PhotoPicker";
+import { AiServicePicker } from "../ai/AiServicePicker";
 
 type FormValues = {
   categoryId: string;
@@ -267,8 +268,10 @@ export default function NewRequestWizard({
               const isInvalid =
                 field.state.meta.isTouched && !field.state.meta.isValid;
               return (
-                <div className="space-y-5">
-                  {groupedCategories.map(([department, items]) => (
+  <div className="space-y-5">
+    <AiServicePicker onPick={(id) => field.handleChange(id)} />
+
+    {groupedCategories.map(([department, items]) => (
                     <div key={department}>
                       <h3 className="mb-2 text-xs font-semibold tracking-widest text-muted-foreground uppercase">
                         {department}
@@ -601,7 +604,7 @@ export default function NewRequestWizard({
                   )}
 
                   {paid && (
-                    <p className="rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-xs text-amber-900 dark:border-amber-500/30 dark:bg-amber-500/10 dark:text-amber-200">
+                    <p className="rounded-lg border border-primary/30 bg-primary/5 px-4 py-3 text-xs text-foreground">
                       This is a paid service. After you submit, you will be
                       taken to SSLCommerz to pay{" "}
                       {formatCurrency(category?.feeAmount)}. Work starts once

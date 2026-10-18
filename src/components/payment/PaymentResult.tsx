@@ -45,7 +45,7 @@ const COPY: Record<
   },
   cancel: {
     icon: Ban,
-    tone: "bg-amber-100 text-amber-700 dark:bg-amber-500/15 dark:text-amber-300",
+    tone: "bg-muted text-muted-foreground",
     title: "Payment cancelled",
     text: "You cancelled the payment. Your request stays in Pending Payment until you pay or cancel it.",
   },

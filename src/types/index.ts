@@ -10,3 +10,4 @@ export * from "./public.type";
 export * from "./request.type";
 export * from "./staff.type";
 export * from "./user.type";
+export * from "./ai.type";
