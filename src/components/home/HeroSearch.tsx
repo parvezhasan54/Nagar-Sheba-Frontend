@@ -22,7 +22,7 @@ export function HeroSearch() {
   const showList = open && items.length > 0;
 
   return (
-    <search className="mx-auto mt-6 w-full max-w-xl">
+    <search className="mx-auto mt-6 w-full max-w-xl lg:mx-0">
       <form
         className="relative flex gap-2"
         onSubmit={(e) => {

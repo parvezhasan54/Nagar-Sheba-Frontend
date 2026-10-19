@@ -3,6 +3,8 @@ import Image from "next/image";
 import { Stagger, StaggerItem } from "@/components/motion/Stagger";
 import { SectionHeading } from "@/components/shared/SectionHeading";
 import { DrawLine } from "../motion/DrawLine";
+import { CARD_BODY, CARD_MEDIA, CARD_SHELL } from "../shared/card-styles";
+import { cn } from "@/lib/utils";
 
 const STEPS = [
   {
@@ -62,8 +64,8 @@ export function HowItWorks() {
                   {i + 1}
                 </div>
 
-                <article className="flex-1 overflow-hidden rounded-xl border bg-background transition-all duration-300 hover:-translate-y-1 hover:border-primary/40 hover:shadow-lg">
-                  <div className="relative aspect-[16/10] overflow-hidden bg-muted">
+                <article className={CARD_SHELL}>
+                  <div className={cn(CARD_MEDIA, "flex items-center justify-center bg-gradient-to-br from-primary/15 via-primary/5 to-muted")}>
                     <Image
                       src={step.image}
                       alt={step.imageAlt}
@@ -73,13 +75,13 @@ export function HowItWorks() {
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/45 via-transparent to-transparent" />
                     <div className="absolute bottom-3 left-4 flex size-10 items-center justify-center rounded-xl border border-white/30 bg-white/90 text-primary shadow-sm backdrop-blur-sm">
-                      <step.icon className="size-5" aria-hidden="true" />
+                      <step.icon className="size-12 text-primary/70" aria-hidden="true" />
                     </div>
                   </div>
-                  <div className="p-5">
-                    <h3 className="text-base font-semibold">{step.title}</h3>
-                    <p className="mt-1.5 text-sm leading-6 text-muted-foreground">{step.text}</p>
-                  </div>
+ <div className={CARD_BODY}>
+    <h3 className="text-base font-semibold">{step.title}</h3>
+    <p className="mt-1.5 text-sm leading-6 text-muted-foreground">{step.text}</p>
+  </div>
                 </article>
               </StaggerItem>
             ))}
