@@ -25,7 +25,6 @@ import {
 } from "recharts";
 import { EmptyState } from "@/components/shared/EmptyState";
 import { ErrorState } from "@/components/shared/ErrorState";
-import { PageHeader } from "@/components/shared/PageHeader";
 import { StatCard } from "@/components/shared/StatCard";
 import { StatusBadge } from "@/components/shared/StatusBadge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -34,6 +33,8 @@ import { useDashboardStats, useRequests } from "@/hook";
 import { formatCurrency, formatDate } from "@/lib/format";
 import { REQUEST_STATUSES, STATUS_META } from "@/lib/status";
 import { AiInsights } from "./AiInsights";
+import { WelcomeBanner } from "./WelcomeBanner";
+import { Reveal } from "../motion/Reveal";
 
 const tooltipStyle = {
   background: "var(--popover)",
@@ -104,10 +105,10 @@ export function AdminOverview() {
   }));
   return (
     <div>
-      <PageHeader
-        title="Platform overview"
-        description="Requests, people and revenue across every department."
-      />
+      <WelcomeBanner
+  title="Platform overview"
+  description="Requests, people and revenue across every department."
+/>
 
       <div className="mb-6 grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
         <StatCard
@@ -168,9 +169,10 @@ export function AdminOverview() {
       </div>
       <AiInsights />
       <div className="mb-6 grid gap-6 lg:grid-cols-[2fr_1fr]">
-        <Card>
-          <CardHeader>
-            <CardTitle>Requests by status</CardTitle>
+        <Reveal>
+  <Card className="h-full">
+    <CardHeader>
+      <CardTitle>Requests by status</CardTitle>
           </CardHeader>
 
           <CardContent>
@@ -229,11 +231,13 @@ export function AdminOverview() {
               </tbody>
             </table>
           </CardContent>
-        </Card>
+          </Card>
+</Reveal>
 
-        <Card>
-          <CardHeader>
-            <CardTitle>Users by role</CardTitle>
+        <Reveal>
+  <Card className="h-full">
+    <CardHeader>
+      <CardTitle>Users by role</CardTitle>
           </CardHeader>
 
           <CardContent>
@@ -280,11 +284,13 @@ export function AdminOverview() {
               </tbody>
             </table>
           </CardContent>
-        </Card>
+  </Card>
+</Reveal>
       </div>
 
-      {deptData.length > 0 && (
-        <Card className="mb-6">
+{deptData.length > 0 && (
+  <Reveal>
+    <Card className="mb-6 h-full">
           <CardHeader>
             <CardTitle>Requests by department</CardTitle>
           </CardHeader>
@@ -345,9 +351,9 @@ export function AdminOverview() {
               </tbody>
             </table>
           </CardContent>
-        </Card>
-      )}
-
+    </Card>
+  </Reveal>
+)}
       <Card>
         <CardHeader className="flex-row items-center justify-between">
           <CardTitle>Latest requests</CardTitle>

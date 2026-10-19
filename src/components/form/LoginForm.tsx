@@ -1,17 +1,7 @@
 "use client";
 
 import { useForm } from "@tanstack/react-form";
-import {
-  ArrowRight,
-  Badge,
-  Eye,
-  EyeOff,
-  KeyRound,
-  LockKeyhole,
-  Mail,
-  UserPlus,
-  Verified,
-} from "lucide-react";
+import { ArrowRight, Eye, EyeOff, LockKeyhole, Mail } from "lucide-react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
@@ -38,12 +28,9 @@ export default function LoginForm() {
   const submitLogin = (credentials: LoginPayload) => {
     login(credentials, {
       onSuccess: (user) => {
-        toast.success("Welcome Back!", {
+        toast.success("Welcome back!", {
           description: "You have successfully signed in to Nagar Sheba.",
         });
-
-        // Only allow same-site relative redirects (prevents open redirect)
-
         router.replace(
           getSafeRedirect(searchParams.get("redirect")) ??
             getRoleHome(user.role),
@@ -62,76 +49,47 @@ export default function LoginForm() {
   };
 
   const form = useForm({
-    defaultValues: {
-      email: "",
-      password: "",
-    },
-    validators: {
-      onBlur: LoginZodSchema,
-      onSubmit: LoginZodSchema,
-    },
+    defaultValues: { email: "", password: "" },
+    validators: { onBlur: LoginZodSchema, onSubmit: LoginZodSchema },
     onSubmit: ({ value }) => {
       submitLogin({ email: value.email, password: value.password });
     },
   });
+
   return (
-    <div className="w-full rounded-xl bg-card/90 p-6 shadow-2xl backdrop-blur-2xl sm:p-8">
-      <div className="mb-6">
-        <div className="flex items-center gap-3">
-          <div className="flex size-12 items-center justify-center rounded-lg bg-muted p-2 shadow-inner">
-            <div className="flex size-full items-center justify-center rounded-md bg-primary/10">
-              <Badge className="size-6 text-primary" />
-            </div>
-          </div>
-
-          <div>
-            <div className="flex items-center gap-2">
-              <h1 className="text-xl font-semibold tracking-tight">Sign in</h1>
-              <Verified
-                className="size-4 text-primary"
-                aria-label="Secured authentication"
-              />
-            </div>
-
-            <p className="text-xs text-muted-foreground">
-              Citizens, staff and administrators use the same form.
-            </p>
-          </div>
-        </div>
+    <div className="w-full rounded-2xl border bg-card p-6 shadow-sm sm:p-8">
+      <div className="mb-7">
+        <h1 className="font-heading text-2xl font-bold tracking-tight">
+          Welcome back
+        </h1>
+        <p className="mt-1 text-sm text-muted-foreground">
+          Sign in to track your requests. Staff and administrators use the same
+          form.
+        </p>
       </div>
 
       <form
+        noValidate
+        className="flex flex-col gap-5"
         onSubmit={(event) => {
           event.preventDefault();
           form.handleSubmit();
         }}
-        className="flex flex-col gap-5"
-        noValidate
       >
         <form.Field name="email">
           {(field) => {
             const isInvalid =
               field.state.meta.isTouched && !field.state.meta.isValid;
-
             return (
               <Field data-invalid={isInvalid} className="space-y-1.5">
-                <FieldLabel
-                  htmlFor={field.name}
-                  className="flex items-center justify-between text-sm font-medium"
-                >
-                  <span className="flex items-center gap-1.5">
-                    Email Address
-                    <span className="text-primary">*</span>
-                  </span>
-
-                  <span className="text-[10px] font-normal text-muted-foreground">
-                    Registered email
-                  </span>
+                <FieldLabel htmlFor={field.name} className="text-sm font-medium">
+                  Email address
                 </FieldLabel>
-
                 <div className="relative">
-                  <Mail className="absolute top-1/2 left-3 size-4 -translate-y-1/2 text-muted-foreground" />
-
+                  <Mail
+                    className="absolute top-1/2 left-3 size-4 -translate-y-1/2 text-muted-foreground"
+                    aria-hidden="true"
+                  />
                   <Input
                     id={field.name}
                     name={field.name}
@@ -139,12 +97,11 @@ export default function LoginForm() {
                     autoComplete="email"
                     value={field.state.value}
                     onBlur={field.handleBlur}
-                    onChange={(event) => field.handleChange(event.target.value)}
+                    onChange={(e) => field.handleChange(e.target.value)}
                     placeholder="you@example.com"
                     className="h-11 pl-10"
                   />
                 </div>
-
                 {isInvalid && <FieldError errors={field.state.meta.errors} />}
               </Field>
             );
@@ -155,48 +112,40 @@ export default function LoginForm() {
           {(field) => {
             const isInvalid =
               field.state.meta.isTouched && !field.state.meta.isValid;
-
             return (
               <Field data-invalid={isInvalid} className="space-y-1.5">
                 <div className="flex items-center justify-between">
-                  <FieldLabel
-                    htmlFor={field.name}
-                    className="flex items-center gap-1.5 text-sm font-medium"
-                  >
-                    Secured Password
-                    <span className="text-primary">*</span>
+                  <FieldLabel htmlFor={field.name} className="text-sm font-medium">
+                    Password
                   </FieldLabel>
-
                   <Link
                     href="/forgot-password"
-                    className="text-xs text-primary underline-offset-4 transition-colors hover:underline"
+                    className="text-xs font-medium text-primary underline-offset-4 hover:underline"
                   >
                     Forgot password?
                   </Link>
                 </div>
-
                 <div className="relative">
-                  <LockKeyhole className="absolute top-1/2 left-3 size-4 -translate-y-1/2 text-muted-foreground" />
-
+                  <LockKeyhole
+                    className="absolute top-1/2 left-3 size-4 -translate-y-1/2 text-muted-foreground"
+                    aria-hidden="true"
+                  />
                   <Input
                     id={field.name}
                     name={field.name}
-                    value={field.state.value}
-                    onBlur={field.handleBlur}
-                    onChange={(event) => field.handleChange(event.target.value)}
-                    placeholder="••••••••••••"
                     type={showPassword ? "text" : "password"}
                     autoComplete="current-password"
+                    value={field.state.value}
+                    onBlur={field.handleBlur}
+                    onChange={(e) => field.handleChange(e.target.value)}
+                    placeholder="Enter your password"
                     className="h-11 pr-11 pl-10"
                   />
-
                   <button
                     type="button"
-                    onClick={() => setShowPassword((prev) => !prev)}
+                    onClick={() => setShowPassword((p) => !p)}
+                    aria-label={showPassword ? "Hide password" : "Show password"}
                     className="absolute top-1/2 right-2.5 flex size-7 -translate-y-1/2 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
-                    aria-label={
-                      showPassword ? "Hide password" : "Show password"
-                    }
                   >
                     {showPassword ? (
                       <EyeOff className="size-4" />
@@ -205,23 +154,16 @@ export default function LoginForm() {
                     )}
                   </button>
                 </div>
-
                 {isInvalid && <FieldError errors={field.state.meta.errors} />}
               </Field>
             );
           }}
         </form.Field>
 
-        <div className="flex items-center justify-end">
-          <span className="flex items-center gap-1 text-xs text-muted-foreground">
-            <KeyRound className="size-3.5" />
-            Secure Login
-          </span>
-        </div>
         <Button
           disabled={loginPending}
           type="submit"
-          className="group mt-1 h-11 w-full gap-2 text-sm font-semibold shadow-lg shadow-primary/20"
+          className="group h-11 w-full gap-2 text-sm font-semibold shadow-lg shadow-primary/20"
         >
           {loginPending ? (
             <>
@@ -230,7 +172,7 @@ export default function LoginForm() {
             </>
           ) : (
             <>
-              Sign In to Nagar Sheba
+              Sign in
               <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
             </>
           )}
@@ -242,31 +184,13 @@ export default function LoginForm() {
           New to Nagar Sheba?{" "}
           <Link
             href="/register"
-            className="inline-flex items-center gap-1 font-medium text-primary underline-offset-4 hover:underline"
+            className="font-medium text-primary underline-offset-4 hover:underline"
           >
-            <UserPlus className="size-3.5" />
             Create a citizen account
           </Link>
         </p>
-
-        <p className="mt-1 text-center text-xs leading-5 text-muted-foreground">
-          By continuing, you agree to our{" "}
-          <Link
-            href="/terms"
-            className="text-foreground underline underline-offset-2 transition-colors hover:text-primary"
-          >
-            Terms of Service
-          </Link>{" "}
-          and{" "}
-          <Link
-            href="/privacy"
-            className="text-foreground underline underline-offset-2 transition-colors hover:text-primary"
-          >
-            Digital Civic Privacy Policy
-          </Link>
-          .
-        </p>
       </form>
+
       <DemoLoginPanel
         pending={loginPending}
         onSelect={(credentials) => {
@@ -275,6 +199,18 @@ export default function LoginForm() {
           submitLogin(credentials);
         }}
       />
+
+      <p className="mt-5 text-center text-xs leading-5 text-muted-foreground">
+        By continuing, you agree to our{" "}
+        <Link href="/terms" className="underline underline-offset-2 hover:text-primary">
+          Terms of Service
+        </Link>{" "}
+        and{" "}
+        <Link href="/privacy" className="underline underline-offset-2 hover:text-primary">
+          Privacy Policy
+        </Link>
+        .
+      </p>
     </div>
   );
 }

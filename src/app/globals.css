@@ -355,3 +355,22 @@
 .typing-dot:nth-child(3) {
   animation-delay: 0.3s;
 }
+
+@keyframes marquee-reverse {
+  from {
+    transform: translateX(-100%);
+  }
+
+  to {
+    transform: translateX(0);
+  }
+}
+
+.animate-marquee-reverse {
+  animation: marquee-reverse var(--marquee-duration, 40s) linear infinite;
+}
+
+.marquee:hover .animate-marquee-reverse,
+.marquee:focus-within .animate-marquee-reverse {
+  animation-play-state: paused;
+}

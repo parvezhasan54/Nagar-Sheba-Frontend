@@ -44,7 +44,7 @@ export default function ForgotPasswordForm() {
   });
 
   return (
-    <div className="w-full rounded-xl bg-card/90 p-6 shadow-2xl backdrop-blur-2xl sm:p-8">
+    <div className="w-full rounded-2xl border bg-card p-6 shadow-sm sm:p-8">
       <div className="mb-6 flex flex-col items-center text-center">
         <div className="mb-3 flex size-12 items-center justify-center rounded-full bg-primary/10">
           <KeyRound className="size-6 text-primary" />

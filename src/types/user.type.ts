@@ -9,6 +9,8 @@ export type AuthUser = {
   status?: AccountStatus;
   authProvider?: AuthProvider;
   profileImage?: string | null;
+  isEmailVerified?: boolean;
+  createdAt?: string;
   mustChangePassword?: boolean;
   citizenProfile?: {
     fullName: string;

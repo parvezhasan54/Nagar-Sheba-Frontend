@@ -98,15 +98,15 @@ export default function RegisterForm() {
   });
 
   return (
-    <div className="w-full rounded-xl bg-card/90 p-6 shadow-2xl backdrop-blur-2xl sm:p-8">
-      <div className="mb-6">
-        <h1 className="text-xl font-semibold tracking-tight">
-          Create Citizen Account
-        </h1>
-        <p className="text-xs text-muted-foreground">
-          Join Nagar Sheba to report issues and track requests
-        </p>
-      </div>
+    <div className="w-full rounded-2xl border bg-card p-6 shadow-sm sm:p-8">
+<div className="mb-7">
+  <h1 className="font-heading text-2xl font-bold tracking-tight">
+    Create your account
+  </h1>
+  <p className="mt-1 text-sm text-muted-foreground">
+    Join Nagar Sheba to report issues, pay fees and track every request.
+  </p>
+</div>
 
       <form
         noValidate
@@ -166,9 +166,9 @@ export default function RegisterForm() {
                   </div>
 
                   {isInvalid && <FieldError errors={field.state.meta.errors} />}
-                  {isPassword && (
-                    <PasswordChecklist value={field.state.value} />
-                  )}
+                 {isPassword && field.state.value && (
+  <PasswordChecklist value={field.state.value} />
+)}
                 </Field>
               );
             }}
@@ -193,15 +193,18 @@ export default function RegisterForm() {
           )}
         </Button>
         <GoogleSignInButton />
-        <p className="text-center text-xs text-muted-foreground">
-          Already have an account?{" "}
-          <Link
-            href="/login"
-            className="text-primary underline-offset-4 hover:underline"
-          >
-            Sign in
-          </Link>
-        </p>
+
+<p className="text-center text-xs leading-5 text-muted-foreground">
+  By creating an account, you agree to our{" "}
+  <Link href="/terms" className="underline underline-offset-2 hover:text-primary">
+    Terms of Service
+  </Link>{" "}
+  and{" "}
+  <Link href="/privacy" className="underline underline-offset-2 hover:text-primary">
+    Privacy Policy
+  </Link>
+  .
+</p>
       </form>
     </div>
   );

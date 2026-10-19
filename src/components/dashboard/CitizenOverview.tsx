@@ -12,7 +12,6 @@ import dynamic from "next/dynamic";
 import Link from "next/link";
 import { EmptyState } from "@/components/shared/EmptyState";
 import { ErrorState } from "@/components/shared/ErrorState";
-import { PageHeader } from "@/components/shared/PageHeader";
 import { StatCard } from "@/components/shared/StatCard";
 import { StatusBadge } from "@/components/shared/StatusBadge";
 import { buttonVariants } from "@/components/ui/button";
@@ -23,6 +22,7 @@ import { formatDate } from "@/lib/format";
 import { getDisplayName } from "@/lib/user";
 import { cn } from "@/lib/utils";
 import { RecommendedServices } from "./RecommendedServices";
+import { WelcomeBanner } from "./WelcomeBanner";
 
 const CitizenCharts = dynamic(
   () => import("./CitizenCharts").then((m) => m.CitizenCharts),
@@ -45,18 +45,19 @@ export function CitizenOverview() {
 
   return (
     <div>
-      <PageHeader
-        title={name ? `Welcome, ${name}` : "Welcome"}
-        description="Here is where your requests stand."
-        actions={
-          <Link
-            href="/citizen/requests/new"
-            className={cn(buttonVariants(), "h-9 gap-2 px-4")}
-          >
-            <FilePlus className="size-4" /> New request
-          </Link>
-        }
-      />
+
+<WelcomeBanner
+  title={name ? `Welcome, ${name}` : "Welcome"}
+  description="Here is where your requests stand."
+  action={
+    <Link
+      href="/citizen/requests/new"
+      className={cn(buttonVariants({ variant: "secondary" }), "h-10 gap-2 px-4")}
+    >
+      <FilePlus className="size-4" /> New request
+    </Link>
+  }
+/>
 
       {pendingCount > 0 && (
         <Link

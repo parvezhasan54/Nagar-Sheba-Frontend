@@ -16,6 +16,8 @@ import { SearchInput } from "@/components/shared/SearchInput";
 import { Button } from "@/components/ui/button";
 import { useCategories, useUrlState } from "@/hook";
 import { cn } from "@/lib/utils";
+import { DepartmentChips } from "./DepartmentChips";
+import { AnimatePresence, motion } from "motion/react";
 
 type CategoryParams = NonNullable<Parameters<typeof getCategories>[0]>;
 type SortBy = NonNullable<CategoryParams["sortBy"]>;
@@ -105,7 +107,8 @@ export function ServiceExplorer() {
 
   return (
     <div>
-      <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-end">
+        <DepartmentChips />
+  <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-end">
         <SearchInput
           paramKey="search"
           placeholder="Search services or departments..."
@@ -170,18 +173,23 @@ export function ServiceExplorer() {
             {total} service{total === 1 ? "" : "s"} found
           </p>
 
-          <div
-            aria-busy={isFetching}
-            className={cn(
-              CATEGORY_GRID_CLASS,
-              "transition-opacity",
-              isFetching && "opacity-60",
-            )}
-          >
-            {categories.map((category) => (
-              <CategoryCard key={category.id} category={category} />
-            ))}
-          </div>
+<div aria-busy={isFetching} className={cn(CATEGORY_GRID_CLASS, "transition-opacity", isFetching && "opacity-60")}>
+  <AnimatePresence mode="popLayout" initial={false}>
+    {categories.map((category, i) => (
+      <motion.div
+        key={category.id}
+        layout
+        initial={{ opacity: 0, scale: 0.95, y: 12 }}
+        animate={{ opacity: 1, scale: 1, y: 0 }}
+        exit={{ opacity: 0, scale: 0.95 }}
+        transition={{ duration: 0.3, delay: Math.min(i, 7) * 0.03 }}
+        className="h-full"
+      >
+        <CategoryCard category={category} />
+      </motion.div>
+    ))}
+  </AnimatePresence>
+</div>
 
           <Pagination meta={data?.meta} />
         </>

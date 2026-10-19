@@ -1,10 +1,8 @@
 import Link from "next/link";
-import { BlogCard } from "@/components/blog/BlogCard";
 import { Reveal } from "@/components/motion/Reveal";
-import { Stagger, StaggerItem } from "@/components/motion/Stagger";
 import { SectionHeading } from "@/components/shared/SectionHeading";
 import { POSTS } from "@/lib/blog";
-import { CATEGORY_GRID_CLASS } from "./CategoryCard";
+import { BlogMarquee } from "./BlogMarquee";
 
 export function BlogPreview() {
   return (
@@ -17,13 +15,9 @@ export function BlogPreview() {
         />
       </Reveal>
 
-      <Stagger className={`mt-10 ${CATEGORY_GRID_CLASS}`}>
-        {POSTS.slice(0, 4).map((post) => (
-          <StaggerItem key={post.slug} className="h-full">
-            <BlogCard post={post} />
-          </StaggerItem>
-        ))}
-      </Stagger>
+      <div className="mt-10">
+        <BlogMarquee posts={POSTS} />
+      </div>
 
       <div className="mt-8 text-center">
         <Link

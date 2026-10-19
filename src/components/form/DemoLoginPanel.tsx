@@ -3,7 +3,6 @@
 import { Rocket, ShieldCheck, UserRound, Wrench } from "lucide-react";
 import type { ReactNode } from "react";
 import { useState } from "react";
-import { Button } from "@/components/ui/button";
 import { Spinner } from "@/components/ui/spinner";
 import { DEMO_ACCOUNTS, type DemoAccount } from "@/config/demo";
 import type { LoginPayload, UserRole } from "@/types/auth.type";
@@ -28,63 +27,38 @@ export default function DemoLoginPanel({ pending, onSelect }: Props) {
   };
 
   return (
-    <section aria-labelledby="demo-login-title" className="mt-6">
-      <div className="mb-4 flex items-center gap-3">
-        <div className="h-px flex-1 bg-border" />
-        <span className="text-xs text-muted-foreground">OR</span>
-        <div className="h-px flex-1 bg-border" />
-      </div>
-
+    <section
+      aria-labelledby="demo-login-title"
+      className="mt-6 rounded-xl border border-dashed bg-muted/40 p-4"
+    >
       <h2
         id="demo-login-title"
-        className="mb-3 flex items-center justify-center gap-2 text-sm font-semibold"
+        className="mb-3 flex items-center justify-center gap-2 text-xs font-semibold tracking-widest text-muted-foreground uppercase"
       >
-        <Rocket className="size-4 text-primary" />
-        Quick Demo Login
+        <Rocket className="size-3.5 text-primary" aria-hidden="true" />
+        Try a demo account
       </h2>
 
-      <p className="mb-3 text-center text-xs text-muted-foreground">
-        Fills the form with demo credentials and signs you in.
-      </p>
-
-      <div className="grid gap-3 sm:grid-cols-3">
+      <div className="grid grid-cols-3 gap-2">
         {DEMO_ACCOUNTS.map((account) => {
           const missing = !account.email || !account.password;
+          const loading = pending && activeRole === account.role;
 
           return (
-            <div
+            <button
               key={account.role}
-              className="flex flex-col gap-2 rounded-lg border bg-background p-3"
+              type="button"
+              disabled={pending || missing}
+              title={missing ? "Demo credentials not configured" : account.description}
+              aria-label={`Demo login as ${account.label}. ${account.description}`}
+              onClick={() => handleClick(account)}
+              className="flex flex-col items-center gap-1.5 rounded-lg border bg-background px-2 py-3 text-xs font-medium outline-none transition-all hover:-translate-y-0.5 hover:border-primary/40 hover:shadow-sm focus-visible:ring-2 focus-visible:ring-ring/50 disabled:pointer-events-none disabled:opacity-50"
             >
-              <div className="flex items-center gap-2 text-primary">
-                {ICONS[account.role]}
-                <span className="text-sm font-semibold text-foreground">
-                  {account.label}
-                </span>
-              </div>
-
-              <p className="flex-1 text-xs leading-4 text-muted-foreground">
-                {account.description}
-              </p>
-
-              <Button
-                type="button"
-                variant="outline"
-                disabled={pending || missing}
-                title={missing ? "Demo credentials not configured" : undefined}
-                onClick={() => handleClick(account)}
-                className="h-8 w-full"
-              >
-                {pending && activeRole === account.role ? (
-                  <>
-                    <Spinner data-icon="inline-start" />
-                    Signing in...
-                  </>
-                ) : (
-                  "Demo Login"
-                )}
-              </Button>
-            </div>
+              <span className="text-primary">
+                {loading ? <Spinner /> : ICONS[account.role]}
+              </span>
+              {loading ? "Signing in..." : account.label}
+            </button>
           );
         })}
       </div>
