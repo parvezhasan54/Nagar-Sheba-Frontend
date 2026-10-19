@@ -13,7 +13,15 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { useProfile, useRequests, useStaffPerformance } from "@/hook";
 import { formatDateTime } from "@/lib/format";
 import { getDisplayName } from "@/lib/user";
+import dynamic from "next/dynamic";
 
+const StaffStatusChart = dynamic(
+  () =>
+    import("@/components/staff/StaffStatusChart").then(
+      (m) => m.StaffStatusChart,
+    ),
+  { loading: () => <Skeleton className="mb-6 h-72 w-full rounded-xl" /> },
+);
 export function StaffOverview() {
   const { data: profile } = useProfile();
 
@@ -69,7 +77,7 @@ export function StaffOverview() {
           tone="success"
         />
       </div>
-
+<StaffStatusChart />
       <Card>
         <CardHeader className="flex-row items-center justify-between">
           <CardTitle>Needs your action</CardTitle>

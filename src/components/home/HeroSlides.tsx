@@ -51,16 +51,15 @@ export function HeroSlides() {
   const Icon = slide.icon;
 
   return (
-    <div
-      role="group"
-      aria-roledescription="carousel"
-      aria-label="How Nagar Sheba works"
-      onMouseEnter={() => setPaused(true)}
-      onMouseLeave={() => setPaused(false)}
-      onFocus={() => setPaused(true)}
-      onBlur={() => setPaused(false)}
-      className="rounded-2xl border bg-card/90 p-6 shadow-xl backdrop-blur"
-    >
+  <section
+  aria-roledescription="carousel"
+  aria-label="How Nagar Sheba works"
+  onMouseEnter={() => setPaused(true)}
+  onMouseLeave={() => setPaused(false)}
+  onFocus={() => setPaused(true)}
+  onBlur={() => setPaused(false)}
+  className="rounded-2xl border bg-card/90 p-6 shadow-xl backdrop-blur"
+>
       <div className="min-h-44" aria-live={paused ? "polite" : "off"}>
         <AnimatePresence mode="wait" initial={false}>
           <motion.div
@@ -99,6 +98,6 @@ export function HeroSlides() {
           />
         ))}
       </div>
-    </div>
+</section>
   );
 }

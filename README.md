@@ -103,6 +103,20 @@ backend listed under [Related Repository](#-related-repository).
 - 🔑 **Google Sign-In** alongside email + OTP registration.
 
 ---
+## 🤖 AI Features
+
+| Feature | Where | How it works |
+|---|---|---|
+| **Chat assistant** | Public pages + citizen dashboard | `POST /ai/chat`. Answers questions about services, fees, SLA, refunds and reopening using the live service catalogue. |
+| **AI search suggestions** | Hero search bar | `GET /ai/search-suggest`. Keyword match first, falls back to AI when nothing matches. |
+| **AI service picker** | New request wizard (step 1) | `POST /ai/suggest-category`. Describe the problem and get the best matching service. |
+| **Admin insights & anomalies** | Admin overview | `GET /ai/admin-insights`. Detects volume spikes, high overdue rates, low ratings and failed refunds, with an AI-written summary. |
+| **Trending services** | Home page | `GET /categories/trending`. Most requested services in the last 30 days. |
+| **Recommended for you** | Citizen overview | `GET /categories/recommended`. Based on the departments and services the citizen already used. |
+
+Every AI feature has a keyword or rule-based fallback, so the UI still works if the AI provider is unavailable.
+
+---
 
 ## 🛠️ Tech Stack
 
@@ -204,7 +218,7 @@ flowchart TB
     API --> R[(Redis: OTP + rate limits)]
     API --> CL[Cloudinary: images]
     API --> PG[SSLCommerz / bKash]
-    API --> EM[Resend: email]
+    API --> EM[EmailJS: email]
 ```
 
 **Key design decisions**

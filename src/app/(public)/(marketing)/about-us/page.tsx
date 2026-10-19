@@ -22,8 +22,7 @@ const VALUES = [
     text: "Every status change is recorded, so you always know where your request stands.",
     image:
       "https://images.unsplash.com/photo-1554224155-6726b3ff858f?auto=format&fit=crop&w=900&q=80",
-    imageAlt:
-      "Financial records and documents representing transparent reporting",
+imageAlt: "Printed charts and documents spread across a desk",
   },
   {
     icon: ShieldCheck,
@@ -31,8 +30,7 @@ const VALUES = [
     text: "Each category has a service-level deadline, and overdue requests are flagged automatically.",
     image:
       "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=900&q=80",
-    imageAlt:
-      "Professional reviewing project records and tracking responsibilities",
+imageAlt: "Person reviewing a project checklist on a laptop",
   },
   {
     icon: HeartHandshake,
@@ -40,7 +38,7 @@ const VALUES = [
     text: "Fees are shown before you pay, and cancelled paid requests are refunded.",
     image:
       "https://images.unsplash.com/photo-1529156069898-49953e39b3ac?auto=format&fit=crop&w=900&q=80",
-    imageAlt: "People connecting and supporting one another in a community",
+    imageAlt: "Group of people talking together outdoors", 
   },
 ];
 
