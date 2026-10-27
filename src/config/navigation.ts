@@ -41,6 +41,7 @@ export const NAV_ITEMS: Record<UserRole, NavItem[]> = {
     { label: "New Request", href: "/citizen/requests/new", icon: FilePlus },
     { label: "Payments", href: "/citizen/payments", icon: CreditCard },
     { label: "Notifications", href: "/citizen/notifications", icon: Bell },
+    { label: "My Feedback", href: "/citizen/feedbacks", icon: MessageSquareText },
     { label: "Profile", href: "/citizen/profile", icon: UserRound },
   ],
   STAFF: [
@@ -48,6 +49,7 @@ export const NAV_ITEMS: Record<UserRole, NavItem[]> = {
     { label: "Request Queue", href: "/staff/requests", icon: ClipboardList },
     { label: "Notifications", href: "/staff/notifications", icon: Bell },
     { label: "Performance", href: "/staff/performance", icon: ChartColumn },
+    { label: "Reviews", href: "/staff/feedbacks", icon: MessageSquareText }, 
     { label: "Profile", href: "/staff/profile", icon: UserRound },
   ],
   ADMIN: [

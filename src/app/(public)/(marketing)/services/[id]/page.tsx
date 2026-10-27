@@ -1,13 +1,12 @@
-import { ArrowLeft, Clock } from "lucide-react";
+
+import { ArrowLeft, Clock, Star } from "lucide-react";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import {
-  CATEGORY_GRID_CLASS,
-  CategoryCard,
-} from "@/components/home/CategoryCard";
+import { CATEGORY_GRID_CLASS, CategoryCard } from "@/components/home/CategoryCard";
 import { ServiceGallery } from "@/components/services/ServiceGallery";
 import { ServiceReviews } from "@/components/services/ServiceReviews";
+
 import { Badge } from "@/components/ui/badge";
 import { buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -18,20 +17,26 @@ import {
   getPublicCategory,
 } from "@/lib/server-api";
 import { cn } from "@/lib/utils";
+import { ShareButton } from "@/components/services/ShareButton";
 
-type Props = { params: Promise<{ id: string }> };
+type Props = {
+  params: Promise<{ id: string }>;
+};
 
 export const revalidate = 60;
 
 export async function generateStaticParams() {
   const categories = await getPublicCategories();
-  return categories.map((c) => ({ id: c.id }));
+  return categories.map((category) => ({ id: category.id }));
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { id } = await params;
   const category = await getPublicCategory(id);
-  if (!category) return { title: "Service not found" };
+
+  if (!category) {
+    return { title: "Service not found" };
+  }
 
   const description =
     category.description?.trim() ||
@@ -59,15 +64,18 @@ const STEPS = [
 export default async function ServiceDetailPage({ params }: Props) {
   const { id } = await params;
   const category = await getPublicCategory(id);
-  if (!category) notFound();
 
-  const [reviews, all] = await Promise.all([
+  if (!category) {
+    notFound();
+  }
+
+  const [reviews, allCategories] = await Promise.all([
     getCategoryReviews(id),
     getPublicCategories(),
   ]);
 
-  const related = all
-    .filter((c) => c.id !== category.id)
+  const related = allCategories
+    .filter((item) => item.id !== category.id)
     .sort(
       (a, b) =>
         Number(b.departmentId === category.departmentId) -
@@ -77,6 +85,13 @@ export default async function ServiceDetailPage({ params }: Props) {
 
   const paid = category.feeType === "PAID";
   const department = category.department?.name ?? "City service";
+  const averageRating = category.averageRating ?? 0;
+  const reviewCount = category.reviewCount ?? 0;
+  const ratingLabel =
+    reviewCount > 0
+      ? `${averageRating.toFixed(1)} (${reviewCount} ${reviewCount === 1 ? "review" : "reviews"})`
+      : "No reviews yet";
+
   const overview =
     category.description?.trim() ||
     `Request this service from the ${department} department and track it until it is resolved.`;
@@ -86,6 +101,7 @@ export default async function ServiceDetailPage({ params }: Props) {
     ["Service type", paid ? "Paid permit" : "Free complaint"],
     ["Fee", paid ? formatCurrency(category.feeAmount) : "No fee"],
     ["Resolution time", formatSla(category.slaHours)],
+    ["Rating", ratingLabel],
     ["Reopen window", "3 days after resolution"],
     [
       "Cancellation",
@@ -97,9 +113,10 @@ export default async function ServiceDetailPage({ params }: Props) {
     <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
       <Link
         href="/services"
-        className="mb-6 inline-flex items-center gap-1.5 text-xs font-medium text-muted-foreground hover:text-foreground"
+        className="mb-6 inline-flex items-center gap-1.5 text-xs font-medium text-muted-foreground transition-colors hover:text-foreground"
       >
-        <ArrowLeft className="size-3.5" /> All services
+        <ArrowLeft className="size-3.5" />
+        All services
       </Link>
 
       <div className="grid gap-8 lg:grid-cols-[2fr_1fr]">
@@ -117,13 +134,14 @@ export default async function ServiceDetailPage({ params }: Props) {
             <p className="text-sm leading-7 text-muted-foreground">
               {overview}
             </p>
+
             <ol className="mt-5 space-y-3">
-              {STEPS.map((s, i) => (
-                <li key={s} className="flex items-start gap-3 text-sm">
+              {STEPS.map((step, index) => (
+                <li key={step} className="flex items-start gap-3 text-sm">
                   <span className="flex size-6 shrink-0 items-center justify-center rounded-full bg-primary/10 text-xs font-semibold text-primary">
-                    {i + 1}
+                    {index + 1}
                   </span>
-                  <span className="pt-0.5">{s}</span>
+                  <span className="pt-0.5">{step}</span>
                 </li>
               ))}
             </ol>
@@ -143,22 +161,74 @@ export default async function ServiceDetailPage({ params }: Props) {
               <p className="text-xs font-semibold tracking-widest text-primary uppercase">
                 {department}
               </p>
+
+              <nav
+                aria-label="Breadcrumb"
+                className="mb-2 flex flex-wrap items-center gap-1.5 text-xs text-muted-foreground"
+              >
+                <Link href="/" className="transition-colors hover:text-foreground">
+                  Home
+                </Link>
+                <span aria-hidden="true">/</span>
+                <Link
+                  href="/services"
+                  className="transition-colors hover:text-foreground"
+                >
+                  Services
+                </Link>
+                <span aria-hidden="true">/</span>
+                <span className="max-w-full truncate text-foreground">
+                  {category.name}
+                </span>
+              </nav>
+
               <CardTitle className="text-xl">{category.name}</CardTitle>
             </CardHeader>
+
             <CardContent className="space-y-4">
-              <div className="flex items-center justify-between">
+              <div className="flex items-center justify-between gap-3">
                 <Badge
                   variant={paid ? "default" : "secondary"}
                   className="h-6 px-2.5 text-xs"
                 >
                   {paid ? formatCurrency(category.feeAmount) : "Free"}
                 </Badge>
+
                 <span className="flex items-center gap-1.5 text-xs text-muted-foreground">
-                  <Clock className="size-3.5" /> {formatSla(category.slaHours)}
+                  <Clock className="size-3.5" />
+                  {formatSla(category.slaHours)}
                 </span>
               </div>
+
+              <div className="flex flex-wrap items-center gap-2">
+                <div
+                  className="flex items-center gap-0.5"
+                  role="img"
+                  aria-label={`${averageRating.toFixed(1)} out of 5 stars`}
+                >
+{Array.from({ length: 5 }, (_, index) => {
+  const star = index + 1;
+
+  return (
+    <Star
+      key={star}
+      className={cn(
+        "size-4",
+        star <= Math.round(averageRating)
+          ? "fill-amber-400 text-amber-400"
+          : "text-muted-foreground/30",
+      )}
+    />
+  );
+})}
+                </div>
+                <span className="text-xs text-muted-foreground">
+                  {ratingLabel}
+                </span>
+              </div>
+
               <Link
-                href={`/citizen/requests/new?category=${category.id}`}
+                href={`/citizen/requests/new?category=${encodeURIComponent(category.id)}`}
                 className={cn(
                   buttonVariants(),
                   "h-11 w-full text-sm font-semibold",
@@ -166,6 +236,8 @@ export default async function ServiceDetailPage({ params }: Props) {
               >
                 Request this service
               </Link>
+
+              <ShareButton title={`${category.name} | Nagar Sheba`} />
             </CardContent>
           </Card>
 
@@ -173,6 +245,7 @@ export default async function ServiceDetailPage({ params }: Props) {
             <CardHeader>
               <CardTitle>Key information</CardTitle>
             </CardHeader>
+
             <CardContent>
               <dl className="divide-y text-sm">
                 {info.map(([label, value]) => (
@@ -180,7 +253,7 @@ export default async function ServiceDetailPage({ params }: Props) {
                     key={label}
                     className="flex items-start justify-between gap-4 py-2.5"
                   >
-                    <dt className="text-muted-foreground">{label}</dt>
+                    <dt className="shrink-0 text-muted-foreground">{label}</dt>
                     <dd className="text-right font-medium">{value}</dd>
                   </div>
                 ))}
@@ -196,8 +269,8 @@ export default async function ServiceDetailPage({ params }: Props) {
             Related services
           </h2>
           <div className={CATEGORY_GRID_CLASS}>
-            {related.map((c) => (
-              <CategoryCard key={c.id} category={c} />
+            {related.map((item) => (
+              <CategoryCard key={item.id} category={item} />
             ))}
           </div>
         </section>

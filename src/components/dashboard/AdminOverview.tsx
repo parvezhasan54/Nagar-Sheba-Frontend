@@ -16,6 +16,8 @@ import {
   CartesianGrid,
   Cell,
   Legend,
+  Line,
+  LineChart,
   Pie,
   PieChart,
   ResponsiveContainer,
@@ -401,6 +403,22 @@ export function AdminOverview() {
           )}
         </CardContent>
       </Card>
+      <Card className="mb-6">
+  <CardHeader><CardTitle>Requests, last 30 days</CardTitle></CardHeader>
+  <CardContent>
+    <div role="img" aria-label="Line chart of requests per day" className="h-72 w-full">
+      <ResponsiveContainer width="100%" height="100%">
+        <LineChart data={s.requests.byDay} margin={{ left: -16, right: 8 }}>
+          <CartesianGrid vertical={false} stroke="var(--border)" strokeDasharray="3 3" />
+          <XAxis dataKey="date" tick={tick} tickFormatter={(v) => v.slice(5)} />
+          <YAxis allowDecimals={false} tick={tick} />
+          <Tooltip contentStyle={tooltipStyle} />
+          <Line type="monotone" dataKey="total" name="Requests" stroke="var(--chart-2)" strokeWidth={2} dot={false} />
+        </LineChart>
+      </ResponsiveContainer>
+    </div>
+  </CardContent>
+</Card>
     </div>
   );
 }

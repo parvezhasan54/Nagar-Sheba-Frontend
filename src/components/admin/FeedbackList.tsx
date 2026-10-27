@@ -29,7 +29,7 @@ const RATING_OPTIONS = [
   })),
 ];
 
-export function FeedbackList({ requestBasePath }: { requestBasePath: string }) {
+export function FeedbackList({ requestBasePath, showDepartmentFilter = false }: { requestBasePath: string; showDepartmentFilter?: boolean }) {
   const { get, getNumber, setParams } = useUrlState();
   const page = getNumber("page", 1);
   const rating = get("rating", "all");
@@ -48,7 +48,7 @@ export function FeedbackList({ requestBasePath }: { requestBasePath: string }) {
   return (
     <div>
       <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-end">
-        <DepartmentFilter />
+          {showDepartmentFilter && <DepartmentFilter />}
         <FilterSelect
           label="Rating"
           value={rating}

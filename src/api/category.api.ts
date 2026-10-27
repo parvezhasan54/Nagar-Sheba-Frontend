@@ -11,14 +11,13 @@ import type {
 export function getCategories(params?: {
   page?: number;
   limit?: number;
-  departmentId?: string;
-  includeInactive?: boolean;
-  minRating?: number;
-  status?: "active" | "inactive" | "deleted";
   search?: string;
-  feeType?: FeeType;
+  departmentId?: string;
+  feeType?: "FREE" | "PAID";
+  maxFee?: number;
   maxSla?: number;
-  sortBy?: "createdAt" | "name" | "slaHours" | "feeAmount";
+  minRating?: number;
+  sortBy?: string;
   sortOrder?: "asc" | "desc";
 }) {
   return apiClient<ApiResponse<Category[]>>("/categories", {

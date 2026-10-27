@@ -45,6 +45,10 @@ export type DashboardStats = {
       name: string;
       total: number;
     }[];
+    byDay: {
+      date: string;
+      total: number;
+    }[];
   };
   payments: {
     totalRevenue: string | number;

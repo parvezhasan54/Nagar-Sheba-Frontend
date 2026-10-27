@@ -6,6 +6,7 @@ import { EmptyState } from "@/components/shared/EmptyState";
 import { ErrorState } from "@/components/shared/ErrorState";
 import { FilterSelect } from "@/components/shared/FilterSelect";
 import { Pagination } from "@/components/shared/Pagination";
+import { SearchInput } from "@/components/shared/SearchInput";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -22,39 +23,97 @@ import { formatDateTime, toEnumLabel } from "@/lib/format";
 const ENTITY_OPTIONS = [
   { value: "all", label: "All entities" },
   ...["User", "Department", "Category", "ServiceRequest", "Payment"].map(
-    (e) => ({ value: e, label: e }),
+    (entity) => ({ value: entity, label: entity }),
   ),
 ];
 
-const hasValue = (v: unknown) => v !== null && v !== undefined;
+const hasValue = (value: unknown) =>
+  value !== null && value !== undefined;
 
 export function AuditLogList() {
   const { get, getNumber, setParams } = useUrlState();
   const page = getNumber("page", 1);
   const entityType = get("entityType", "all");
+  const action = get("action");
+  const from = get("from");
+  const to = get("to");
+
+  const hasFilters =
+    entityType !== "all" ||
+    Boolean(action) ||
+    Boolean(from) ||
+    Boolean(to);
 
   const { data, isLoading, isError, error, refetch } = useAuditLogs({
     page,
     limit: 15,
     entityType: entityType === "all" ? undefined : entityType,
+    action: action || undefined,
+    from: from || undefined,
+    to: to || undefined,
   });
 
   const logs = data?.data ?? [];
 
+  const clearFilters = () =>
+    setParams({
+      entityType: null,
+      action: null,
+      from: null,
+      to: null,
+      page: null,
+    });
+
   return (
     <div>
-      <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-end">
+      <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-end">
         <FilterSelect
           label="Entity"
           value={entityType}
           options={ENTITY_OPTIONS}
-          onChange={(v) => setParams({ entityType: v })}
+          onChange={(value) =>
+            setParams({
+              entityType: value === "all" ? null : value,
+              page: null,
+            })
+          }
         />
-        {entityType !== "all" && (
+
+        <SearchInput
+          paramKey="action"
+          placeholder="Action, e.g. USER_BLOCKED"
+        />
+
+        <label className="flex flex-col gap-1 text-xs font-medium text-muted-foreground">
+          From
+          <input
+            type="date"
+            value={from}
+            onChange={(event) =>
+              setParams({ from: event.target.value || null, page: null })
+            }
+            className="h-9 rounded-md border border-input bg-background px-2 text-xs text-foreground"
+          />
+        </label>
+
+        <label className="flex flex-col gap-1 text-xs font-medium text-muted-foreground">
+          To
+          <input
+            type="date"
+            value={to}
+            min={from || undefined}
+            onChange={(event) =>
+              setParams({ to: event.target.value || null, page: null })
+            }
+            className="h-9 rounded-md border border-input bg-background px-2 text-xs text-foreground"
+          />
+        </label>
+
+        {hasFilters && (
           <Button
             variant="ghost"
             className="h-9"
-            onClick={() => setParams({ entityType: null })}
+            onClick={clearFilters}
           >
             Clear
           </Button>
@@ -67,7 +126,7 @@ export function AuditLogList() {
         <ErrorState error={error} onRetry={() => refetch()} />
       ) : logs.length === 0 ? (
         <EmptyState
-          icon={entityType === "all" ? ScrollText : SearchX}
+          icon={hasFilters ? SearchX : ScrollText}
           title="No audit entries"
           description="Administrative changes are recorded here."
         />
@@ -103,7 +162,8 @@ export function AuditLogList() {
                       </p>
                     </TableCell>
                     <TableCell className="pr-4">
-                      {hasValue(log.previousValue) || hasValue(log.newValue) ? (
+                      {hasValue(log.previousValue) ||
+                      hasValue(log.newValue) ? (
                         <details>
                           <summary className="cursor-pointer text-primary">
                             View

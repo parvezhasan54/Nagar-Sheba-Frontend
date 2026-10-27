@@ -53,6 +53,9 @@ export function getAuditLogs(params?: {
   limit?: number;
   entityType?: string;
   actorId?: string;
+  action?: string;
+  from?: string;
+  to?: string;
 }) {
   return apiClient<ApiResponse<AuditLog[]>>("/admin/audit-logs", {
     method: "GET",
