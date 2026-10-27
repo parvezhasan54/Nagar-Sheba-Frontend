@@ -38,11 +38,11 @@ export function DashboardShell({ userRole, children }: Props) {
       router.replace(getRoleHome(profile.role));
     }
   }, [isLoading, profile, userRole, pathname, router]);
-useEffect(() => {
-	if (!profile?.mustChangePassword) return;
-	const profilePath = `${getRoleHome(userRole)}/profile`;
-	if (pathname !== profilePath) router.replace(profilePath);
-}, [profile?.mustChangePassword, userRole, pathname, router]);
+  useEffect(() => {
+    if (!profile?.mustChangePassword) return;
+    const profilePath = `${getRoleHome(userRole)}/profile`;
+    if (pathname !== profilePath) router.replace(profilePath);
+  }, [profile?.mustChangePassword, userRole, pathname, router]);
   return (
     <div className="min-h-screen bg-muted/30">
       <aside className="fixed inset-y-0 left-0 z-30 hidden w-64 border-r bg-background lg:block">

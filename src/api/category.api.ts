@@ -1,10 +1,10 @@
-import type { RecommendedCategories } from "@/types/category.type";
 import apiClient from "@/lib/apiClient";
 import type { ApiResponse } from "@/types/api.type";
 import type {
   Category,
   CreateCategoryPayload,
   FeeType,
+  RecommendedCategories,
   UpdateCategoryPayload,
 } from "@/types/category.type";
 
@@ -19,6 +19,8 @@ export function getCategories(params?: {
   minRating?: number;
   sortBy?: string;
   sortOrder?: "asc" | "desc";
+  includeInactive?: boolean;
+  status?: "active" | "inactive" | "deleted";
 }) {
   return apiClient<ApiResponse<Category[]>>("/categories", {
     method: "GET",
@@ -51,7 +53,6 @@ export function deleteCategory(id: string) {
     method: "DELETE",
   });
 }
-
 
 export function getRecommendedCategories(limit = 4) {
   return apiClient<ApiResponse<RecommendedCategories>>(

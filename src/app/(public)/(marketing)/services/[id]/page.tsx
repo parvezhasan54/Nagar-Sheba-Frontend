@@ -1,12 +1,14 @@
-
 import { ArrowLeft, Clock, Star } from "lucide-react";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { CATEGORY_GRID_CLASS, CategoryCard } from "@/components/home/CategoryCard";
+import {
+  CATEGORY_GRID_CLASS,
+  CategoryCard,
+} from "@/components/home/CategoryCard";
 import { ServiceGallery } from "@/components/services/ServiceGallery";
 import { ServiceReviews } from "@/components/services/ServiceReviews";
-
+import { ShareButton } from "@/components/services/ShareButton";
 import { Badge } from "@/components/ui/badge";
 import { buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -17,7 +19,6 @@ import {
   getPublicCategory,
 } from "@/lib/server-api";
 import { cn } from "@/lib/utils";
-import { ShareButton } from "@/components/services/ShareButton";
 
 type Props = {
   params: Promise<{ id: string }>;
@@ -32,11 +33,8 @@ export async function generateStaticParams() {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { id } = await params;
-  const category = await getPublicCategory(id);
-
-  if (!category) {
-    return { title: "Service not found" };
-  }
+  const category = await getPublicCategory(id).catch(() => null);
+  if (!category) return { title: "Service" };
 
   const description =
     category.description?.trim() ||
@@ -166,7 +164,10 @@ export default async function ServiceDetailPage({ params }: Props) {
                 aria-label="Breadcrumb"
                 className="mb-2 flex flex-wrap items-center gap-1.5 text-xs text-muted-foreground"
               >
-                <Link href="/" className="transition-colors hover:text-foreground">
+                <Link
+                  href="/"
+                  className="transition-colors hover:text-foreground"
+                >
                   Home
                 </Link>
                 <span aria-hidden="true">/</span>

@@ -1,10 +1,10 @@
 import { ArrowLeft, Bell, CreditCard, MapPin, ShieldCheck } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 import type { ReactNode } from "react";
 import { Reveal } from "@/components/motion/Reveal";
 import { Stagger, StaggerItem } from "@/components/motion/Stagger";
 import { ThemeToggle } from "@/components/shared/ThemeToggle";
-import Image from "next/image";
 
 const POINTS = [
   {
@@ -45,65 +45,64 @@ function Logo({ className }: { className?: string }) {
 export default function AuthLayout({ children }: { children: ReactNode }) {
   return (
     <div className="grid min-h-screen lg:grid-cols-[1.05fr_1fr]">
+      {/* Brand panel (desktop only) */}
+      <aside className="relative isolate hidden min-h-screen overflow-hidden bg-primary text-primary-foreground lg:flex lg:flex-col lg:justify-between">
+        <Image
+          src="/images/nagar-sheba-auth.png"
+          alt="Smart city services, location tracking, and city infrastructure"
+          fill
+          priority
+          sizes="52vw"
+          className="object-cover"
+        />
 
+        <div
+          aria-hidden="true"
+          className="absolute inset-0 bg-gradient-to-b from-slate-950/20 via-slate-950/5 to-slate-950/80"
+        />
 
-{/* Brand panel (desktop only) */}
-<aside className="relative isolate hidden min-h-screen overflow-hidden bg-primary text-primary-foreground lg:flex lg:flex-col lg:justify-between">
-  <Image
-    src="/images/nagar-sheba-auth.png"
-    alt="Smart city services, location tracking, and city infrastructure"
-    fill
-    priority
-    sizes="52vw"
-    className="object-cover"
-  />
+        <div className="relative z-10 p-8 xl:p-12">
+          <Logo />
+        </div>
 
-  <div
-    aria-hidden="true"
-    className="absolute inset-0 bg-gradient-to-b from-slate-950/20 via-slate-950/5 to-slate-950/80"
-  />
+        <div className="relative z-10 mt-auto max-w-2xl p-8 xl:p-12">
+          <Reveal>
+            <span className="mb-4 inline-flex items-center gap-2 rounded-full border border-white/25 bg-white/10 px-3 py-1.5 text-xs font-medium text-white backdrop-blur-md">
+              <ShieldCheck className="size-4" aria-hidden="true" />
+              Your city, your voice
+            </span>
 
-  <div className="relative z-10 p-8 xl:p-12">
-    <Logo />
-  </div>
+            <h2 className="font-heading max-w-xl text-4xl leading-tight font-bold tracking-tight text-white xl:text-5xl">
+              A better city starts with you.
+            </h2>
 
-  <div className="relative z-10 mt-auto max-w-2xl p-8 xl:p-12">
-    <Reveal>
-      <span className="mb-4 inline-flex items-center gap-2 rounded-full border border-white/25 bg-white/10 px-3 py-1.5 text-xs font-medium text-white backdrop-blur-md">
-        <ShieldCheck className="size-4" aria-hidden="true" />
-        Your city, your voice
-      </span>
+            <p className="mt-4 max-w-lg text-base leading-7 text-white/85">
+              Report local issues, track service requests, and help build a
+              cleaner, smarter community.
+            </p>
+          </Reveal>
 
-      <h2 className="font-heading max-w-xl text-4xl leading-tight font-bold tracking-tight text-white xl:text-5xl">
-        A better city starts with you.
-      </h2>
+          <Stagger as="ul" className="mt-8 grid gap-3 sm:grid-cols-3" gap={0.1}>
+            {POINTS.map((point) => (
+              <StaggerItem as="li" key={point.title}>
+                <div className="h-full rounded-xl border border-white/20 bg-slate-950/25 p-3 backdrop-blur-md">
+                  <point.icon
+                    className="mb-3 size-5 text-white"
+                    aria-hidden="true"
+                  />
+                  <p className="text-sm font-semibold text-white">
+                    {point.title}
+                  </p>
+                </div>
+              </StaggerItem>
+            ))}
+          </Stagger>
 
-      <p className="mt-4 max-w-lg text-base leading-7 text-white/85">
-        Report local issues, track service requests, and help build a cleaner,
-        smarter community.
-      </p>
-    </Reveal>
-
-    <Stagger as="ul" className="mt-8 grid gap-3 sm:grid-cols-3" gap={0.1}>
-      {POINTS.map((point) => (
-        <StaggerItem as="li" key={point.title}>
-          <div className="h-full rounded-xl border border-white/20 bg-slate-950/25 p-3 backdrop-blur-md">
-            <point.icon
-              className="mb-3 size-5 text-white"
-              aria-hidden="true"
-            />
-            <p className="text-sm font-semibold text-white">{point.title}</p>
-          </div>
-        </StaggerItem>
-      ))}
-    </Stagger>
-
-    <p className="mt-8 text-xs text-white/70">
-      © {new Date().getFullYear()} Nagar Sheba. All rights reserved.
-    </p>
-  </div>
-</aside>
-
+          <p className="mt-8 text-xs text-white/70">
+            © {new Date().getFullYear()} Nagar Sheba. All rights reserved.
+          </p>
+        </div>
+      </aside>
 
       {/* Form side */}
       <div className="flex min-h-screen flex-col bg-muted/40">

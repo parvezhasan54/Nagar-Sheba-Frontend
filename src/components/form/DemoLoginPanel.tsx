@@ -49,7 +49,11 @@ export default function DemoLoginPanel({ pending, onSelect }: Props) {
               key={account.role}
               type="button"
               disabled={pending || missing}
-              title={missing ? "Demo credentials not configured" : account.description}
+              title={
+                missing
+                  ? "Demo credentials not configured"
+                  : account.description
+              }
               aria-label={`Demo login as ${account.label}. ${account.description}`}
               onClick={() => handleClick(account)}
               className="flex flex-col items-center gap-1.5 rounded-lg border bg-background px-2 py-3 text-xs font-medium outline-none transition-all hover:-translate-y-0.5 hover:border-primary/40 hover:shadow-sm focus-visible:ring-2 focus-visible:ring-ring/50 disabled:pointer-events-none disabled:opacity-50"

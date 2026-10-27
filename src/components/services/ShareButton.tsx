@@ -1,4 +1,3 @@
-
 "use client";
 
 import { Check, Share2 } from "lucide-react";
@@ -40,19 +39,15 @@ export function ShareButton({ title }: ShareButtonProps) {
         className="h-10 w-full gap-2"
         onClick={handleShare}
       >
-        {copied ? (
-          <Check className="size-4" />
-        ) : (
-          <Share2 className="size-4" />
-        )}
+        {copied ? <Check className="size-4" /> : <Share2 className="size-4" />}
         {copied ? "Link copied" : "Share this service"}
       </Button>
 
       {error && (
-  <output className="block text-xs text-muted-foreground">
-    Sharing was cancelled or unavailable. Please try again.
-  </output>
-)}
+        <output className="block text-xs text-muted-foreground">
+          Sharing was cancelled or unavailable. Please try again.
+        </output>
+      )}
     </div>
   );
 }

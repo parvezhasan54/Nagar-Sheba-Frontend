@@ -69,31 +69,34 @@ export function Features() {
 
       <Stagger className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
         {FEATURES.map((feature) => (
-          <StaggerItem key={feature.title} className="h-full [perspective:1000px]">
-  <Tilt>
-    <article className="group h-full overflow-hidden rounded-xl border bg-card transition-shadow duration-300 hover:border-primary/40 hover:shadow-lg">
-    <div className="relative aspect-[16/9] overflow-hidden bg-muted">
-                <Image
-                  src={feature.image}
-                  alt={feature.imageAlt}
-                  fill
-                  sizes="(max-width: 639px) 100vw, (max-width: 1023px) 50vw, 33vw"
-                  className="object-cover transition-transform duration-500 group-hover:scale-105"
+          <StaggerItem
+            key={feature.title}
+            className="h-full [perspective:1000px]"
+          >
+            <Tilt>
+              <article className="group h-full overflow-hidden rounded-xl border bg-card transition-shadow duration-300 hover:border-primary/40 hover:shadow-lg">
+                <div className="relative aspect-[16/9] overflow-hidden bg-muted">
+                  <Image
+                    src={feature.image}
+                    alt={feature.imageAlt}
+                    fill
+                    sizes="(max-width: 639px) 100vw, (max-width: 1023px) 50vw, 33vw"
+                    className="object-cover transition-transform duration-500 group-hover:scale-105"
                   />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/45 via-transparent to-transparent" />
-                <div className="absolute bottom-3 left-4 flex size-11 items-center justify-center rounded-xl border border-white/30 bg-white/90 text-primary shadow-sm backdrop-blur-sm">
-                  <feature.icon className="size-5" aria-hidden="true" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/45 via-transparent to-transparent" />
+                  <div className="absolute bottom-3 left-4 flex size-11 items-center justify-center rounded-xl border border-white/30 bg-white/90 text-primary shadow-sm backdrop-blur-sm">
+                    <feature.icon className="size-5" aria-hidden="true" />
+                  </div>
                 </div>
-              </div>
 
-              <div className="p-6">
-                <h3 className="text-base font-semibold">{feature.title}</h3>
-                <p className="mt-1.5 text-sm leading-6 text-muted-foreground">
-                  {feature.text}
-                </p>
-              </div>
-            </article>
-                  </Tilt>
+                <div className="p-6">
+                  <h3 className="text-base font-semibold">{feature.title}</h3>
+                  <p className="mt-1.5 text-sm leading-6 text-muted-foreground">
+                    {feature.text}
+                  </p>
+                </div>
+              </article>
+            </Tilt>
           </StaggerItem>
         ))}
       </Stagger>

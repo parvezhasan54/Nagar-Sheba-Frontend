@@ -17,8 +17,7 @@ export function HeroSearch() {
   const debounced = useDebounce(value, 300);
   const { data } = useSearchSuggest(debounced);
 
-  const items =
-    value.trim().length >= 2 ? (data?.data.suggestions ?? []) : [];
+  const items = value.trim().length >= 2 ? (data?.data.suggestions ?? []) : [];
   const showList = open && items.length > 0;
 
   return (

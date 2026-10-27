@@ -1,4 +1,3 @@
-
 import type { CSSProperties } from "react";
 import { cn } from "@/lib/utils";
 import type { Category } from "@/types/category.type";

@@ -1,4 +1,3 @@
-
 import Link from "next/link";
 import { AnimatedFaq } from "@/components/home/AnimatedFaq";
 import { Reveal } from "@/components/motion/Reveal";

@@ -34,9 +34,9 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { useDashboardStats, useRequests } from "@/hook";
 import { formatCurrency, formatDate } from "@/lib/format";
 import { REQUEST_STATUSES, STATUS_META } from "@/lib/status";
+import { Reveal } from "../motion/Reveal";
 import { AiInsights } from "./AiInsights";
 import { WelcomeBanner } from "./WelcomeBanner";
-import { Reveal } from "../motion/Reveal";
 
 const tooltipStyle = {
   background: "var(--popover)",
@@ -108,9 +108,9 @@ export function AdminOverview() {
   return (
     <div>
       <WelcomeBanner
-  title="Platform overview"
-  description="Requests, people and revenue across every department."
-/>
+        title="Platform overview"
+        description="Requests, people and revenue across every department."
+      />
 
       <div className="mb-6 grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
         <StatCard
@@ -172,190 +172,190 @@ export function AdminOverview() {
       <AiInsights />
       <div className="mb-6 grid gap-6 lg:grid-cols-[2fr_1fr]">
         <Reveal>
-  <Card className="h-full">
-    <CardHeader>
-      <CardTitle>Requests by status</CardTitle>
-          </CardHeader>
+          <Card className="h-full">
+            <CardHeader>
+              <CardTitle>Requests by status</CardTitle>
+            </CardHeader>
 
-          <CardContent>
-            <div
-              role="img"
-              aria-label="Bar chart of request counts by status"
-              className="h-80 w-full"
-            >
-              <ResponsiveContainer width="100%" height="100%">
-                <BarChart
-                  data={statusData}
-                  layout="vertical"
-                  margin={{ left: 8, right: 16 }}
-                >
-                  <CartesianGrid
-                    horizontal={false}
-                    stroke="var(--border)"
-                    strokeDasharray="3 3"
-                  />
-                  <XAxis type="number" allowDecimals={false} tick={tick} />
-                  <YAxis
-                    type="category"
-                    dataKey="name"
-                    width={110}
-                    tick={tick}
-                  />
-                  <Tooltip
-                    contentStyle={tooltipStyle}
-                    cursor={{ fill: "var(--muted)", opacity: 0.4 }}
-                  />
-                  <Bar
-                    dataKey="value"
-                    name="Requests"
-                    fill="var(--chart-4)"
-                    radius={[0, 4, 4, 0]}
-                  />
-                </BarChart>
-              </ResponsiveContainer>
-            </div>
+            <CardContent>
+              <div
+                role="img"
+                aria-label="Bar chart of request counts by status"
+                className="h-80 w-full"
+              >
+                <ResponsiveContainer width="100%" height="100%">
+                  <BarChart
+                    data={statusData}
+                    layout="vertical"
+                    margin={{ left: 8, right: 16 }}
+                  >
+                    <CartesianGrid
+                      horizontal={false}
+                      stroke="var(--border)"
+                      strokeDasharray="3 3"
+                    />
+                    <XAxis type="number" allowDecimals={false} tick={tick} />
+                    <YAxis
+                      type="category"
+                      dataKey="name"
+                      width={110}
+                      tick={tick}
+                    />
+                    <Tooltip
+                      contentStyle={tooltipStyle}
+                      cursor={{ fill: "var(--muted)", opacity: 0.4 }}
+                    />
+                    <Bar
+                      dataKey="value"
+                      name="Requests"
+                      fill="var(--chart-4)"
+                      radius={[0, 4, 4, 0]}
+                    />
+                  </BarChart>
+                </ResponsiveContainer>
+              </div>
 
-            <table className="sr-only">
-              <caption>Requests by status</caption>
-              <thead>
-                <tr>
-                  <th>Status</th>
-                  <th>Requests</th>
-                </tr>
-              </thead>
-              <tbody>
-                {statusData.map((d) => (
-                  <tr key={d.name}>
-                    <td>{d.name}</td>
-                    <td>{d.value}</td>
+              <table className="sr-only">
+                <caption>Requests by status</caption>
+                <thead>
+                  <tr>
+                    <th>Status</th>
+                    <th>Requests</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          </CardContent>
+                </thead>
+                <tbody>
+                  {statusData.map((d) => (
+                    <tr key={d.name}>
+                      <td>{d.name}</td>
+                      <td>{d.value}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </CardContent>
           </Card>
-</Reveal>
+        </Reveal>
 
         <Reveal>
-  <Card className="h-full">
-    <CardHeader>
-      <CardTitle>Users by role</CardTitle>
-          </CardHeader>
+          <Card className="h-full">
+            <CardHeader>
+              <CardTitle>Users by role</CardTitle>
+            </CardHeader>
 
-          <CardContent>
-            <div
-              role="img"
-              aria-label="Donut chart of users by role"
-              className="h-80 w-full"
-            >
-              <ResponsiveContainer width="100%" height="100%">
-                <PieChart>
-                  <Pie
-                    data={userData}
-                    dataKey="value"
-                    nameKey="name"
-                    innerRadius="55%"
-                    outerRadius="80%"
-                    paddingAngle={2}
-                  >
-                    {userData.map((d) => (
-                      <Cell key={d.name} fill={d.fill} />
-                    ))}
-                  </Pie>
-                  <Tooltip contentStyle={tooltipStyle} />
-                  <Legend wrapperStyle={{ fontSize: 12 }} />
-                </PieChart>
-              </ResponsiveContainer>
-            </div>
+            <CardContent>
+              <div
+                role="img"
+                aria-label="Donut chart of users by role"
+                className="h-80 w-full"
+              >
+                <ResponsiveContainer width="100%" height="100%">
+                  <PieChart>
+                    <Pie
+                      data={userData}
+                      dataKey="value"
+                      nameKey="name"
+                      innerRadius="55%"
+                      outerRadius="80%"
+                      paddingAngle={2}
+                    >
+                      {userData.map((d) => (
+                        <Cell key={d.name} fill={d.fill} />
+                      ))}
+                    </Pie>
+                    <Tooltip contentStyle={tooltipStyle} />
+                    <Legend wrapperStyle={{ fontSize: 12 }} />
+                  </PieChart>
+                </ResponsiveContainer>
+              </div>
 
-            <table className="sr-only">
-              <caption>Users by role</caption>
-              <thead>
-                <tr>
-                  <th>Role</th>
-                  <th>Users</th>
-                </tr>
-              </thead>
-              <tbody>
-                {userData.map((d) => (
-                  <tr key={d.name}>
-                    <td>{d.name}</td>
-                    <td>{d.value}</td>
+              <table className="sr-only">
+                <caption>Users by role</caption>
+                <thead>
+                  <tr>
+                    <th>Role</th>
+                    <th>Users</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          </CardContent>
-  </Card>
-</Reveal>
+                </thead>
+                <tbody>
+                  {userData.map((d) => (
+                    <tr key={d.name}>
+                      <td>{d.name}</td>
+                      <td>{d.value}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </CardContent>
+          </Card>
+        </Reveal>
       </div>
 
-{deptData.length > 0 && (
-  <Reveal>
-    <Card className="mb-6 h-full">
-          <CardHeader>
-            <CardTitle>Requests by department</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div
-              role="img"
-              aria-label="Bar chart of request counts by department"
-              className="w-full"
-              style={{ height: Math.max(deptData.length * 48, 160) }}
-            >
-              <ResponsiveContainer width="100%" height="100%">
-                <BarChart
-                  data={deptData}
-                  layout="vertical"
-                  margin={{ left: 8, right: 16 }}
-                >
-                  <CartesianGrid
-                    horizontal={false}
-                    stroke="var(--border)"
-                    strokeDasharray="3 3"
-                  />
-                  <XAxis type="number" allowDecimals={false} tick={tick} />
-                  <YAxis
-                    type="category"
-                    dataKey="name"
-                    width={150}
-                    tick={tick}
-                  />
-                  <Tooltip
-                    contentStyle={tooltipStyle}
-                    cursor={{ fill: "var(--muted)", opacity: 0.4 }}
-                  />
-                  <Bar
-                    dataKey="value"
-                    name="Requests"
-                    fill="var(--chart-3)"
-                    radius={[0, 4, 4, 0]}
-                  />
-                </BarChart>
-              </ResponsiveContainer>
-            </div>
+      {deptData.length > 0 && (
+        <Reveal>
+          <Card className="mb-6 h-full">
+            <CardHeader>
+              <CardTitle>Requests by department</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div
+                role="img"
+                aria-label="Bar chart of request counts by department"
+                className="w-full"
+                style={{ height: Math.max(deptData.length * 48, 160) }}
+              >
+                <ResponsiveContainer width="100%" height="100%">
+                  <BarChart
+                    data={deptData}
+                    layout="vertical"
+                    margin={{ left: 8, right: 16 }}
+                  >
+                    <CartesianGrid
+                      horizontal={false}
+                      stroke="var(--border)"
+                      strokeDasharray="3 3"
+                    />
+                    <XAxis type="number" allowDecimals={false} tick={tick} />
+                    <YAxis
+                      type="category"
+                      dataKey="name"
+                      width={150}
+                      tick={tick}
+                    />
+                    <Tooltip
+                      contentStyle={tooltipStyle}
+                      cursor={{ fill: "var(--muted)", opacity: 0.4 }}
+                    />
+                    <Bar
+                      dataKey="value"
+                      name="Requests"
+                      fill="var(--chart-3)"
+                      radius={[0, 4, 4, 0]}
+                    />
+                  </BarChart>
+                </ResponsiveContainer>
+              </div>
 
-            <table className="sr-only">
-              <caption>Requests by department</caption>
-              <thead>
-                <tr>
-                  <th>Department</th>
-                  <th>Requests</th>
-                </tr>
-              </thead>
-              <tbody>
-                {deptData.map((d) => (
-                  <tr key={d.name}>
-                    <td>{d.name}</td>
-                    <td>{d.value}</td>
+              <table className="sr-only">
+                <caption>Requests by department</caption>
+                <thead>
+                  <tr>
+                    <th>Department</th>
+                    <th>Requests</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          </CardContent>
-    </Card>
-  </Reveal>
-)}
+                </thead>
+                <tbody>
+                  {deptData.map((d) => (
+                    <tr key={d.name}>
+                      <td>{d.name}</td>
+                      <td>{d.value}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </CardContent>
+          </Card>
+        </Reveal>
+      )}
       <Card>
         <CardHeader className="flex-row items-center justify-between">
           <CardTitle>Latest requests</CardTitle>
@@ -404,21 +404,45 @@ export function AdminOverview() {
         </CardContent>
       </Card>
       <Card className="mb-6">
-  <CardHeader><CardTitle>Requests, last 30 days</CardTitle></CardHeader>
-  <CardContent>
-    <div role="img" aria-label="Line chart of requests per day" className="h-72 w-full">
-      <ResponsiveContainer width="100%" height="100%">
-        <LineChart data={s.requests.byDay} margin={{ left: -16, right: 8 }}>
-          <CartesianGrid vertical={false} stroke="var(--border)" strokeDasharray="3 3" />
-          <XAxis dataKey="date" tick={tick} tickFormatter={(v) => v.slice(5)} />
-          <YAxis allowDecimals={false} tick={tick} />
-          <Tooltip contentStyle={tooltipStyle} />
-          <Line type="monotone" dataKey="total" name="Requests" stroke="var(--chart-2)" strokeWidth={2} dot={false} />
-        </LineChart>
-      </ResponsiveContainer>
-    </div>
-  </CardContent>
-</Card>
+        <CardHeader>
+          <CardTitle>Requests, last 30 days</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div
+            role="img"
+            aria-label="Line chart of requests per day"
+            className="h-72 w-full"
+          >
+            <ResponsiveContainer width="100%" height="100%">
+              <LineChart
+                data={s.requests.byDay}
+                margin={{ left: -16, right: 8 }}
+              >
+                <CartesianGrid
+                  vertical={false}
+                  stroke="var(--border)"
+                  strokeDasharray="3 3"
+                />
+                <XAxis
+                  dataKey="date"
+                  tick={tick}
+                  tickFormatter={(v) => v.slice(5)}
+                />
+                <YAxis allowDecimals={false} tick={tick} />
+                <Tooltip contentStyle={tooltipStyle} />
+                <Line
+                  type="monotone"
+                  dataKey="total"
+                  name="Requests"
+                  stroke="var(--chart-2)"
+                  strokeWidth={2}
+                  dot={false}
+                />
+              </LineChart>
+            </ResponsiveContainer>
+          </div>
+        </CardContent>
+      </Card>
     </div>
   );
 }

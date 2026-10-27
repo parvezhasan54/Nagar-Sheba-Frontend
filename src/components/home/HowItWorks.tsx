@@ -2,9 +2,9 @@ import { Bell, CreditCard, FilePlus, Wrench } from "lucide-react";
 import Image from "next/image";
 import { Stagger, StaggerItem } from "@/components/motion/Stagger";
 import { SectionHeading } from "@/components/shared/SectionHeading";
+import { cn } from "@/lib/utils";
 import { DrawLine } from "../motion/DrawLine";
 import { CARD_BODY, CARD_MEDIA, CARD_SHELL } from "../shared/card-styles";
-import { cn } from "@/lib/utils";
 
 const STEPS = [
   {
@@ -59,13 +59,22 @@ export function HowItWorks() {
 
           <Stagger as="ol" className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
             {STEPS.map((step, i) => (
-              <StaggerItem as="li" key={step.title} className="group flex flex-col">
+              <StaggerItem
+                as="li"
+                key={step.title}
+                className="group flex flex-col"
+              >
                 <div className="relative z-10 mx-auto mb-4 flex size-10 items-center justify-center rounded-full bg-primary text-sm font-bold text-primary-foreground shadow-sm ring-4 ring-muted">
                   {i + 1}
                 </div>
 
                 <article className={CARD_SHELL}>
-                  <div className={cn(CARD_MEDIA, "flex items-center justify-center bg-gradient-to-br from-primary/15 via-primary/5 to-muted")}>
+                  <div
+                    className={cn(
+                      CARD_MEDIA,
+                      "flex items-center justify-center bg-gradient-to-br from-primary/15 via-primary/5 to-muted",
+                    )}
+                  >
                     <Image
                       src={step.image}
                       alt={step.imageAlt}
@@ -75,13 +84,18 @@ export function HowItWorks() {
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/45 via-transparent to-transparent" />
                     <div className="absolute bottom-3 left-4 flex size-10 items-center justify-center rounded-xl border border-white/30 bg-white/90 text-primary shadow-sm backdrop-blur-sm">
-                      <step.icon className="size-12 text-primary/70" aria-hidden="true" />
+                      <step.icon
+                        className="size-12 text-primary/70"
+                        aria-hidden="true"
+                      />
                     </div>
                   </div>
- <div className={CARD_BODY}>
-    <h3 className="text-base font-semibold">{step.title}</h3>
-    <p className="mt-1.5 text-sm leading-6 text-muted-foreground">{step.text}</p>
-  </div>
+                  <div className={CARD_BODY}>
+                    <h3 className="text-base font-semibold">{step.title}</h3>
+                    <p className="mt-1.5 text-sm leading-6 text-muted-foreground">
+                      {step.text}
+                    </p>
+                  </div>
                 </article>
               </StaggerItem>
             ))}

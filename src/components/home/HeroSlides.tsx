@@ -43,7 +43,10 @@ export function HeroSlides() {
 
   useEffect(() => {
     if (reduce || paused) return;
-    const id = setInterval(() => setIndex((i) => (i + 1) % SLIDES.length), 5000);
+    const id = setInterval(
+      () => setIndex((i) => (i + 1) % SLIDES.length),
+      5000,
+    );
     return () => clearInterval(id);
   }, [reduce, paused]);
 
@@ -51,15 +54,15 @@ export function HeroSlides() {
   const Icon = slide.icon;
 
   return (
-  <section
-  aria-roledescription="carousel"
-  aria-label="How Nagar Sheba works"
-  onMouseEnter={() => setPaused(true)}
-  onMouseLeave={() => setPaused(false)}
-  onFocus={() => setPaused(true)}
-  onBlur={() => setPaused(false)}
-  className="rounded-2xl border bg-card/90 p-6 shadow-xl backdrop-blur"
->
+    <section
+      aria-roledescription="carousel"
+      aria-label="How Nagar Sheba works"
+      onMouseEnter={() => setPaused(true)}
+      onMouseLeave={() => setPaused(false)}
+      onFocus={() => setPaused(true)}
+      onBlur={() => setPaused(false)}
+      className="rounded-2xl border bg-card/90 p-6 shadow-xl backdrop-blur"
+    >
       <div className="min-h-44" aria-live={paused ? "polite" : "off"}>
         <AnimatePresence mode="wait" initial={false}>
           <motion.div
@@ -75,14 +78,24 @@ export function HeroSlides() {
             <p className="mt-4 text-xs font-semibold tracking-widest text-primary uppercase">
               {slide.step}
             </p>
-            <h2 className="mt-1 font-heading text-xl font-semibold">{slide.title}</h2>
-            <p className="mt-2 text-sm leading-6 text-muted-foreground">{slide.text}</p>
-            <p className="mt-3 text-xs font-medium text-foreground/70">{slide.meta}</p>
+            <h2 className="mt-1 font-heading text-xl font-semibold">
+              {slide.title}
+            </h2>
+            <p className="mt-2 text-sm leading-6 text-muted-foreground">
+              {slide.text}
+            </p>
+            <p className="mt-3 text-xs font-medium text-foreground/70">
+              {slide.meta}
+            </p>
           </motion.div>
         </AnimatePresence>
       </div>
 
-      <div className="mt-5 flex items-center gap-2" role="tablist" aria-label="Choose a step">
+      <div
+        className="mt-5 flex items-center gap-2"
+        role="tablist"
+        aria-label="Choose a step"
+      >
         {SLIDES.map((s, i) => (
           <button
             key={s.step}
@@ -93,11 +106,13 @@ export function HeroSlides() {
             onClick={() => setIndex(i)}
             className={cn(
               "h-1.5 rounded-full transition-all outline-none focus-visible:ring-2 focus-visible:ring-ring/50",
-              i === index ? "w-8 bg-primary" : "w-4 bg-muted hover:bg-muted-foreground/40",
+              i === index
+                ? "w-8 bg-primary"
+                : "w-4 bg-muted hover:bg-muted-foreground/40",
             )}
           />
         ))}
       </div>
-</section>
+    </section>
   );
 }

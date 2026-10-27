@@ -82,7 +82,10 @@ export default function LoginForm() {
               field.state.meta.isTouched && !field.state.meta.isValid;
             return (
               <Field data-invalid={isInvalid} className="space-y-1.5">
-                <FieldLabel htmlFor={field.name} className="text-sm font-medium">
+                <FieldLabel
+                  htmlFor={field.name}
+                  className="text-sm font-medium"
+                >
                   Email address
                 </FieldLabel>
                 <div className="relative">
@@ -115,7 +118,10 @@ export default function LoginForm() {
             return (
               <Field data-invalid={isInvalid} className="space-y-1.5">
                 <div className="flex items-center justify-between">
-                  <FieldLabel htmlFor={field.name} className="text-sm font-medium">
+                  <FieldLabel
+                    htmlFor={field.name}
+                    className="text-sm font-medium"
+                  >
                     Password
                   </FieldLabel>
                   <Link
@@ -144,7 +150,9 @@ export default function LoginForm() {
                   <button
                     type="button"
                     onClick={() => setShowPassword((p) => !p)}
-                    aria-label={showPassword ? "Hide password" : "Show password"}
+                    aria-label={
+                      showPassword ? "Hide password" : "Show password"
+                    }
                     className="absolute top-1/2 right-2.5 flex size-7 -translate-y-1/2 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
                   >
                     {showPassword ? (
@@ -202,11 +210,17 @@ export default function LoginForm() {
 
       <p className="mt-5 text-center text-xs leading-5 text-muted-foreground">
         By continuing, you agree to our{" "}
-        <Link href="/terms" className="underline underline-offset-2 hover:text-primary">
+        <Link
+          href="/terms"
+          className="underline underline-offset-2 hover:text-primary"
+        >
           Terms of Service
         </Link>{" "}
         and{" "}
-        <Link href="/privacy" className="underline underline-offset-2 hover:text-primary">
+        <Link
+          href="/privacy"
+          className="underline underline-offset-2 hover:text-primary"
+        >
           Privacy Policy
         </Link>
         .

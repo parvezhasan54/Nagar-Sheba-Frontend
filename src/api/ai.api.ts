@@ -1,8 +1,8 @@
-import type { SearchSuggestResult } from "@/types/ai.type";
 import apiClient from "@/lib/apiClient";
 import type {
   AiInsights,
   ChatMessage,
+  SearchSuggestResult,
   ServiceSuggestion,
 } from "@/types/ai.type";
 import type { ApiResponse } from "@/types/api.type";
@@ -26,7 +26,6 @@ export function getAiInsights() {
     method: "GET",
   });
 }
-
 
 export function aiSearchSuggest(q: string) {
   return apiClient<ApiResponse<SearchSuggestResult>>("/ai/search-suggest", {

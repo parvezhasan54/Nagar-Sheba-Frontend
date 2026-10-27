@@ -67,7 +67,9 @@ export function PasswordChecklist({ value }: { value: string }) {
               )}
               <span>
                 {rule.label}
-                <span className="sr-only">{met ? " (met)" : " (not met yet)"}</span>
+                <span className="sr-only">
+                  {met ? " (met)" : " (not met yet)"}
+                </span>
               </span>
             </li>
           );

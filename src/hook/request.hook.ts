@@ -27,7 +27,7 @@ function useInvalidateRequests() {
     queryClient.invalidateQueries({ queryKey: ["request-search"] });
     queryClient.invalidateQueries({ queryKey: ["staff-performance"] });
     queryClient.invalidateQueries({ queryKey: ["citizen-summary"] });
-queryClient.invalidateQueries({ queryKey: ["recommended-categories"] });
+    queryClient.invalidateQueries({ queryKey: ["recommended-categories"] });
     if (id) queryClient.invalidateQueries({ queryKey: ["request", id] });
     if (opts.payments)
       queryClient.invalidateQueries({ queryKey: ["payments"] });

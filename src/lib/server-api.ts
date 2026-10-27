@@ -9,18 +9,26 @@ import type {
 
 const BACKEND_URL = process.env.BACKEND_URL ?? "http://localhost:5000/api/v1";
 
-async function serverGet<T>(path: string, revalidate = 30): Promise<T | null> {
-  try {
-    const res = await fetch(`${BACKEND_URL}${path}`, {
-      next: { revalidate },
-      signal: AbortSignal.timeout(8000), // don't hang 60s on a cold backend
-    });
-    if (!res.ok) return null;
-    const json = (await res.json()) as ApiResponse<T>;
-    return json.data;
-  } catch {
-    return null;
+async function serverGet<T>(
+  path: string,
+  revalidate = 30,
+  patient = false,
+): Promise<T | null> {
+  const attempts = patient ? 2 : 1;
+  for (let i = 0; i < attempts; i++) {
+    try {
+      const res = await fetch(`${BACKEND_URL}${path}`, {
+        next: { revalidate },
+        signal: AbortSignal.timeout(patient ? 25_000 : 8_000),
+      });
+      if (res.status === 404) return null; // a real "not found"
+      if (res.ok) return ((await res.json()) as ApiResponse<T>).data;
+    } catch {
+      /* retry */
+    }
   }
+  if (patient) throw new Error("Backend unavailable"); // never cache as 404
+  return null;
 }
 
 export async function getPublicCategories() {
@@ -40,7 +48,7 @@ export function getCategoryReviews(id: string) {
 }
 
 export function getPublicCategory(id: string) {
-  return serverGet<Category>(`/categories/${id}`, 60);
+  return serverGet<Category>(`/categories/${id}`, 60, true);
 }
 
 export async function getResolvedIssues() {

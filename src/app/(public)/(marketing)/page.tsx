@@ -1,8 +1,10 @@
-
 import type { Metadata } from "next";
 import { Suspense } from "react";
 import { BlogPreview } from "@/components/home/BlogPreview";
-import { CategoryCardSkeleton, CategoryGridSkeleton } from "@/components/home/CategoryCardSkeleton";
+import {
+  CategoryCardSkeleton,
+  CategoryGridSkeleton,
+} from "@/components/home/CategoryCardSkeleton";
 import { CtaBanner } from "@/components/home/CtaBanner";
 import { FaqPreview } from "@/components/home/FaqPreview";
 import { Features } from "@/components/home/Features";
@@ -37,9 +39,7 @@ export const metadata: Metadata = {
   },
 };
 
-const BlockSkeleton = () => (
-  <Skeleton className="h-72 w-full rounded-xl" />
-);
+const BlockSkeleton = () => <Skeleton className="h-72 w-full rounded-xl" />;
 
 export default function HomePage() {
   return (
@@ -66,19 +66,19 @@ export default function HomePage() {
         </Reveal>
         <div className="mt-10">
           <Suspense
-  fallback={
-    <div className="flex gap-5 overflow-hidden py-3">
-      {Array.from({ length: 4 }, (_, i) => (
-        // biome-ignore lint/suspicious/noArrayIndexKey: static skeleton list
-        <div key={i} className="w-72 shrink-0 sm:w-80">
-          <CategoryCardSkeleton />
-        </div>
-      ))}
-    </div>
-  }
->
-  <ServicesData />
-</Suspense>
+            fallback={
+              <div className="flex gap-5 overflow-hidden py-3">
+                {Array.from({ length: 4 }, (_, i) => (
+                  // biome-ignore lint/suspicious/noArrayIndexKey: static skeleton list
+                  <div key={i} className="w-72 shrink-0 sm:w-80">
+                    <CategoryCardSkeleton />
+                  </div>
+                ))}
+              </div>
+            }
+          >
+            <ServicesData />
+          </Suspense>
         </div>
       </Section>
 

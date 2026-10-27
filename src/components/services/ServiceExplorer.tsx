@@ -1,7 +1,7 @@
 "use client";
 
-import { AnimatePresence, motion } from "motion/react";
 import { SearchX, Tags } from "lucide-react";
+import { AnimatePresence, motion } from "motion/react";
 import type { getCategories } from "@/api";
 import {
   CATEGORY_GRID_CLASS,
@@ -171,7 +171,10 @@ export function ServiceExplorer() {
           value={sort}
           options={SORT_OPTIONS}
           onChange={(value) =>
-            setParams({ sort: value === DEFAULT_SORT ? null : value, page: null })
+            setParams({
+              sort: value === DEFAULT_SORT ? null : value,
+              page: null,
+            })
           }
         />
 
@@ -189,7 +192,9 @@ export function ServiceExplorer() {
       ) : categories.length === 0 ? (
         <EmptyState
           icon={hasFilters ? SearchX : Tags}
-          title={hasFilters ? "No services match your filters" : "No services yet"}
+          title={
+            hasFilters ? "No services match your filters" : "No services yet"
+          }
           description={
             hasFilters
               ? "Try a different search term or clear a filter."

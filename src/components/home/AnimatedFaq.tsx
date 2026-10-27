@@ -1,7 +1,7 @@
 "use client";
 
-import { AnimatePresence, motion } from "motion/react";
 import { ChevronDown } from "lucide-react";
+import { AnimatePresence, motion } from "motion/react";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
 
@@ -26,9 +26,15 @@ export function AnimatedFaq({ items }: { items: Item[] }) {
                 className="flex w-full items-center justify-between gap-4 px-5 py-4 text-left text-sm font-medium outline-none transition-colors hover:text-primary focus-visible:ring-2 focus-visible:ring-ring/50"
               >
                 {item.q}
-                <motion.span animate={{ rotate: isOpen ? 180 : 0 }} transition={{ duration: 0.25 }}>
+                <motion.span
+                  animate={{ rotate: isOpen ? 180 : 0 }}
+                  transition={{ duration: 0.25 }}
+                >
                   <ChevronDown
-                    className={cn("size-4 shrink-0", isOpen ? "text-primary" : "text-muted-foreground")}
+                    className={cn(
+                      "size-4 shrink-0",
+                      isOpen ? "text-primary" : "text-muted-foreground",
+                    )}
                     aria-hidden="true"
                   />
                 </motion.span>
@@ -47,7 +53,9 @@ export function AnimatedFaq({ items }: { items: Item[] }) {
                   transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
                   className="overflow-hidden"
                 >
-                  <p className="px-5 pb-4 text-sm leading-6 text-muted-foreground">{item.a}</p>
+                  <p className="px-5 pb-4 text-sm leading-6 text-muted-foreground">
+                    {item.a}
+                  </p>
                 </motion.div>
               )}
             </AnimatePresence>

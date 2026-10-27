@@ -99,14 +99,14 @@ export default function RegisterForm() {
 
   return (
     <div className="w-full rounded-2xl border bg-card p-6 shadow-sm sm:p-8">
-<div className="mb-7">
-  <h1 className="font-heading text-2xl font-bold tracking-tight">
-    Create your account
-  </h1>
-  <p className="mt-1 text-sm text-muted-foreground">
-    Join Nagar Sheba to report issues, pay fees and track every request.
-  </p>
-</div>
+      <div className="mb-7">
+        <h1 className="font-heading text-2xl font-bold tracking-tight">
+          Create your account
+        </h1>
+        <p className="mt-1 text-sm text-muted-foreground">
+          Join Nagar Sheba to report issues, pay fees and track every request.
+        </p>
+      </div>
 
       <form
         noValidate
@@ -166,9 +166,9 @@ export default function RegisterForm() {
                   </div>
 
                   {isInvalid && <FieldError errors={field.state.meta.errors} />}
-                 {isPassword && field.state.value && (
-  <PasswordChecklist value={field.state.value} />
-)}
+                  {isPassword && field.state.value && (
+                    <PasswordChecklist value={field.state.value} />
+                  )}
                 </Field>
               );
             }}
@@ -194,17 +194,23 @@ export default function RegisterForm() {
         </Button>
         <GoogleSignInButton />
 
-<p className="text-center text-xs leading-5 text-muted-foreground">
-  By creating an account, you agree to our{" "}
-  <Link href="/terms" className="underline underline-offset-2 hover:text-primary">
-    Terms of Service
-  </Link>{" "}
-  and{" "}
-  <Link href="/privacy" className="underline underline-offset-2 hover:text-primary">
-    Privacy Policy
-  </Link>
-  .
-</p>
+        <p className="text-center text-xs leading-5 text-muted-foreground">
+          By creating an account, you agree to our{" "}
+          <Link
+            href="/terms"
+            className="underline underline-offset-2 hover:text-primary"
+          >
+            Terms of Service
+          </Link>{" "}
+          and{" "}
+          <Link
+            href="/privacy"
+            className="underline underline-offset-2 hover:text-primary"
+          >
+            Privacy Policy
+          </Link>
+          .
+        </p>
       </form>
     </div>
   );

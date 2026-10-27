@@ -1,6 +1,7 @@
 "use client";
 
 import { AlarmClock, CircleCheck, Hourglass, Inbox, Play } from "lucide-react";
+import dynamic from "next/dynamic";
 import Link from "next/link";
 import { EmptyState } from "@/components/shared/EmptyState";
 import { ErrorState } from "@/components/shared/ErrorState";
@@ -13,7 +14,6 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { useProfile, useRequests, useStaffPerformance } from "@/hook";
 import { formatDateTime } from "@/lib/format";
 import { getDisplayName } from "@/lib/user";
-import dynamic from "next/dynamic";
 
 const StaffStatusChart = dynamic(
   () =>
@@ -77,7 +77,7 @@ export function StaffOverview() {
           tone="success"
         />
       </div>
-<StaffStatusChart />
+      <StaffStatusChart />
       <Card>
         <CardHeader className="flex-row items-center justify-between">
           <CardTitle>Needs your action</CardTitle>

@@ -16,7 +16,6 @@ export type Category = {
   averageRating?: number | null;
   reviewCount?: number;
   requestCount?: number;
-  
 };
 
 export type CreateCategoryPayload = {

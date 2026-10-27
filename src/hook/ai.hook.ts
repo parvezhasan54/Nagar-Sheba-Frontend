@@ -1,7 +1,10 @@
-import { useMutation, useQuery } from "@tanstack/react-query";
-import { aiChat, aiSuggestCategory, getAiInsights } from "@/api";
-import { keepPreviousData } from "@tanstack/react-query";
-import { aiSearchSuggest } from "@/api";
+import { keepPreviousData, useMutation, useQuery } from "@tanstack/react-query";
+import {
+  aiChat,
+  aiSearchSuggest,
+  aiSuggestCategory,
+  getAiInsights,
+} from "@/api";
 
 export function useSearchSuggest(q: string) {
   return useQuery({

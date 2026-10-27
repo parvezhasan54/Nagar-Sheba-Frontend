@@ -45,19 +45,21 @@ export function CitizenOverview() {
 
   return (
     <div>
-
-<WelcomeBanner
-  title={name ? `Welcome, ${name}` : "Welcome"}
-  description="Here is where your requests stand."
-  action={
-    <Link
-      href="/citizen/requests/new"
-      className={cn(buttonVariants({ variant: "secondary" }), "h-10 gap-2 px-4")}
-    >
-      <FilePlus className="size-4" /> New request
-    </Link>
-  }
-/>
+      <WelcomeBanner
+        title={name ? `Welcome, ${name}` : "Welcome"}
+        description="Here is where your requests stand."
+        action={
+          <Link
+            href="/citizen/requests/new"
+            className={cn(
+              buttonVariants({ variant: "secondary" }),
+              "h-10 gap-2 px-4",
+            )}
+          >
+            <FilePlus className="size-4" /> New request
+          </Link>
+        }
+      />
 
       {pendingCount > 0 && (
         <Link

@@ -50,14 +50,38 @@ const ALLOWED_IMAGES = ["image/jpeg", "image/png", "image/webp"];
 const MAX_IMAGE_SIZE = 5 * 1024 * 1024;
 
 const DETAIL_FIELDS = [
-  { name: "fullName", label: "Full name", autoComplete: "name", roles: ["CITIZEN", "STAFF", "ADMIN"] },
-  { name: "phone", label: "Phone number", autoComplete: "tel", roles: ["CITIZEN"] },
-  { name: "address", label: "Address", autoComplete: "street-address", roles: ["CITIZEN"] },
-  { name: "title", label: "Job title", autoComplete: "organization-title", roles: ["STAFF"] },
+  {
+    name: "fullName",
+    label: "Full name",
+    autoComplete: "name",
+    roles: ["CITIZEN", "STAFF", "ADMIN"],
+  },
+  {
+    name: "phone",
+    label: "Phone number",
+    autoComplete: "tel",
+    roles: ["CITIZEN"],
+  },
+  {
+    name: "address",
+    label: "Address",
+    autoComplete: "street-address",
+    roles: ["CITIZEN"],
+  },
+  {
+    name: "title",
+    label: "Job title",
+    autoComplete: "organization-title",
+    roles: ["STAFF"],
+  },
 ] as const;
 
 const PASSWORD_FIELDS = [
-  { name: "currentPassword", label: "Current password", autoComplete: "current-password" },
+  {
+    name: "currentPassword",
+    label: "Current password",
+    autoComplete: "current-password",
+  },
   { name: "newPassword", label: "New password", autoComplete: "new-password" },
 ] as const;
 
@@ -134,14 +158,19 @@ function ProfileHeader({ profile }: { profile: AuthUser }) {
     upload(formData, {
       onSuccess: () => toast.success("Profile photo updated"),
       onError: (error) =>
-        toast.error("Upload failed", { description: getApiErrorMessage(error) }),
+        toast.error("Upload failed", {
+          description: getApiErrorMessage(error),
+        }),
     });
   };
 
   return (
     <Card className="gap-0 py-0">
       <div className="relative h-28 overflow-hidden bg-primary sm:h-32">
-        <div aria-hidden="true" className="pointer-events-none absolute inset-0">
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0"
+        >
           <div className="animate-float absolute -top-10 -right-6 size-44 rounded-full bg-white/10 blur-2xl" />
           <div className="animate-float-slow absolute -bottom-14 left-1/4 size-52 rounded-full bg-white/10 blur-2xl" />
         </div>
@@ -158,7 +187,10 @@ function ProfileHeader({ profile }: { profile: AuthUser }) {
               className="group relative block rounded-full outline-none focus-visible:ring-2 focus-visible:ring-ring/50"
             >
               <Avatar className="size-24 ring-4 ring-card sm:size-28">
-                <AvatarImage src={profile.profileImage ?? undefined} alt={name} />
+                <AvatarImage
+                  src={profile.profileImage ?? undefined}
+                  alt={name}
+                />
                 <AvatarFallback className="text-3xl">
                   {getInitials(name)}
                 </AvatarFallback>
@@ -170,7 +202,11 @@ function ProfileHeader({ profile }: { profile: AuthUser }) {
                     : "opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100 [@media(hover:none)]:opacity-0"
                 }`}
               >
-                {isPending ? <Spinner className="size-6" /> : <Camera className="size-6" aria-hidden="true" />}
+                {isPending ? (
+                  <Spinner className="size-6" />
+                ) : (
+                  <Camera className="size-6" aria-hidden="true" />
+                )}
               </span>
             </button>
 
@@ -256,7 +292,10 @@ function AccountCard({ profile }: { profile: AuthUser }) {
       <CardContent>
         <dl className="divide-y text-sm">
           {rows.map((r) => (
-            <div key={r.label} className="flex items-center justify-between gap-4 py-3">
+            <div
+              key={r.label}
+              className="flex items-center justify-between gap-4 py-3"
+            >
               <dt className="text-muted-foreground">{r.label}</dt>
               <dd className="text-right font-medium">{r.value}</dd>
             </div>
@@ -287,7 +326,9 @@ function DetailsForm({ profile }: { profile: AuthUser }) {
       onSubmit: UpdateProfileZodSchema,
     },
     onSubmit: ({ value }) => {
-      const payload: Record<string, string> = { fullName: value.fullName.trim() };
+      const payload: Record<string, string> = {
+        fullName: value.fullName.trim(),
+      };
       if (role === "CITIZEN") {
         if (value.phone.trim()) payload.phone = value.phone.trim();
         if (value.address.trim()) payload.address = value.address.trim();
@@ -356,7 +397,9 @@ function DetailsForm({ profile }: { profile: AuthUser }) {
                         onChange={(e) => field.handleChange(e.target.value)}
                         className="h-10"
                       />
-                      {isInvalid && <FieldError errors={field.state.meta.errors} />}
+                      {isInvalid && (
+                        <FieldError errors={field.state.meta.errors} />
+                      )}
                     </Field>
                   );
                 }}
@@ -367,7 +410,11 @@ function DetailsForm({ profile }: { profile: AuthUser }) {
           <form.Subscribe selector={(s) => s.isDirty}>
             {(dirty) => (
               <div className="flex flex-wrap items-center gap-3 border-t pt-4">
-                <Button type="submit" disabled={isPending || !dirty} className="h-10 px-5">
+                <Button
+                  type="submit"
+                  disabled={isPending || !dirty}
+                  className="h-10 px-5"
+                >
                   {isPending ? (
                     <>
                       <Spinner data-icon="inline-start" /> Saving...
@@ -401,7 +448,10 @@ function DetailsForm({ profile }: { profile: AuthUser }) {
 }
 
 function PasswordForm({ profile }: { profile: AuthUser }) {
-  const [show, setShow] = useState({ currentPassword: false, newPassword: false });
+  const [show, setShow] = useState({
+    currentPassword: false,
+    newPassword: false,
+  });
   const { mutate: change, isPending } = useChangePassword();
 
   const form = useForm({
@@ -487,10 +537,16 @@ function PasswordForm({ profile }: { profile: AuthUser }) {
                         aria-label={`${visible ? "Hide" : "Show"} ${item.label.toLowerCase()}`}
                         className="absolute top-1/2 right-2 flex size-7 -translate-y-1/2 items-center justify-center rounded-md text-muted-foreground hover:bg-muted hover:text-foreground"
                       >
-                        {visible ? <EyeOff className="size-4" /> : <Eye className="size-4" />}
+                        {visible ? (
+                          <EyeOff className="size-4" />
+                        ) : (
+                          <Eye className="size-4" />
+                        )}
                       </button>
                     </div>
-                    {isInvalid && <FieldError errors={field.state.meta.errors} />}
+                    {isInvalid && (
+                      <FieldError errors={field.state.meta.errors} />
+                    )}
                     {item.name === "newPassword" && field.state.value && (
                       <PasswordChecklist value={field.state.value} />
                     )}

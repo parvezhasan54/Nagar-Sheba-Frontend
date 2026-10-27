@@ -173,7 +173,9 @@ export default function ResetPasswordForm() {
                   </button>
                 </div>
                 {isInvalid && <FieldError errors={field.state.meta.errors} />}
-                {field.state.value && <PasswordChecklist value={field.state.value} />}
+                {field.state.value && (
+                  <PasswordChecklist value={field.state.value} />
+                )}
               </Field>
             );
           }}

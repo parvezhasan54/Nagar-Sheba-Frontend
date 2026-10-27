@@ -10,7 +10,12 @@ type Props = {
   wordClassName?: string;
 };
 
-export function SplitText({ text, delay = 0, className, wordClassName }: Props) {
+export function SplitText({
+  text,
+  delay = 0,
+  className,
+  wordClassName,
+}: Props) {
   const reduce = useReducedMotion();
 
   return (

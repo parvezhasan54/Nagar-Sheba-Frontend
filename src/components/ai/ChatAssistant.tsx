@@ -66,7 +66,7 @@ function TypingBubble() {
         className="flex items-center gap-1 rounded-2xl rounded-bl-sm bg-muted px-4 py-3"
         aria-label="Assistant is typing"
       >
-                <span
+        <span
           key="typing-dot-1"
           aria-hidden="true"
           className="typing-dot size-1.5 rounded-full bg-muted-foreground"

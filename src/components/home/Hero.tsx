@@ -15,7 +15,10 @@ export function Hero() {
       id="hero"
       className="relative isolate flex min-h-[60svh] items-center border-b bg-gradient-to-b from-primary/10 via-background to-background lg:max-h-[70svh]"
     >
-      <div aria-hidden="true" className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 -z-10 overflow-hidden"
+      >
         <div className="animate-float absolute -top-24 left-[10%] size-72 rounded-full bg-primary/20 blur-3xl" />
         <div className="animate-float-slow absolute top-32 right-[8%] size-80 rounded-full bg-chart-1/30 blur-3xl" />
       </div>
@@ -42,8 +45,8 @@ export function Hero() {
 
           <StaggerItem>
             <p className="mx-auto mt-5 max-w-xl text-base leading-7 text-muted-foreground lg:mx-0 lg:text-lg">
-              File a complaint, pay service fees securely and follow every status
-              update until your issue is resolved.
+              File a complaint, pay service fees securely and follow every
+              status update until your issue is resolved.
             </p>
           </StaggerItem>
 
@@ -56,7 +59,10 @@ export function Hero() {
               <Magnetic>
                 <Link
                   href="/citizen/requests/new"
-                  className={cn(buttonVariants(), "group h-11 gap-2 px-6 text-sm font-semibold shadow-lg shadow-primary/25")}
+                  className={cn(
+                    buttonVariants(),
+                    "group h-11 gap-2 px-6 text-sm font-semibold shadow-lg shadow-primary/25",
+                  )}
                 >
                   Report an issue
                   <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
@@ -65,7 +71,10 @@ export function Hero() {
               <Magnetic>
                 <Link
                   href="/services"
-                  className={cn(buttonVariants({ variant: "outline" }), "h-11 px-6 text-sm font-semibold")}
+                  className={cn(
+                    buttonVariants({ variant: "outline" }),
+                    "h-11 px-6 text-sm font-semibold",
+                  )}
                 >
                   Browse services
                 </Link>

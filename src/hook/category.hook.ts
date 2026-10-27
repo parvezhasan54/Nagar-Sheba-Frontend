@@ -1,4 +1,3 @@
-import { getRecommendedCategories } from "@/api";
 import {
   keepPreviousData,
   useMutation,
@@ -10,6 +9,7 @@ import {
   deleteCategory,
   getCategories,
   getCategory,
+  getRecommendedCategories,
   updateCategory,
 } from "@/api";
 
@@ -76,7 +76,6 @@ export function useDeleteCategory() {
     },
   });
 }
-
 
 export function useRecommendedCategories() {
   return useQuery({

@@ -13,9 +13,9 @@ import {
 } from "@/lib/server-api";
 import { CATEGORY_GRID_CLASS, CategoryCard } from "./CategoryCard";
 import { ResolvedIssues } from "./ResolvedIssues";
+import { ServiceMarquee } from "./ServiceMarquee";
 import { StatsStrip } from "./StatsStrip";
 import { Testimonials } from "./Testimonials";
-import { ServiceMarquee } from "./ServiceMarquee";
 
 export async function StatsData() {
   return <StatsStrip stats={await getPublicStats()} />;
@@ -28,7 +28,6 @@ export async function ResolvedData() {
 export async function TestimonialsData() {
   return <Testimonials items={await getTestimonials()} />;
 }
-
 
 export async function ServicesData() {
   const categories = await getPublicCategories();
@@ -57,7 +56,6 @@ export async function ServicesData() {
     </>
   );
 }
-
 
 export async function DepartmentsData() {
   const departments = await getPublicDepartments();
@@ -125,7 +123,7 @@ export async function TrendingData() {
     );
   }
 
-    return (
+  return (
     <Stagger className={CATEGORY_GRID_CLASS}>
       {categories.map((category, i) => (
         <StaggerItem key={category.id} className="h-full">

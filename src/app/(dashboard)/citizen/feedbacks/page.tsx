@@ -9,7 +9,10 @@ export const metadata: Metadata = { title: "Feedback" };
 export default function CitizenFeedbackPage() {
   return (
     <>
-      <PageHeader title="My feedback" description="Ratings you have left on resolved requests." />
+      <PageHeader
+        title="My feedback"
+        description="Ratings you have left on resolved requests."
+      />
       <Suspense fallback={<RequestListSkeleton />}>
         <FeedbackList requestBasePath="/citizen/requests" />
       </Suspense>

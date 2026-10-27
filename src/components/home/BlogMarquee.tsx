@@ -1,4 +1,3 @@
-
 import type { CSSProperties } from "react";
 import { BlogCard } from "@/components/blog/BlogCard";
 import type { BlogPost } from "@/lib/blog";
@@ -17,19 +16,14 @@ function Group({
     <div
       aria-hidden={clone || undefined}
       inert={clone || undefined}
-      style={
-        { "--marquee-duration": `${duration}s` } as CSSProperties
-      }
+      style={{ "--marquee-duration": `${duration}s` } as CSSProperties}
       className={cn(
         "animate-marquee-reverse flex shrink-0 gap-5 pr-5",
         clone && "marquee-clone",
       )}
     >
       {posts.map((post, index) => (
-        <div
-          key={`${post.slug}-${index}`}
-          className="w-72 shrink-0 sm:w-80"
-        >
+        <div key={`${post.slug}-${index}`} className="w-72 shrink-0 sm:w-80">
           <BlogCard post={post} />
         </div>
       ))}
@@ -37,11 +31,7 @@ function Group({
   );
 }
 
-export function BlogMarquee({
-  posts,
-}: {
-  posts: BlogPost[];
-}) {
+export function BlogMarquee({ posts }: { posts: BlogPost[] }) {
   if (posts.length === 0) {
     return null;
   }
@@ -50,10 +40,7 @@ export function BlogMarquee({
   const group =
     posts.length >= 6
       ? posts
-      : Array.from(
-          { length: Math.ceil(6 / posts.length) },
-          () => posts,
-        ).flat();
+      : Array.from({ length: Math.ceil(6 / posts.length) }, () => posts).flat();
 
   const duration = Math.max(group.length * 8, 32);
 

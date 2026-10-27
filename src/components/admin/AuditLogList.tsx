@@ -27,8 +27,7 @@ const ENTITY_OPTIONS = [
   ),
 ];
 
-const hasValue = (value: unknown) =>
-  value !== null && value !== undefined;
+const hasValue = (value: unknown) => value !== null && value !== undefined;
 
 export function AuditLogList() {
   const { get, getNumber, setParams } = useUrlState();
@@ -39,10 +38,7 @@ export function AuditLogList() {
   const to = get("to");
 
   const hasFilters =
-    entityType !== "all" ||
-    Boolean(action) ||
-    Boolean(from) ||
-    Boolean(to);
+    entityType !== "all" || Boolean(action) || Boolean(from) || Boolean(to);
 
   const { data, isLoading, isError, error, refetch } = useAuditLogs({
     page,
@@ -110,11 +106,7 @@ export function AuditLogList() {
         </label>
 
         {hasFilters && (
-          <Button
-            variant="ghost"
-            className="h-9"
-            onClick={clearFilters}
-          >
+          <Button variant="ghost" className="h-9" onClick={clearFilters}>
             Clear
           </Button>
         )}
@@ -162,8 +154,7 @@ export function AuditLogList() {
                       </p>
                     </TableCell>
                     <TableCell className="pr-4">
-                      {hasValue(log.previousValue) ||
-                      hasValue(log.newValue) ? (
+                      {hasValue(log.previousValue) || hasValue(log.newValue) ? (
                         <details>
                           <summary className="cursor-pointer text-primary">
                             View
