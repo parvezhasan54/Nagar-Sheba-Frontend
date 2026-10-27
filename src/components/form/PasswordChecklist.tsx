@@ -2,7 +2,7 @@ import { Check, Circle } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const RULES = [
-  { label: "At least 8 characters", test: (v: string) => v.length >= 8},
+  { label: "At least 8 characters", test: (v: string) => v.length >= 8 },
   { label: "One lowercase letter", test: (v: string) => /[a-z]/.test(v) },
   { label: "One uppercase letter", test: (v: string) => /[A-Z]/.test(v) },
   { label: "One digit", test: (v: string) => /\d/.test(v) },

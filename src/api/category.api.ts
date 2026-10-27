@@ -3,7 +3,6 @@ import type { ApiResponse } from "@/types/api.type";
 import type {
   Category,
   CreateCategoryPayload,
-  FeeType,
   RecommendedCategories,
   UpdateCategoryPayload,
 } from "@/types/category.type";

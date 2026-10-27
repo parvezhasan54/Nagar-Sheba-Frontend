@@ -132,10 +132,10 @@ async function roleFromToken(token?: string): Promise<UserRole | null> {
  */
 async function fetchRole(cookie: string): Promise<UserRole | null> {
   const res = await fetch(`${BACKEND_URL}/auth/me`, {
-	headers: { cookie },
-	cache: "no-store",
-	signal: AbortSignal.timeout(10_000),
-});
+    headers: { cookie },
+    cache: "no-store",
+    signal: AbortSignal.timeout(10_000),
+  });
 
   if (!res.ok) return null;
 
@@ -229,12 +229,12 @@ async function getSession(
     // Attempt refresh when the access token is absent, expired,
     // or rejected by the backend.
     const refresh = await fetch(`${BACKEND_URL}/auth/refresh-token`, {
-	method: "POST",
-	headers: { cookie, "content-type": "application/json" },
-	body: "{}",
-	cache: "no-store",
-	signal: AbortSignal.timeout(10_000),
-});
+      method: "POST",
+      headers: { cookie, "content-type": "application/json" },
+      body: "{}",
+      cache: "no-store",
+      signal: AbortSignal.timeout(10_000),
+    });
 
     if (!refresh.ok) {
       return NO_SESSION;

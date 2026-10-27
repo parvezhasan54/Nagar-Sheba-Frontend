@@ -265,13 +265,17 @@ function StatusOverrideForm({ request }: { request: ServiceRequest }) {
 }
 
 export function AdminActions({ request }: { request: ServiceRequest }) {
-  if (TERMINAL.includes(request.status)) {
+  if (
+    TERMINAL.includes(request.status) ||
+    request.status === "PENDING_PAYMENT"
+  ) {
     return (
       <Card>
         <CardContent className="flex items-start gap-2 text-xs text-muted-foreground">
           <Lock className="mt-0.5 size-4 shrink-0" />
-          This request is {request.status.toLowerCase()} and can no longer be
-          changed.
+          {request.status === "PENDING_PAYMENT"
+            ? "This request is waiting for the citizen's payment. Actions unlock once it is paid."
+            : `This request is ${request.status.toLowerCase()} and can no longer be changed.`}
         </CardContent>
       </Card>
     );
@@ -282,11 +286,9 @@ export function AdminActions({ request }: { request: ServiceRequest }) {
       <CardHeader>
         <CardTitle>Admin actions</CardTitle>
       </CardHeader>
-
       <CardContent className="space-y-4">
-        {request.status !== "PENDING_PAYMENT" && <ReassignForm request={request} />}
-
-        {request.status !== "PENDING_PAYMENT" && <StatusOverrideForm request={request} />}
+        <ReassignForm request={request} />
+        <StatusOverrideForm request={request} />
       </CardContent>
     </Card>
   );

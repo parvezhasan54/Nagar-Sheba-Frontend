@@ -397,7 +397,7 @@ NEXT_PUBLIC_SITE_URL=http://localhost:3000
 | `NEXT_PUBLIC_DEMO_ADMIN_EMAIL` / `_PASSWORD` | ➖ | Admin demo login |
 | `NEXT_PUBLIC_DEMO_STAFF_EMAIL` / `_PASSWORD` | ➖ | Staff demo login |
 | `NEXT_PUBLIC_DEMO_CITIZEN_EMAIL` / `_PASSWORD` | ➖ | Citizen demo login |
-
+| `JWT_ACCESS_SECRET` | ✅ | Same value as the backend. Used only by `proxy.ts` to verify the access token. Never prefix it with `NEXT_PUBLIC_` |
 **Production values**
 
 ```dotenv

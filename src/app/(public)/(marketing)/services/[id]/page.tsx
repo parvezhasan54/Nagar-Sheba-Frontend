@@ -6,11 +6,11 @@ import {
   CATEGORY_GRID_CLASS,
   CategoryCard,
 } from "@/components/home/CategoryCard";
+import { RequestServiceButton } from "@/components/services/RequestServiceButton";
 import { ServiceGallery } from "@/components/services/ServiceGallery";
 import { ServiceReviews } from "@/components/services/ServiceReviews";
 import { ShareButton } from "@/components/services/ShareButton";
 import { Badge } from "@/components/ui/badge";
-import { buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { formatCurrency, formatSla } from "@/lib/format";
 import {
@@ -19,7 +19,6 @@ import {
   getPublicCategory,
 } from "@/lib/server-api";
 import { cn } from "@/lib/utils";
-import { RequestServiceButton } from "@/components/services/RequestServiceButton";
 
 type Props = {
   params: Promise<{ id: string }>;
@@ -208,21 +207,21 @@ export default async function ServiceDetailPage({ params }: Props) {
                   role="img"
                   aria-label={`${averageRating.toFixed(1)} out of 5 stars`}
                 >
-{Array.from({ length: 5 }, (_, index) => {
-  const star = index + 1;
+                  {Array.from({ length: 5 }, (_, index) => {
+                    const star = index + 1;
 
-  return (
-    <Star
-      key={star}
-      className={cn(
-        "size-4",
-        star <= Math.round(averageRating)
-          ? "fill-amber-400 text-amber-400"
-          : "text-muted-foreground/30",
-      )}
-    />
-  );
-})}
+                    return (
+                      <Star
+                        key={star}
+                        className={cn(
+                          "size-4",
+                          star <= Math.round(averageRating)
+                            ? "fill-amber-400 text-amber-400"
+                            : "text-muted-foreground/30",
+                        )}
+                      />
+                    );
+                  })}
                 </div>
                 <span className="text-xs text-muted-foreground">
                   {ratingLabel}
