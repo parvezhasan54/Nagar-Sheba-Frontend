@@ -19,6 +19,7 @@ import {
   getPublicCategory,
 } from "@/lib/server-api";
 import { cn } from "@/lib/utils";
+import { RequestServiceButton } from "@/components/services/RequestServiceButton";
 
 type Props = {
   params: Promise<{ id: string }>;
@@ -228,15 +229,7 @@ export default async function ServiceDetailPage({ params }: Props) {
                 </span>
               </div>
 
-              <Link
-                href={`/citizen/requests/new?category=${encodeURIComponent(category.id)}`}
-                className={cn(
-                  buttonVariants(),
-                  "h-11 w-full text-sm font-semibold",
-                )}
-              >
-                Request this service
-              </Link>
+              <RequestServiceButton categoryId={category.id} />
 
               <ShareButton title={`${category.name} | Nagar Sheba`} />
             </CardContent>

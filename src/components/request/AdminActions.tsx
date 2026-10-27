@@ -284,11 +284,9 @@ export function AdminActions({ request }: { request: ServiceRequest }) {
       </CardHeader>
 
       <CardContent className="space-y-4">
-        <ReassignForm request={request} />
+        {request.status !== "PENDING_PAYMENT" && <ReassignForm request={request} />}
 
-        {request.status !== "PENDING_PAYMENT" && (
-          <StatusOverrideForm request={request} />
-        )}
+        {request.status !== "PENDING_PAYMENT" && <StatusOverrideForm request={request} />}
       </CardContent>
     </Card>
   );
